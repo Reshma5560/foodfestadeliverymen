@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:foodfestadeliverymen/utils/utils.dart';
 import 'package:get/get.dart';

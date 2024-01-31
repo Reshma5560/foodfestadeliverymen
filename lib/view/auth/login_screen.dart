@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodfestadeliverymen/route/app_routes.dart';
 import 'package:get/get.dart';
 
 import '../../controller/auth/login_controller.dart';
@@ -90,7 +91,26 @@ class LoginScreen extends StatelessWidget {
                                     FilteringTextInputFormatter.digitsOnly,
                                     LengthLimitingTextInputFormatter(8),
                                   ],
-                                ),
+                                ), SizedBox(height: 10.w),
+                                Align(
+                                    alignment: Alignment.centerRight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Get.toNamed(
+                                            AppRoutes.forgotPasswordScreen);
+                                      },
+                                      child: Text(
+                                        "Forgot password",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 14.sp,
+                                          decoration: TextDecoration.underline,
+                                          decorationThickness: 1.5,
+                                          color: Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    )),
                                 SizedBox(height: MediaQuery.of(context).viewInsets.bottom + defaultPadding.w * 3),
                                 Obx(
                                   () => TweenAnimationBuilder(

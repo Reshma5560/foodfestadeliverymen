@@ -4,7 +4,11 @@ class ApiUrls {
   static String baseUrl = AppEnvironment().getApiURL();
 
   //? Auth Api's
-  static String loginUrl = "restaurant-login";
+  static String loginUrl = "deliveryman-login";
+  static String updatePasswordUrl = "update-password";
+  static String forgotPasswordUrl = "forgot-password";
+  static String getProfileUrl = "get-profile";
+  static String updateUserProfileUrl = "update-profile";
 
 // //? Bottombar Api's
 // static String groups = "group/group-list";
