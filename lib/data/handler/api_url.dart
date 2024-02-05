@@ -3,12 +3,21 @@ import '../../app_environment.dart';
 class ApiUrls {
   static String baseUrl = AppEnvironment().getApiURL();
 
+static String deliverymenUrl="deliverymen/";
   //? Auth Api's
   static String loginUrl = "deliveryman-login";
   static String updatePasswordUrl = "update-password";
   static String forgotPasswordUrl = "forgot-password";
   static String getProfileUrl = "get-profile";
   static String updateUserProfileUrl = "update-profile";
+
+//order api's
+  static String orderComplaintUrl = "deliverymen-complaint";  
+  static String currentOrderUrl="current-order";
+  static String requestOrderUrl="get-request-order";
+  static String pastOrderUrl="past-order";
+  static String getOrderByIdUrl = "order-detail";
+  static String acceptOrderUrl="order-accept";
 
 // //? Bottombar Api's
 // static String groups = "group/group-list";

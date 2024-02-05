@@ -201,7 +201,7 @@ class EditAccountScreen extends StatelessWidget {
                 editAccountController.showImagePickerBottomSheet();
               },
               child: Container(
-                  padding: EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
                     color: Theme.of(Get.context!).primaryColor,
                     // colorScheme.background,
@@ -211,7 +211,7 @@ class EditAccountScreen extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.camera,
-                    // AppIcons.cameraIcon,\
+                    // AppIcons.cameraIcon,
                     color: AppColors.white,
                     //  Theme.of(Get.context!).primaryColor,
                     // height: 25,

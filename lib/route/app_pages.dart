@@ -1,7 +1,9 @@
 import 'package:foodfestadeliverymen/view/account/widgets/edit_account_screen.dart';
+import 'package:foodfestadeliverymen/view/account/widgets/order_complaint_screen.dart';
 import 'package:foodfestadeliverymen/view/account/widgets/update_password_screen.dart';
 import 'package:foodfestadeliverymen/view/auth/forgot_password_screen.dart';
 import 'package:foodfestadeliverymen/view/index/bottom_screen.dart';
+import 'package:foodfestadeliverymen/view/index/widgets/home/widgets/order_detail_Screen.dart';
 import 'package:get/get.dart';
 
 import '../view/auth/login_screen.dart';
@@ -26,14 +28,21 @@ class AppPages {
       name: AppRoutes.updatePasswordScreen,
       page: () => UpdatePasswordScreen(),
     ),
-    
-     GetPage(
+    GetPage(
       name: AppRoutes.forgotPasswordScreen,
       page: () => ForgotPasswordScreen(),
     ),
     GetPage(
       name: AppRoutes.editAccountScreen,
       page: () => EditAccountScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.orderComplaintScreen,
+      page: () => OrderComplaintScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.orderDetailScreen,
+      page: () => OrderDetailScreen(),
     ),
   ];
 }

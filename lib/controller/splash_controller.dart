@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:foodfestadeliverymen/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 import '../route/app_routes.dart';
@@ -11,11 +12,16 @@ class SplashController extends GetxController {
     super.onInit();
   }
 
-
   navigation() {
     Timer(
       const Duration(seconds: 5),
-      () => Get.offAllNamed(AppRoutes.loginScreen),
+      () {
+        if (LocalStorage.token.value.isEmpty) {
+          Get.offAllNamed(AppRoutes.loginScreen);
+        } else {
+          Get.offAllNamed(AppRoutes.bottomScreen);
+        }
+      },
     );
   }
 }

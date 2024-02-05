@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodfestadeliverymen/view/account/account_screen.dart';
-import 'package:foodfestadeliverymen/view/index/widgets/home_screen.dart';
-import 'package:foodfestadeliverymen/view/index/widgets/order_screen.dart';
+import 'package:foodfestadeliverymen/view/index/widgets/home/home_screen.dart';
 import 'package:get/get.dart';
 
 class BottomController extends GetxController {
@@ -15,9 +14,5 @@ class BottomController extends GetxController {
     } else if (index == 2) {}
   }
 
-  final pages = <Widget>[
-    const HomeScreen(),
-    const OrderScreen(),
-    AccountScreen()
-  ];
+  final pages = <Widget>[HomeScreen(), AccountScreen()];
 }

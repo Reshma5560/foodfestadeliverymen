@@ -53,6 +53,7 @@ class AppStrings {
   static String notificationNotFoundSubtitle = "We'll notify you when something arrives.";
   static String deleteNotificationConfirmation = "This will permanently delete the item. Confirm deletion?";
   static String giveYourFirstLike = "Give your first like";
+  static String recordNotFound="Record not found";
 
   /// change password
   static const String enterPassValidationText = 'Please enter password';
