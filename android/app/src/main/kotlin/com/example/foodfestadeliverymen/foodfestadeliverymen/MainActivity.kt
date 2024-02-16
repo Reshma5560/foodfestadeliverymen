@@ -1,4 +1,4 @@
-package com.example.foodfestadeliverymen.foodfestadeliverymen
+package com.example.foodfestadeliverymen
 
 import io.flutter.embedding.android.FlutterActivity
 
