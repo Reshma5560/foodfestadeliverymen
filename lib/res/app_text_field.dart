@@ -153,7 +153,9 @@ class AppTextField extends StatelessWidget {
       style: style ?? TextStyle(fontSize: 15.sp, fontWeight: FontWeight.w500, color: titleTextColor ?? Theme.of(context).primaryColor),
       inputFormatters: inputFormatters,
       readOnly: readOnly ?? false,
+      
       decoration: InputDecoration(
+        
         filled: true,
         isCollapsed: true,
         contentPadding: contentPadding ?? const EdgeInsets.all(18),

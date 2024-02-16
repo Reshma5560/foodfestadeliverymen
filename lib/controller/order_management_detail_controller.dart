@@ -2,17 +2,15 @@ import 'package:foodfestadeliverymen/data/models/get_order_by_id_model.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:get/get.dart';
 
-class OrderDetailController extends GetxController {
+class OrderManagementDetailController extends GetxController {
   Rx<GetOrderByIdModel> getOrderDataModel = GetOrderByIdModel().obs;
+
   RxBool isLoading = true.obs;
-  var orderId = Get.arguments['orderId'];
-  RxBool isAccept = false.obs;
+  RxString orderId = "".obs;
 
   @override
   void onInit() {
-    if (Get.arguments['isAccept'] != null) {
-      isAccept.value = Get.arguments['isAccept'];
-    }
+    orderId.value = Get.arguments['orderId'];
     super.onInit();
   }
 
@@ -20,7 +18,9 @@ class OrderDetailController extends GetxController {
   Future<void> onReady() async {
     await DesktopRepository().getOrderByIdApiCall(
         isLoader: isLoading,
-        orderId: orderId,orderData: getOrderDataModel); // "9b3acdb9-facd-48f7-b42b-808a47ee202a");
+        orderId: orderId.value,
+        orderData:
+            getOrderDataModel); // "9b3acdb9-facd-48f7-b42b-808a47ee202a");
     super.onReady();
   }
 }

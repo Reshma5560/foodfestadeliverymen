@@ -10,7 +10,8 @@ import '../utils/local_storage.dart';
 import '../utils/utils.dart';
 
 class AuthRepository {
-  Future<dynamic> loginApi({dynamic params, RxBool? isLoader}) async {
+  Future<dynamic> loginApi(
+      {dynamic params, RxBool? isLoader, required bool isRemeber}) async {
     try {
       isLoader?.value = true;
       printData(key: "Login params", value: params);
@@ -33,6 +34,19 @@ class AuthRepository {
                 Get.offAllNamed(AppRoutes.bottomScreen);
               },
             );
+            // if (isRemeber == true) {
+            await LocalStorage.setLoginInfo(
+                userEmail: params['email'],
+                // con.emailCon.value.text,
+                userPassword: params['password'],
+
+                // con.passwordCon.value.text,
+                isRemeberData: isRemeber
+                // con.isRemeber.value
+                );
+            // } else {
+            //   await LocalStorage.clearLoginData();
+            // }
 
             // /// Set links
             // if (!isValEmpty(response["links"])) {

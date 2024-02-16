@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +11,7 @@ import 'package:foodfestadeliverymen/res/app_colors.dart';
 import 'package:foodfestadeliverymen/res/app_style.dart';
 import 'package:foodfestadeliverymen/res/app_text_field.dart';
 import 'package:get/get.dart';
+import 'dart:io' as io;
 
 class EditAccountScreen extends StatelessWidget {
   EditAccountScreen({super.key});
@@ -123,14 +126,16 @@ class EditAccountScreen extends StatelessWidget {
                     ),
                     AppButton(
                       onPressed: () {
+                        log(editAccountController.imagePath.value);
                         DesktopRepository().editProfileApiCall(
                           isLoader: editAccountController.isLoader,
-                          // params: {
 
-                          //   "image":editAccountController.name
-                          //       // editAccountController.selectedProfileImage?.path
-                          // },
                         );
+                        // params: {
+
+                        //   "image":editAccountController.name
+                        //       // editAccountController.selectedProfileImage?.path
+                        // },
                       },
                       title: "Update",
                     )
@@ -154,47 +159,38 @@ class EditAccountScreen extends StatelessWidget {
             borderRadius: const BorderRadius.all(
               Radius.circular(200),
             ),
-            child: editAccountController.selectedProfileImage != null
-                ? Container(
-                    height: 180,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: FileImage(
-                          editAccountController.selectedProfileImage!,
-                        ),
-                        onError: (exception, stackTrace) =>
-                            // Image.asset(AppImages.appLogoImage),
-                            Image.network(
-                                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+            child: Container(
+              height: 100,
+              width: 100,
+              decoration: const BoxDecoration(
+                color: Colors.grey,
+                shape: BoxShape.circle,
+              ),
+              child: Obx(
+                () => editAccountController.imagePath.isNotEmpty
+                    ? Image.file(
+                        io.File(editAccountController.imagePath.value),
                         fit: BoxFit.cover,
-                      ),
-                    ),
-                  )
-                : Container(
-                    height: 180,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          image: const NetworkImage(
-                              'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'), //userProfileImage),
-                          fit: BoxFit.cover,
-                          onError: (exception, stackTrace) =>
-                              // Image.asset(AppImages.appLogoImage),
-                              Image.network(
-                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
-                    ),
-                  ),
+                      )
+                    : editAccountController.image.value.isNotEmpty
+                        ? Image.network(editAccountController.image.value)
+                        //  LocalStorage.userImage.value.contains("https://") || LocalStorage.userImage.value.contains("http://")
+                        //     ? MFNetworkImage(
+                        //         imageUrl: LocalStorage.userImage.value,
+                        //         fit: BoxFit.cover,
+                        //       )
+                        : Image.network(
+                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+                            fit: BoxFit.cover,
+                          ),
+              ),
+            ),
           ),
         ),
       ),
       Positioned(
-          bottom: 20,
-          right: 100,
+          bottom: 16,
+          right: 130,
           child: Center(
             child: GestureDetector(
               onTap: () {
@@ -211,15 +207,95 @@ class EditAccountScreen extends StatelessWidget {
                   ),
                   child: Icon(
                     Icons.camera,
-                    // AppIcons.cameraIcon,
+                    // AppIcons.cameraIcon,\
                     color: AppColors.white,
                     //  Theme.of(Get.context!).primaryColor,
                     // height: 25,
                     // width: 25,
-                    size: 25,
+                    size: 18,
                   )),
             ),
           ))
     ]);
   }
+  // Widget _profileImageWidget() {
+  //   return Stack(children: [
+  //     Positioned(
+  //       // left: 20,
+  //       // top: 20,
+  //       // right: 20,
+  //       // bottom: 20,
+  //       child: Center(
+  //         child: ClipRRect(
+  //           borderRadius: const BorderRadius.all(
+  //             Radius.circular(200),
+  //           ),
+  //           child: editAccountController.selectedProfileImage != null
+  //               ? Container(
+  //                   height: 180,
+  //                   width: 180,
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.grey,
+  //                     shape: BoxShape.circle,
+  //                     image: DecorationImage(
+  //                       image: FileImage(
+  //                         editAccountController.selectedProfileImage!,
+  //                       ),
+  //                       onError: (exception, stackTrace) =>
+  //                           // Image.asset(AppImages.appLogoImage),
+  //                           Image.network(
+  //                               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"),
+  //                       fit: BoxFit.cover,
+  //                     ),
+  //                   ),
+  //                 )
+  //               : Container(
+  //                   height: 180,
+  //                   width: 180,
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.grey,
+  //                     shape: BoxShape.circle,
+  //                     image: DecorationImage(
+  //                         image: const NetworkImage(
+  //                             'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'), //userProfileImage),
+  //                         fit: BoxFit.cover,
+  //                         onError: (exception, stackTrace) =>
+  //                             // Image.asset(AppImages.appLogoImage),
+  //                             Image.network(
+  //                                 "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")),
+  //                   ),
+  //                 ),
+  //         ),
+  //       ),
+  //     ),
+  //     Positioned(
+  //         bottom: 20,
+  //         right: 100,
+  //         child: Center(
+  //           child: GestureDetector(
+  //             onTap: () {
+  //               editAccountController.showImagePickerBottomSheet();
+  //             },
+  //             child: Container(
+  //                 padding: const EdgeInsets.all(4),
+  //                 decoration: BoxDecoration(
+  //                   color: Theme.of(Get.context!).primaryColor,
+  //                   // colorScheme.background,
+  //                   borderRadius: const BorderRadius.all(
+  //                     Radius.circular(7),
+  //                   ),
+  //                 ),
+  //                 child: Icon(
+  //                   Icons.camera,
+  //                   // AppIcons.cameraIcon,
+  //                   color: AppColors.white,
+  //                   //  Theme.of(Get.context!).primaryColor,
+  //                   // height: 25,
+  //                   // width: 25,
+  //                   size: 25,
+  //                 )),
+  //           ),
+  //         ))
+  //   ]);
+  // }
 }

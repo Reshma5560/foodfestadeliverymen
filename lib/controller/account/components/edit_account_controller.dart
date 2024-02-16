@@ -1,11 +1,11 @@
-import 'dart:developer';
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
+import 'package:foodfestadeliverymen/res/color_print.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 
 class EditAccountController extends GetxController {
   TextEditingController mobileNumberCon = TextEditingController();
@@ -22,6 +22,10 @@ class EditAccountController extends GetxController {
   RxString lastNameError = ''.obs;
   RxString emailError = ''.obs;
   RxBool isMobileValid = false.obs;
+  RxString image = "".obs;
+
+ File? apiImage;
+  RxString imagePath = "".obs;
 
   RxBool isLoader = false.obs;
   RxBool isLoading = false.obs;
@@ -50,7 +54,7 @@ class EditAccountController extends GetxController {
             ListTile(
               dense: true,
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
               leading: Icon(
                 Icons.camera_alt_rounded,
                 color: AppColors.grey,
@@ -59,13 +63,13 @@ class EditAccountController extends GetxController {
               title: const Text("Camera"),
               onTap: () {
                 Get.back();
-                getImageFromCamera();
+                selectImage(pickFromCamera: true);
               },
             ),
             ListTile(
               dense: true,
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
               leading: Icon(
                 Icons.perm_media_rounded,
                 color: AppColors.grey,
@@ -74,13 +78,13 @@ class EditAccountController extends GetxController {
               title: const Text("Library"),
               onTap: () {
                 Get.back();
-                getImageFromGallery();
+                selectImage(pickFromCamera: false);
               },
             ),
             ListTile(
               dense: true,
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
               leading: Icon(
                 Icons.close,
                 color: AppColors.grey,
@@ -96,40 +100,130 @@ class EditAccountController extends GetxController {
   }
 
   String name = '';
-  // Get from gallery
-  getImageFromGallery() async {
-    isLoading(true);
-    XFile? pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
+selectImage({bool pickFromCamera = false}) async {
+    XFile? pickedImage = await ImagePicker().pickImage(
+      source: pickFromCamera == true ? ImageSource.camera : ImageSource.gallery,
       maxWidth: 1800,
       maxHeight: 1800,
     );
-    if (pickedFile != null) {
-      selectedProfileImage = File(pickedFile.path);
-      name = basename(pickedFile.path);
-    }
-    isLoading(false);
-  }
 
-  //Get from Camera
-  getImageFromCamera() async {
-    isLoading(true);
-    XFile? pickedFile = await ImagePicker().pickImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      selectedProfileImage = File(pickedFile.path);
-
-      log("Image pathg ${selectedProfileImage?.path}");
+    if (pickedImage != null) {
+      apiImage = File(pickedImage.path);
+      printYellow("---------------------  $apiImage");
+      imagePath.value = pickedImage.path;
     }
-    isLoading(false);
   }
+  // showImagePickerBottomSheet() {
+  //   showModalBottomSheet<dynamic>(
+  //       isScrollControlled: true,
+  //       context: Get.context!,
+  //       builder: (BuildContext bc) {
+  //         return Wrap(children: <Widget>[
+  //           Column(
+  //             children: [
+  //               Padding(
+  //                 padding: const EdgeInsets.only(left: 25, top: 15, bottom: 15),
+  //                 child: Text(
+  //                   "Albums",
+  //                   style: TextStyle(
+  //                     fontSize: 15,
+  //                     color: AppColors.grey,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //           ListTile(
+  //             dense: true,
+  //             contentPadding:
+  //                 const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+  //             leading: Icon(
+  //               Icons.camera_alt_rounded,
+  //               color: AppColors.grey,
+  //               size: 25,
+  //             ),
+  //             title: const Text("Camera"),
+  //             onTap: () {
+  //               Get.back();
+  //               getImageFromCamera();
+  //             },
+  //           ),
+  //           ListTile(
+  //             dense: true,
+  //             contentPadding:
+  //                 const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+  //             leading: Icon(
+  //               Icons.perm_media_rounded,
+  //               color: AppColors.grey,
+  //               size: 25,
+  //             ),
+  //             title: const Text("Library"),
+  //             onTap: () {
+  //               Get.back();
+  //               getImageFromGallery();
+  //             },
+  //           ),
+  //           ListTile(
+  //             dense: true,
+  //             contentPadding:
+  //                 const EdgeInsets.symmetric(horizontal: 25, vertical: 3),
+  //             leading: Icon(
+  //               Icons.close,
+  //               color: AppColors.grey,
+  //               size: 25,
+  //             ),
+  //             title: const Text("Cancel"),
+  //             onTap: () {
+  //               Get.back();
+  //             },
+  //           ),
+  //         ]);
+  //       });
+  // }
+  //
+  // String name = '';
+  // // Get from gallery
+  // getImageFromGallery() async {
+  //   isLoading(true);
+  //   XFile? pickedFile = await ImagePicker().pickImage(
+  //     source: ImageSource.gallery,
+  //     maxWidth: 1800,
+  //     maxHeight: 1800,
+  //   );
+  //   if (pickedFile != null) {
+  //     selectedProfileImage = File(pickedFile.path);
+  //     name = basename(pickedFile.path);
+  //   }
+  //   isLoading(false);
+  // }
+  //
+  // //Get from Camera
+  // getImageFromCamera() async {
+  //   isLoading(true);
+  //   XFile? pickedFile = await ImagePicker().pickImage(
+  //     source: ImageSource.camera,
+  //     maxWidth: 1800,
+  //     maxHeight: 1800,
+  //   );
+  //   if (pickedFile != null) {
+  //     selectedProfileImage = File(pickedFile.path);
+  //
+  //     log("Image pathg ${selectedProfileImage?.path}");
+  //   }
+  //   isLoading(false);
+  // }
 
   @override
   void onInit() {
-    emailCon.text = "customer@gmail.com";
+    // emailCon.text = "customer@gmail.com";
+
+    if (Get.arguments != null) {
+      image.value = Get.arguments['image'];
+      firstNameCon.text = Get.arguments['firstName'];
+      lastNameCon.text = Get.arguments['lastName'];
+      emailCon.text = Get.arguments['email'] ?? "customer@gmail.com";
+      mobileNumberCon.text = Get.arguments['mobileNo'];
+    }
     super.onInit();
   }
 }

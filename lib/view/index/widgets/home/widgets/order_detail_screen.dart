@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestadeliverymen/controller/order_detail_controller.dart';
-import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
 import 'package:foodfestadeliverymen/res/app_loader.dart';
@@ -344,69 +343,69 @@ class OrderDetailScreen extends StatelessWidget {
                                   height: 30.h,
                                 ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    ElevatedButton(
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        var params = {
-                                          "order_id": con
-                                              .getOrderDataModel.value.data?.id,
-                                          "status":
-                                              "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
-                                        };
-                                        DesktopRepository()
-                                            .acceptOrderApiCall(
-                                                isLoader: con.isLoading,
-                                                params: params)
-                                            .then((value) =>
-                                                con.isAccept.value = true);
-                                      },
-                                      child: const Text("Accept"),
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    ElevatedButton(
-                                      style: ButtonStyle(
-                                        shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: con.isAccept.value == true
-                                          ? null
-                                          : () {
-                                              var params = {
-                                                "order_id": con
-                                                    .getOrderDataModel
-                                                    .value
-                                                    .data
-                                                    ?.id,
-                                                "status":
-                                                    "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
-                                              };
-                                              DesktopRepository()
-                                                  .acceptOrderApiCall(
-                                                      isLoader: con.isLoading,
-                                                      params: params);
-                                            },
-                                      child: const Text("Reject"),
-                                    ),
-                                  ],
-                                )
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: [
+                                //     ElevatedButton(
+                                //       style: ButtonStyle(
+                                //         shape: MaterialStateProperty.all<
+                                //             RoundedRectangleBorder>(
+                                //           RoundedRectangleBorder(
+                                //             borderRadius:
+                                //                 BorderRadius.circular(5.0),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       onPressed: () {
+                                //         var params = {
+                                //           "order_id": con
+                                //               .getOrderDataModel.value.data?.id,
+                                //           "status":
+                                //               "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                //         };
+                                //         DesktopRepository()
+                                //             .acceptOrderApiCall(
+                                //                 isLoader: con.isLoading,
+                                //                 params: params)
+                                //             .then((value) =>
+                                //                 con.isAccept.value = true);
+                                //       },
+                                //       child: const Text("Accept"),
+                                //     ),
+                                //     SizedBox(
+                                //       width: 10.w,
+                                //     ),
+                                //     ElevatedButton(
+                                //       style: ButtonStyle(
+                                //         shape: MaterialStateProperty.all<
+                                //             RoundedRectangleBorder>(
+                                //           RoundedRectangleBorder(
+                                //             borderRadius:
+                                //                 BorderRadius.circular(5.0),
+                                //           ),
+                                //         ),
+                                //       ),
+                                //       onPressed: con.isAccept.value == true
+                                //           ? null
+                                //           : () {
+                                //               var params = {
+                                //                 "order_id": con
+                                //                     .getOrderDataModel
+                                //                     .value
+                                //                     .data
+                                //                     ?.id,
+                                //                 "status":
+                                //                     "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                //               };
+                                //               DesktopRepository()
+                                //                   .acceptOrderApiCall(
+                                //                       isLoader: con.isLoading,
+                                //                       params: params);
+                                //             },
+                                //       child: const Text("Reject"),
+                                //     ),
+                                //   ],
+                                // )
                               ],
                             ).paddingSymmetric(
                               horizontal: 10.w, vertical: 10.h)))
@@ -452,27 +451,40 @@ class OrderDetailScreen extends StatelessWidget {
                 //   style:
                 //       TextStyle(fontWeight: FontWeight.w500, fontSize: 12.sp),
                 // ),
-                item?.addon?.length == 0
-                    ? Container()
-                    : Row(
-                        children: [
-                          Text("Addons : ${item?.addon?.length}"),
-                          ...item!.addon!.map((addons) {
-                            return Text("${addons.addonName},");
-                          }).toList(),
-                        ],
-                      ),
-                item?.variant?.length == 0
-                    ? Container()
-                    : Row(
-                        children: [
-                          const Text("Variants :"),
-                          ...item!.variant!.map((varients) {
-                            return Text(
-                                "${varients.variationOptionName ?? ""},");
-                          }).toList(),
-                        ],
-                      ),
+                Row(
+                  children: [
+                    const Text("Addons :"),
+                    item?.addon?.length == 0
+                        ? Container()
+                        : Expanded(
+                            child: Row(
+                              children: [
+                                ...item!.addon!.map((addons) {
+                                  return Text("${addons.addonName},");
+                                }).toList(),
+                              ],
+                            ),
+                          ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    const Text("Variants :"),
+                    item?.variant?.length == 0
+                        ? Container()
+                        : Column(
+                            children: [
+                              ...item!.variant!.map((varients) {
+                                return Text(
+                                  "${varients.variationOptionName ?? ""}, ",
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                );
+                              }).toList(),
+                            ],
+                          ),
+                  ],
+                ),
               ],
             )
           ],
