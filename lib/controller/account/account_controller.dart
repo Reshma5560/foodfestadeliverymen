@@ -1,3 +1,4 @@
+import 'package:foodfestadeliverymen/data/models/get_review_model.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:get/get.dart';
 
@@ -8,9 +9,10 @@ class ProfileController extends GetxController {
 
   // File? selectedProfileImage;
   GetProfileModel? getDataMap;
-
+Rx<GetReviewData>  getReviewData=GetReviewData().obs;
   // RxBool isLoading = false.obs;
 
+RxBool isRating=false.obs;
 
   RxString userApiImageFile = "".obs;
   RxString userName = "".obs;

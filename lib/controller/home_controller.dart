@@ -10,7 +10,7 @@ class HomeController extends GetxController
   RxBool isLoading = false.obs;
   RxBool paginationLoading = false.obs;
   RxBool nextPageStop = true.obs;
-  RxInt page = 1.obs;
+  RxInt page = 5.obs;
 
   ScrollController currentOrderScrollController = ScrollController();
   ScrollController requestOrderScrollController = ScrollController();
@@ -21,8 +21,10 @@ class HomeController extends GetxController
 
   RxList<RequestOrderDatum> requestOrderListData = <RequestOrderDatum>[].obs;
 
-  RxList<CurrentOrderStatusDatum> getCurrentOrderStatusListData = <CurrentOrderStatusDatum>[].obs;
-  Rx<CurrentOrderStatusDatum> orderstatusDropDownValue = CurrentOrderStatusDatum(statusName: 'Select order status').obs;
+  RxList<CurrentOrderStatusDatum> getCurrentOrderStatusListData =
+      <CurrentOrderStatusDatum>[].obs;
+  Rx<CurrentOrderStatusDatum> orderstatusDropDownValue =
+      CurrentOrderStatusDatum(statusName: 'Select order status').obs;
 
   // RxList<PastOrderDatum> pastOrderListData = <PastOrderDatum>[].obs;
 

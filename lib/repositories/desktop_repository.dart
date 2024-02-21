@@ -4,14 +4,17 @@ import 'dart:developer';
 import 'package:dio/dio.dart' as dio;
 import 'package:foodfestadeliverymen/controller/account/account_controller.dart';
 import 'package:foodfestadeliverymen/controller/account/components/edit_account_controller.dart';
+import 'package:foodfestadeliverymen/controller/account/components/my_earning_controller.dart';
 import 'package:foodfestadeliverymen/controller/home_controller.dart';
 import 'package:foodfestadeliverymen/controller/order_management_controller.dart';
 import 'package:foodfestadeliverymen/data/api/api_function.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_model.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_status_model.dart';
+import 'package:foodfestadeliverymen/data/models/get_deliverymen_earning_model.dart';
 import 'package:foodfestadeliverymen/data/models/get_order_by_id_model.dart';
 import 'package:foodfestadeliverymen/data/models/get_order_history_filter_model.dart';
 import 'package:foodfestadeliverymen/data/models/get_profile_model.dart';
+import 'package:foodfestadeliverymen/data/models/get_review_model.dart';
 import 'package:foodfestadeliverymen/data/models/request_order_model.dart';
 import 'package:foodfestadeliverymen/res/color_print.dart';
 import 'package:foodfestadeliverymen/res/ui_utils.dart';
@@ -43,6 +46,37 @@ class DesktopRepository {
             con.lastName.value = con.getDataMap?.data.lastName ?? "";
             con.email.value = con.getDataMap?.data.email ?? "";
             log("${con.getDataMap}");
+            await getReviewApiCall(isLoader: isLoader);
+          }
+          return response;
+        },
+      );
+    } on dio.DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        printWarning(e.response?.statusCode);
+        printError(type: this, errText: "$e");
+      }
+      rethrow;
+    } finally {
+      isLoader?.value = false;
+    }
+  }
+
+  Future<dynamic> getReviewApiCall({RxBool? isLoader}) async {
+    final con = Get.find<ProfileController>();
+
+    try {
+      isLoader?.value = true;
+      await APIFunction()
+          .getApiCall(
+              apiName: "${ApiUrls.deliverymenUrl}${ApiUrls.getReviewUrl}")
+          .then(
+        (response) async {
+          printData(key: "get review  response", value: response);
+          if (!isValEmpty(response) && response["status"] == true) {
+            GetReviewModel data = GetReviewModel.fromJson(response);
+
+            con.getReviewData.value = data.data ?? GetReviewData();
           }
           return response;
         },
@@ -236,56 +270,6 @@ class DesktopRepository {
     }
   }
 
-  // ///get past order list api
-  // Future<dynamic> getPastOrderListAPI({required bool isInitial}) async {
-  //   final HomeController con = Get.find<HomeController>();
-  //   try {
-  //     if (await getConnectivityResult()) {
-  //       if (isInitial) {
-  //         con.pastOrderListData.clear();
-  //         con.page.value = 1;
-  //         con.isLoading.value = true;
-  //         con.nextPageStop.value = true;
-  //       }
-
-  //       if (con.nextPageStop.isTrue) {
-  //         await APIFunction()
-  //             .getApiCall(
-  //                 apiName:
-  //                     "${ApiUrls.deliverymenUrl}${ApiUrls.pastOrderUrl}?page=${con.page.value}")
-  //             .then(
-  //           (response) async {
-  //             PastOrderModel pastOrderModel = PastOrderModel.fromJson(response);
-
-  //             pastOrderModel.data?.data?.forEach((element) {
-  //               // log("-------------${element.restaurant}");
-  //               // log("-------------${element.restaurant != null}");
-  //               if (element != null) {
-  //                 con.pastOrderListData.add(element);
-  //               }
-  //             });
-  //             con.pastOrderListData.refresh();
-
-  //             con.page.value++;
-  //             printData(
-  //                 key: "past order length",
-  //                 value: con.pastOrderListData.length);
-  //             if (con.pastOrderListData.length == pastOrderModel.data?.total) {
-  //               con.nextPageStop.value = false;
-  //             }
-  //             return response;
-  //           },
-  //         );
-  //       }
-  //     }
-  //   } catch (e) {
-  //     printError(type: this, errText: "$e");
-  //   } finally {
-  //     con.isLoading.value = false;
-  //     con.paginationLoading.value = false;
-  //   }
-  // }
-
   //get order by id api call
   Future<dynamic> getOrderByIdApiCall(
       {RxBool? isLoader,
@@ -303,8 +287,6 @@ class DesktopRepository {
             GetOrderByIdModel data = GetOrderByIdModel.fromJson(response);
 
             orderData.value = data;
-            log("$data");
-            log("ORDER track data ${orderData.value.data}");
           }
           return response;
         },
@@ -429,38 +411,89 @@ class DesktopRepository {
 
 //get order history filer api call
   Future<dynamic> getOrderHistoryFilterApiCall(
-      {RxBool? isLoader,
+      {required bool isInitial,
+      RxBool? isLoader,
       String? search,
       required String fromdDate,
       required String toDate}) async {
     final OrderManagementController con = Get.find<OrderManagementController>();
     try {
+      if (await getConnectivityResult()) {
+        con.getOrderHistoryFilterList.clear();
+        if (isInitial) {
+          con.page.value = 3;
+          con.isLoader.value = true;
+          con.nextPageStop.value = true;
+        }
+
+        dio.FormData formData = dio.FormData.fromMap({
+          "search": search ?? "",
+          "from_date": fromdDate,
+          "to_date": toDate,
+        });
+        if (con.nextPageStop.isTrue) {
+          await APIFunction()
+              .postApiCall(
+                  apiName:
+                      "${ApiUrls.getOrderHistoryFilterUrl}?per_page=${con.page.value}",
+                  params: formData)
+              .then(
+            (response) async {
+              printData(
+                  key: "get order history filter response", value: response);
+              if (!isValEmpty(response) && response["status"] == true) {
+                GetOrderHistoryFilterModel getOrderHistoryFiltermodel =
+                    GetOrderHistoryFilterModel.fromJson(response);
+
+                getOrderHistoryFiltermodel.data?.data?.forEach((element) {
+                  // log("-------------${element.restaurant}");
+                  // log("-------------${element.restaurant != null}");
+                  if (element != null) {
+                    con.getOrderHistoryFilterList.add(element);
+                  }
+                });
+
+                con.getOrderHistoryFilterList.refresh();
+                con.page.value++;
+                printData(
+                    key: " order history filter length",
+                    value: con.getOrderHistoryFilterList.length);
+                if (con.getOrderHistoryFilterList.length ==
+                    getOrderHistoryFiltermodel.data?.total) {
+                  con.nextPageStop.value = false;
+                }
+              }
+              return response;
+            },
+          );
+        }
+      }
+    } on dio.DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        printWarning(e.response?.statusCode);
+        printError(type: this, errText: "$e");
+      }
+    } finally {
+      isLoader?.value = false;
+    }
+  }
+
+  Future<dynamic> getEarningApiCall({RxBool? isLoader}) async {
+    final con = Get.find<MyEarningController>();
+
+    try {
       isLoader?.value = true;
-      dio.FormData formData = dio.FormData.fromMap({
-        "search": search ?? "",
-        "from_date": fromdDate,
-        "to_date": toDate,
-      });
       await APIFunction()
-          .postApiCall(
-              apiName: "${ApiUrls.getOrderHistoryFilterUrl}", params: formData)
+          .getApiCall(
+              apiName: "${ApiUrls.deliverymenUrl}${ApiUrls.getEarningUrl}")
           .then(
         (response) async {
-          printData(key: "get order history filter response", value: response);
+          printData(key: "get earning  response", value: response);
           if (!isValEmpty(response) && response["status"] == true) {
-            GetOrderHistoryFilterModel getOrderHistoryFiltermodel =
-                GetOrderHistoryFilterModel.fromJson(response);
+            GetDeliveryManEarningModel data =
+                GetDeliveryManEarningModel.fromJson(response);
 
-            getOrderHistoryFiltermodel.data?.data?.forEach((element) {
-              // log("-------------${element.restaurant}");
-              // log("-------------${element.restaurant != null}");
-              if (element != null) {
-                con.getOrderHistoryFilterList.add(element);
-              }
-            });
-
-            con.getOrderHistoryFilterList.refresh();
-            log(con.getOrderHistoryFilterList.length.toString());
+            con.myEarningData.value = data;
           }
           return response;
         },
@@ -470,6 +503,7 @@ class DesktopRepository {
         printWarning(e.response?.statusCode);
         printError(type: this, errText: "$e");
       }
+      rethrow;
     } finally {
       isLoader?.value = false;
     }

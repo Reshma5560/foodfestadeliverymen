@@ -1,11 +1,12 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:foodfestadeliverymen/common_widgets/simmer_tile.dart';
 import 'package:foodfestadeliverymen/controller/order_management_detail_controller.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
-import 'package:foodfestadeliverymen/res/app_loader.dart';
 import 'package:foodfestadeliverymen/res/app_style.dart';
 import 'package:get/get.dart';
 
@@ -35,7 +36,16 @@ class OrderManagementDetailScreen extends StatelessWidget {
                     Expanded(
                       child: Obx(
                         () => con.isLoading.isTrue
-                            ? const AppLoader()
+                            ? ListView.builder(
+                                // padding: const EdgeInsets.all(defaultPadding)
+                                //     .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+
+                                // padding: EdgeInsets.symmetric(vertical: 5.h),
+                                shrinkWrap: true,
+                                itemCount: 8,
+                                itemBuilder: (BuildContext context, index) =>
+                                    const SimmerTile(),
+                              )
                             : ListView(children: [
                                 Container(
                                   decoration: BoxDecoration(
@@ -87,7 +97,19 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                               ),
                                             ),
                                             InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  var fileName =
+                                                      "Food fiesta ${con.getOrderDataModel.value.data?.id ?? ""}";
+                                                  con.downloadFile(
+                                                      url: con
+                                                              .getOrderDataModel
+                                                              .value
+                                                              .data
+                                                              ?.downloadInvoice ??
+                                                          "",
+                                                      fileName: fileName,
+                                                      isDownload: true);
+                                                },
                                                 child: Icon(
                                                   Icons.download,
                                                   size: 18.sp,
@@ -192,6 +214,50 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                         Divider(
                                           color: AppColors.greyBorderColor,
                                         ),
+                                        con.getOrderDataModel.value.data
+                                                    ?.comments?.rating !=
+                                                null
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "Order Rating ",
+                                                    style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 13.sp),
+                                                  ),
+                                                  RatingBar.builder(
+                                                    direction: Axis.horizontal,
+                                                    allowHalfRating: true,
+                                                    itemSize: 18,
+                                                    initialRating: double.parse(
+                                                        con
+                                                            .getOrderDataModel
+                                                            .value
+                                                            .data!
+                                                            .comments!
+                                                            .rating
+                                                            .toString()),
+                                                    itemBuilder: (context, _) =>
+                                                        Icon(
+                                                      Icons.star_rounded,
+                                                      color: AppColors.yellow,
+                                                    ),
+                                                    ignoreGestures: true,
+                                                    onRatingUpdate:
+                                                        (double value) {},
+                                                  ),
+                                                ],
+                                              )
+                                            : Container(),
+                                        Divider(
+                                          color: AppColors.greyBorderColor,
+                                        ),
                                         SizedBox(
                                           height: 14.h,
                                         ),
@@ -261,7 +327,7 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                                   fontSize: 11.sp),
                                             ),
                                             Text(
-                                              "\$ ${con.getOrderDataModel.value.data?.orderAmount ?? " "}",
+                                              "\$ ${con.getOrderDataModel.value.data?.orderAmount ?? "0"}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: AppColors.black,
@@ -286,7 +352,7 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                                   fontSize: 11.sp),
                                             ),
                                             Text(
-                                              "\$ ${con.getOrderDataModel.value.data?.totalTaxAmount ?? " "}",
+                                              "\$ ${con.getOrderDataModel.value.data?.totalTaxAmount ?? "0"}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: AppColors.black,
@@ -311,7 +377,7 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                                   fontSize: 11.sp),
                                             ),
                                             Text(
-                                              "\$ ${con.getOrderDataModel.value.data!.discountTotal}",
+                                              "\$ ${con.getOrderDataModel.value.data?.discountTotal ?? "0"}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: AppColors.black,
@@ -336,7 +402,7 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                                   fontSize: 11.sp),
                                             ),
                                             Text(
-                                              "\$ ${con.getOrderDataModel.value.data!.deliveryCharge}",
+                                              "\$ ${con.getOrderDataModel.value.data?.deliveryCharge ?? "0"}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: AppColors.black,
@@ -364,7 +430,7 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                                   fontSize: 13.sp),
                                             ),
                                             Text(
-                                              "\$ ${con.getOrderDataModel.value.data!.orderAmount}",
+                                              "\$ ${con.getOrderDataModel.value.data?.orderAmount ?? "0"}",
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
                                                   color: AppColors.black,

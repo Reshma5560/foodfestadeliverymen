@@ -1,14 +1,7 @@
-// To parse this JSON data, do
-//
-//     final getOrderByIdModel = getOrderByIdModelFromJson(jsonString);
-
 import 'dart:convert';
 
 GetOrderByIdModel getOrderByIdModelFromJson(String str) =>
     GetOrderByIdModel.fromJson(json.decode(str));
-
-String getOrderByIdModelToJson(GetOrderByIdModel data) =>
-    json.encode(data.toJson());
 
 class GetOrderByIdModel {
   final bool? status;
@@ -25,11 +18,6 @@ class GetOrderByIdModel {
         data:
             json["data"] == null ? null : OrderTrackData.fromJson(json["data"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
-        "data": data?.toJson(),
-      };
 }
 
 class OrderTrackData {
@@ -51,7 +39,7 @@ class OrderTrackData {
   final dynamic deliveryManRemarks;
   final dynamic customerComplaint;
   final dynamic couponCode;
-  final dynamic orderNote;
+  final String? orderNote;
   final dynamic deliveryDate;
   final String? orderType;
   final int? checked;
@@ -112,6 +100,7 @@ class OrderTrackData {
   final Restaurant? restaurant;
   final DeliveryMan? deliveryMan;
   final List<OrderDetail>? orderDetail;
+  final Comments? comments;
 
   OrderTrackData({
     this.id,
@@ -193,6 +182,7 @@ class OrderTrackData {
     this.restaurant,
     this.deliveryMan,
     this.orderDetail,
+    this.comments,
   });
 
   factory OrderTrackData.fromJson(Map<String, dynamic> json) => OrderTrackData(
@@ -294,91 +284,52 @@ class OrderTrackData {
             ? []
             : List<OrderDetail>.from(
                 json["order_detail"]!.map((x) => OrderDetail.fromJson(x))),
+        comments: json["comments"] == null
+            ? null
+            : Comments.fromJson(json["comments"]),
       );
+}
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "invoice_number": invoiceNumber,
-        "user_id": userId,
-        "order_status_id": orderStatusId,
-        "payment_status_id": paymentStatusId,
-        "payment_type_id": paymentTypeId,
-        "order_amount": orderAmount,
-        "total_discount": totalDiscount,
-        "total_tax_amount": totalTaxAmount,
-        "delivery_charge": deliveryCharge,
-        "restaurant_discount_amount": restaurantDiscountAmount,
-        "original_delivery_charge": originalDeliveryCharge,
-        "transaction_reference": transactionReference,
-        "delivery_address_id": deliveryAddressId,
-        "delivery_man_id": deliveryManId,
-        "delivery_man_remarks": deliveryManRemarks,
-        "customer_complaint": customerComplaint,
-        "coupon_code": couponCode,
-        "order_note": orderNote,
-        "delivery_date": deliveryDate,
-        "order_type": orderType,
-        "checked": checked,
-        "restaurant_id": restaurantId,
-        "adjustment": adjustment,
-        "discount_total": discountTotal,
-        "edited": edited,
-        "otp": otp,
-        "pending": pending,
-        "accepted": accepted,
-        "confirmed": confirmed,
-        "processing": processing,
-        "handover": handover,
-        "picked_up": pickedUp,
-        "delivered": delivered,
-        "canceled": canceled,
-        "refund_requested": refundRequested,
-        "refunded": refunded,
-        "failed": failed,
-        "cancellation_note": cancellationNote,
-        "cancellation_reason": cancellationReason,
-        "canceled_by": canceledBy,
-        "refund_request_canceled": refundRequestCanceled,
-        "tax_percentage": taxPercentage,
-        "delivery_instruction": deliveryInstruction,
-        "unavailable_item_note": unavailableItemNote,
-        "cutlery": cutlery,
-        "distance": distance,
-        "is_guest": isGuest,
-        "delivery_address": deliveryAddress?.toJson(),
-        "zone_id": zoneId,
-        "dm_tips": dmTips,
-        "tax_status": taxStatus,
-        "vehicle_id": vehicleId,
-        "schedule_at": scheduleAt,
-        "scheduled": scheduled,
-        "processing_time": processingTime,
-        "callback": callback,
-        "additional_charge": additionalCharge,
-        "partially_paid_amount": partiallyPaidAmount,
-        "order_proof": orderProof,
-        "coupon_created_by": couponCreatedBy,
-        "free_delivery_by": freeDeliveryBy,
-        "order_subscription_active": orderSubscriptionActive,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "discount_on_product_by": discountOnProductBy,
-        "subscription_id": subscriptionId,
-        "download_invoice": downloadInvoice,
-        "user": user?.toJson(),
-        "order_status": orderStatus?.toJson(),
-        "payment_status": paymentStatus?.toJson(),
-        "payment_type": paymentType?.toJson(),
-        "restaurant": restaurant?.toJson(),
-        "delivery_man": deliveryMan?.toJson(),
-        "order_detail": orderDetail == null
-            ? []
-            : List<dynamic>.from(orderDetail!.map((x) => x.toJson())),
-      };
+class Comments {
+  final String? id;
+  final String? body;
+  final int? rating;
+  final String? commentableType;
+  final String? commentableId;
+  final int? isActive;
+  final String? createdBy;
+  final dynamic updatedBy;
+  final dynamic deletedAt;
+  final dynamic createdAt;
+  final dynamic updatedAt;
+
+  Comments({
+    this.id,
+    this.body,
+    this.rating,
+    this.commentableType,
+    this.commentableId,
+    this.isActive,
+    this.createdBy,
+    this.updatedBy,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Comments.fromJson(Map<String, dynamic> json) => Comments(
+        id: json["id"],
+        body: json["body"],
+        rating: json["rating"],
+        commentableType: json["commentable_type"],
+        commentableId: json["commentable_id"],
+        isActive: json["is_active"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        deletedAt: json["deleted_at"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
 }
 
 class DeliveryAddress {
@@ -472,35 +423,6 @@ class DeliveryAddress {
         state: json["state"] == null ? null : State.fromJson(json["state"]),
         city: json["city"] == null ? null : City.fromJson(json["city"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "address_type": addressType,
-        "contact_person_number": contactPersonNumber,
-        "address": address,
-        "latitude": latitude,
-        "longitude": longitude,
-        "user_id": userId,
-        "zone_id": zoneId,
-        "contact_person_name": contactPersonName,
-        "floor": floor,
-        "road": road,
-        "house": house,
-        "is_active": isActive,
-        "is_default": isDefault,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "country_id": countryId,
-        "state_id": stateId,
-        "city_id": cityId,
-        "zip_code": zipCode,
-        "country": country?.toJson(),
-        "state": state?.toJson(),
-        "city": city?.toJson(),
-      };
 }
 
 class City {
@@ -547,20 +469,6 @@ class City {
             ? null
             : DateTime.parse(json["updated_at"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "state_id": stateId,
-        "city_name": cityName,
-        "latitude": latitude,
-        "longitude": longitude,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }
 
 class Country {
@@ -604,19 +512,6 @@ class Country {
             ? null
             : DateTime.parse(json["updated_at"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "country_name": countryName,
-        "short_name": shortName,
-        "country_code": countryCode,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }
 
 class State {
@@ -657,18 +552,6 @@ class State {
             ? null
             : DateTime.parse(json["updated_at"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "country_id": countryId,
-        "state_name": stateName,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }
 
 class DeliveryMan {
@@ -699,6 +582,8 @@ class DeliveryMan {
   final dynamic deletedAt;
   final DateTime? createdAt;
   final DateTime? updatedAt;
+  final String? ratingCount;
+  final int? commentsCount;
 
   DeliveryMan({
     this.id,
@@ -728,6 +613,8 @@ class DeliveryMan {
     this.deletedAt,
     this.createdAt,
     this.updatedAt,
+    this.ratingCount,
+    this.commentsCount,
   });
 
   factory DeliveryMan.fromJson(Map<String, dynamic> json) => DeliveryMan(
@@ -762,37 +649,9 @@ class DeliveryMan {
         updatedAt: json["updated_at"] == null
             ? null
             : DateTime.parse(json["updated_at"]),
+        ratingCount: json["rating_count"],
+        commentsCount: json["comments_count"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "user_id": userId,
-        "identity_number": identityNumber,
-        "identity_type": identityType,
-        "identity_image": identityImage,
-        "image": image,
-        "earning": earning,
-        "zone_id": zoneId,
-        "order_count": orderCount,
-        "assigned_order_count": assignedOrderCount,
-        "available": available,
-        "vehicle_id": vehicleId,
-        "shift_id": shiftId,
-        "current_orders": currentOrders,
-        "additional_data": additionalData,
-        "additional_documents": additionalDocuments,
-        "application_status": applicationStatus,
-        "type": type,
-        "restaurant_id": restaurantId,
-        "payment_type": paymentType,
-        "payment_amount": paymentAmount,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }
 
 class OrderDetail {
@@ -803,8 +662,8 @@ class OrderDetail {
   final String? totalAmount;
   final dynamic tax;
   final dynamic discount;
-  final List<Variant>? variant;
-  final List<dynamic>? addon;
+  List<Variant>? variant;
+  List<Addon>? addon;
   final int? quantity;
   final dynamic foodDetails;
   final DateTime? createdAt;
@@ -842,7 +701,7 @@ class OrderDetail {
                 json["variant"]!.map((x) => Variant.fromJson(x))),
         addon: json["addon"] == null
             ? []
-            : List<dynamic>.from(json["addon"]!.map((x) => x)),
+            : List<Addon>.from(json["addon"]!.map((x) => Addon.fromJson(x))),
         quantity: json["quantity"],
         foodDetails: json["food_details"],
         createdAt: json["created_at"] == null
@@ -853,25 +712,6 @@ class OrderDetail {
             : DateTime.parse(json["updated_at"]),
         food: json["food"] == null ? null : Food.fromJson(json["food"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "order_id": orderId,
-        "food_id": foodId,
-        "price": price,
-        "total_amount": totalAmount,
-        "tax": tax,
-        "discount": discount,
-        "variant": variant == null
-            ? []
-            : List<dynamic>.from(variant!.map((x) => x.toJson())),
-        "addon": addon == null ? [] : List<dynamic>.from(addon!.map((x) => x)),
-        "quantity": quantity,
-        "food_details": foodDetails,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "food": food?.toJson(),
-      };
 }
 
 class Food {
@@ -998,62 +838,21 @@ class Food {
             ? []
             : List<dynamic>.from(json["translations"]!.map((x) => x)),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "food_name": foodName,
-        "description": description,
-        "image": image,
-        "category_id": categoryId,
-        "category_ids": categoryIds,
-        "variations": variations,
-        "add_ons": addOns,
-        "attributes": attributes,
-        "choice_options": choiceOptions,
-        "base_price": basePrice,
-        "price": price,
-        "tax": tax,
-        "tax_type": taxType,
-        "discount": discount,
-        "discount_type": discountType,
-        "available_time_starts": availableTimeStarts,
-        "available_time_ends": availableTimeEnds,
-        "veg": veg,
-        "status": status,
-        "restaurant_id": restaurantId,
-        "avg_rating": avgRating,
-        "rating_count": ratingCount,
-        "rating": rating,
-        "slug": slug,
-        "recommended": recommended,
-        "order_count": orderCount,
-        "minimum_cart_quantity": minimumCartQuantity,
-        "maximum_cart_quantity": maximumCartQuantity,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "comments_count": commentsCount,
-        "translations": translations == null
-            ? []
-            : List<dynamic>.from(translations!.map((x) => x)),
-      };
 }
 
+
 class Variant {
-  final String? id;
-  final String? foodId;
-  final String? foodVariationId;
-  final String? variationOptionName;
-  final String? price;
-  final dynamic createdBy;
-  final dynamic updatedBy;
-  final dynamic deletedAt;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
-  final FoodVariant? foodVariant;
+  String? id;
+  String? foodId;
+  String? foodVariationId;
+  String? variationOptionName;
+  String? price;
+  dynamic createdBy;
+  dynamic updatedBy;
+  dynamic deletedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+  FoodVariant? foodVariant;
 
   Variant({
     this.id,
@@ -1088,31 +887,17 @@ class Variant {
             ? null
             : FoodVariant.fromJson(json["food_variant"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "food_id": foodId,
-        "food_variation_id": foodVariationId,
-        "variation_option_name": variationOptionName,
-        "price": price,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "food_variant": foodVariant?.toJson(),
-      };
 }
 
 class FoodVariant {
-  final String? id;
-  final String? foodId;
-  final String? variationName;
-  final dynamic createdBy;
-  final dynamic updatedBy;
-  final dynamic deletedAt;
-  final DateTime? createdAt;
-  final DateTime? updatedAt;
+  String? id;
+  String? foodId;
+  String? variationName;
+  dynamic createdBy;
+  dynamic updatedBy;
+  dynamic deletedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
 
   FoodVariant({
     this.id,
@@ -1139,17 +924,50 @@ class FoodVariant {
             ? null
             : DateTime.parse(json["updated_at"]),
       );
+}
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "food_id": foodId,
-        "variation_name": variationName,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
+
+class Addon {
+  String? id;
+  String? addonName;
+  int? price;
+  String? restaurantId;
+  int? isActive;
+  dynamic createdBy;
+  dynamic updatedBy;
+  dynamic deletedAt;
+  DateTime? createdAt;
+  DateTime? updatedAt;
+
+  Addon({
+    this.id,
+    this.addonName,
+    this.price,
+    this.restaurantId,
+    this.isActive,
+    this.createdBy,
+    this.updatedBy,
+    this.deletedAt,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory Addon.fromJson(Map<String, dynamic> json) => Addon(
+        id: json["id"],
+        addonName: json["addon_name"],
+        price: json["price"],
+        restaurantId: json["restaurant_id"],
+        isActive: json["is_active"],
+        createdBy: json["created_by"],
+        updatedBy: json["updated_by"],
+        deletedAt: json["deleted_at"],
+        createdAt: json["created_at"] == null
+            ? null
+            : DateTime.parse(json["created_at"]),
+        updatedAt: json["updated_at"] == null
+            ? null
+            : DateTime.parse(json["updated_at"]),
+      );
 }
 
 class Status {
@@ -1190,18 +1008,6 @@ class Status {
             ? null
             : DateTime.parse(json["updated_at"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "status": status,
-        "status_name": statusName,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }
 
 class PaymentType {
@@ -1242,18 +1048,6 @@ class PaymentType {
             ? null
             : DateTime.parse(json["updated_at"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "payment_type_name": paymentTypeName,
-        "description": description,
-        "value": value,
-        "provider_key": providerKey,
-        "provider_secret": providerSecret,
-        "is_active": isActive,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-      };
 }
 
 class Restaurant {
@@ -1264,10 +1058,10 @@ class Restaurant {
   final String? logo;
   final String? minimumDeliveryTime;
   final String? maximumDeliveryTime;
-  final dynamic tinNumber;
-  final dynamic date;
+  final String? tinNumber;
+  final DateTime? date;
   final dynamic tags;
-  final dynamic licenseDocument;
+  final String? licenseDocument;
   final String? latitude;
   final String? longitude;
   final String? address;
@@ -1286,10 +1080,11 @@ class Restaurant {
   final dynamic metaImage;
   final int? tax;
   final dynamic commission;
-  final dynamic coverPhoto;
+  final String? coverPhoto;
   final String? slug;
   final dynamic qrCode;
   final String? offDay;
+  final String? gst;
   final DateTime? openingTime;
   final String? closingTime;
   final String? zoneId;
@@ -1307,6 +1102,7 @@ class Restaurant {
   final int? orderCount;
   final int? totalOrder;
   final dynamic maximumShippingCharge;
+  final dynamic freeDeliveryDistance;
   final dynamic additionalData;
   final dynamic additionalDocuments;
   final int? countryId;
@@ -1361,6 +1157,7 @@ class Restaurant {
     this.slug,
     this.qrCode,
     this.offDay,
+    this.gst,
     this.openingTime,
     this.closingTime,
     this.zoneId,
@@ -1378,6 +1175,7 @@ class Restaurant {
     this.orderCount,
     this.totalOrder,
     this.maximumShippingCharge,
+    this.freeDeliveryDistance,
     this.additionalData,
     this.additionalDocuments,
     this.countryId,
@@ -1408,7 +1206,7 @@ class Restaurant {
         minimumDeliveryTime: json["minimum_delivery_time"],
         maximumDeliveryTime: json["maximum_delivery_time"],
         tinNumber: json["tin_number"],
-        date: json["date"],
+        date: json["date"] == null ? null : DateTime.parse(json["date"]),
         tags: json["tags"],
         licenseDocument: json["license_document"],
         latitude: json["latitude"],
@@ -1435,6 +1233,7 @@ class Restaurant {
         slug: json["slug"],
         qrCode: json["qr_code"],
         offDay: json["off_day"],
+        gst: json["gst"],
         openingTime: json["opening_time"] == null
             ? null
             : DateTime.parse(json["opening_time"]),
@@ -1454,6 +1253,7 @@ class Restaurant {
         orderCount: json["order_count"],
         totalOrder: json["total_order"],
         maximumShippingCharge: json["maximum_shipping_charge"],
+        freeDeliveryDistance: json["free_delivery_distance"],
         additionalData: json["additional_data"],
         additionalDocuments: json["additional_documents"],
         countryId: json["country_id"],
@@ -1480,81 +1280,6 @@ class Restaurant {
             : List<dynamic>.from(json["translations"]!.map((x) => x)),
         zone: json["zone"] == null ? null : Zone.fromJson(json["zone"]),
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "restaurant_name": restaurantName,
-        "phone": phone,
-        "email": email,
-        "logo": logo,
-        "minimum_delivery_time": minimumDeliveryTime,
-        "maximum_delivery_time": maximumDeliveryTime,
-        "tin_number": tinNumber,
-        "date": date,
-        "tags": tags,
-        "license_document": licenseDocument,
-        "latitude": latitude,
-        "longitude": longitude,
-        "address": address,
-        "footer_text": footerText,
-        "minimum_order_amount": minimumOrderAmount,
-        "minimum_shipping_charge": minimumShippingCharge,
-        "per_km_shipping_charge": perKmShippingCharge,
-        "free_delivery": freeDelivery,
-        "user_id": userId,
-        "rating":
-            rating == null ? [] : List<dynamic>.from(rating!.map((x) => x)),
-        "home_delivery": homeDelivery,
-        "take_away": takeAway,
-        "cutlery": cutlery,
-        "meta_title": metaTitle,
-        "meta_description": metaDescription,
-        "meta_image": metaImage,
-        "tax": tax,
-        "commission": commission,
-        "cover_photo": coverPhoto,
-        "slug": slug,
-        "qr_code": qrCode,
-        "off_day": offDay,
-        "opening_time": openingTime?.toIso8601String(),
-        "closing_time": closingTime,
-        "zone_id": zoneId,
-        "announcement": announcement,
-        "announcement_message": announcementMessage,
-        "veg": veg,
-        "non_veg": nonVeg,
-        "self_delivery_system": selfDeliverySystem,
-        "pos_system": posSystem,
-        "delivery_time": deliveryTime,
-        "schedule_delivery": scheduleDelivery,
-        "food_section": foodSection,
-        "reviews_section": reviewsSection,
-        "restaurant_model": restaurantModel,
-        "order_count": orderCount,
-        "total_order": totalOrder,
-        "maximum_shipping_charge": maximumShippingCharge,
-        "additional_data": additionalData,
-        "additional_documents": additionalDocuments,
-        "country_id": countryId,
-        "state_id": stateId,
-        "city_id": cityId,
-        "is_active": isActive,
-        "is_verify": isVerify,
-        "close_temporarily": closeTemporarily,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "order_subscription_active": orderSubscriptionActive,
-        "free_delivery_distance_status": freeDeliveryDistanceStatus,
-        "free_delivery_distance_value": freeDeliveryDistanceValue,
-        "zone_name": zoneName,
-        "translations": translations == null
-            ? []
-            : List<dynamic>.from(translations!.map((x) => x)),
-        "zone": zone?.toJson(),
-      };
 }
 
 class Zone {
@@ -1628,29 +1353,6 @@ class Zone {
             : DateTime.parse(json["updated_at"]),
         cityId: json["city_id"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "zone_name": zoneName,
-        "minimum_delivery_charge": minimumDeliveryCharge,
-        "maximum_delivery_charge": maximumDeliveryCharge,
-        "per_km_delivery_charge": perKmDeliveryCharge,
-        "max_cod_order_amount": maxCodOrderAmount,
-        "increased_delivery_charge": increasedDeliveryCharge,
-        "increase_delivery_charge_message": increaseDeliveryChargeMessage,
-        "increased_delivery_fee_status": increasedDeliveryFeeStatus,
-        "coordinates": coordinates,
-        "restaurant_wise_topic": restaurantWiseTopic,
-        "customer_wise_topic": customerWiseTopic,
-        "deliveryman_wise_topic": deliverymanWiseTopic,
-        "is_active": isActive,
-        "created_by": createdBy,
-        "updated_by": updatedBy,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "city_id": cityId,
-      };
 }
 
 class User {
@@ -1659,7 +1361,7 @@ class User {
   final String? lastName;
   final String? phone;
   final String? email;
-  final dynamic image;
+  final String? image;
   final int? isPhoneVerified;
   final dynamic emailVerifiedAt;
   final dynamic emailVerificationToken;
@@ -1748,35 +1450,4 @@ class User {
         tempToken: json["temp_token"],
         currentLanguageKey: json["current_language_key"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "first_name": firstName,
-        "last_name": lastName,
-        "phone": phone,
-        "email": email,
-        "image": image,
-        "is_phone_verified": isPhoneVerified,
-        "email_verified_at": emailVerifiedAt,
-        "email_verification_token": emailVerificationToken,
-        "cm_firebase_token": cmFirebaseToken,
-        "is_active": isActive,
-        "newsletter_subscribe": newsletterSubscribe,
-        "is_verified": isVerified,
-        "verify_code": verifyCode,
-        "deleted_at": deletedAt,
-        "created_at": createdAt?.toIso8601String(),
-        "updated_at": updatedAt?.toIso8601String(),
-        "status": status,
-        "order_count": orderCount,
-        "login_medium": loginMedium,
-        "social_id": socialId,
-        "zone_id": zoneId,
-        "wallet_balance": walletBalance,
-        "loyalty_point": loyaltyPoint,
-        "ref_code": refCode,
-        "ref_by": refBy,
-        "temp_token": tempToken,
-        "current_language_key": currentLanguageKey,
-      };
 }

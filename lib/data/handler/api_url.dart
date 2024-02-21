@@ -11,6 +11,10 @@ class ApiUrls {
   static String getProfileUrl = "get-profile";
   static String updateUserProfileUrl = "update-profile";
 
+  //profile
+  static String getReviewUrl = "get-review";
+  static String getEarningUrl = "earning";
+
 //order api's
   static String orderComplaintUrl = "deliverymen-complaint";
   static String currentOrderUrl = "current-order";

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestadeliverymen/common_widgets/custom_alert_dislog.dart';
 import 'package:foodfestadeliverymen/common_widgets/custom_list_tile.dart';
@@ -126,17 +127,69 @@ class AccountScreen extends StatelessWidget {
             });
           },
         ),
-        
-        // Divider(
-        //   color: AppColors.grey,
-        // ),
-        // CustomListTile(
-        //   icon: Icons.favorite,
-        //   title: 'Favorite',
-        //   onPressed: () {
-        //     Get.toNamed(AppRoutes.wishListScreen);
-        //   },
-        // ),
+
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.star,
+          title: 'Deliveryman Rating',
+          onPressed: () {
+            profileController.isRating.value =
+                !profileController.isRating.value;
+          },
+        ),
+        Obx(() => profileController.isRating.value == true
+            ? profileController.getReviewData.value.ratingCount != null
+                ? Container(
+                    padding: EdgeInsets.symmetric(vertical: 9.h),
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 50.w, vertical: 8.h),
+                    decoration: BoxDecoration(
+                        color: Theme.of(Get.context!).colorScheme.background,
+                        borderRadius: BorderRadius.circular(15.h)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RatingBar.builder(
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemSize: 18,
+                          initialRating: double.parse(profileController
+                              .getReviewData.value.ratingCount
+                              .toString()),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star_rounded,
+                            color: AppColors.yellow,
+                          ),
+                          ignoreGestures: true,
+                          onRatingUpdate: (double value) {},
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Text(
+                          "${profileController.getReviewData.value.ratingCount.toString()} out of 5.0",
+                          style: TextStyle(
+                              color: AppColors.greyFontColor,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13.sp),
+                        ),
+                      ],
+                    ),
+                  )
+                : Container()
+            : Container()),
+        Divider(
+          color: AppColors.grey,
+        ),
+        CustomListTile(
+          icon: Icons.money,
+          title: 'My Earning',
+          onPressed: () {
+            Get.toNamed(AppRoutes.myEarningScreen);
+          },
+        ),
         Divider(
           color: AppColors.grey,
         ),
@@ -153,15 +206,11 @@ class AccountScreen extends StatelessWidget {
         CustomListTile(
           icon: Icons.logout,
           title: 'Logout',
-          onPressed:(){ _logoutWidget();},
+          onPressed: () {
+            _logoutWidget();
+          },
         ),
-        // Divider(
-        //   color: AppColors.grey,
-        // ),
-        // const CustomListTile(
-        //   icon: Icons.percent,
-        //   title: 'Offer',
-        // ),
+
         // Divider(
         //   color: AppColors.grey,
         // ),
@@ -203,12 +252,12 @@ class AccountScreen extends StatelessWidget {
     );
   }
 
-   _logoutWidget() {
-    return  showDialog(
-        barrierDismissible: false,
-        context: Get.context!,
-        builder: (context) {
-          return CustomLogoutAlertDialog(
+  _logoutWidget() {
+    return showDialog(
+      barrierDismissible: false,
+      context: Get.context!,
+      builder: (context) {
+        return CustomLogoutAlertDialog(
             text: "Logout",
             content: "Are you sure you want logout ?",
             yesButtonText: "Yes",
@@ -223,10 +272,11 @@ class AccountScreen extends StatelessWidget {
             //     .logOutApiCall(isLoader: profileController.isLoader),
             noButtonText: "No",
             onNoPressed: () => Get.back(),
-            bgColor: Theme.of(context).primaryColor,
-          );
-        },
-      );
+            bgColor: Theme.of(context)
+                .colorScheme
+                .background // AppColors.lightYellow,
+            );
+      },
+    );
   }
-
 }

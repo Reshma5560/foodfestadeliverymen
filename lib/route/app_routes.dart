@@ -12,7 +12,8 @@ class AppRoutes {
   static String forgotPasswordScreen = "/FORGOT_PASSWORD_SCREEN";
   static String editAccountScreen = "/EDIT_PROFILE_SCREEN";
   static String orderDetailScreen = "/ORDER_DETAIL_SCREEN";
-  static String orderManagementDetailScreen="/ORDER_MANAGEMENT_DETAIL_SCREEN";
+  static String orderManagementDetailScreen = "/ORDER_MANAGEMENT_DETAIL_SCREEN";
+  static String myEarningScreen = "/MY_EARNING_SCREEN";
 /*  static String bottomBarScreen = '/BOTTOMBAR_SCREEN';
   static String createOrUpdateGroupScreen = '/CREATE_NEW_GROUP_SCREEN';
   static String notificationScreen = '/NOTIFICATION_SCREEN';

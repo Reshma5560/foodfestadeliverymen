@@ -194,7 +194,8 @@ class OrderDetailScreen extends StatelessWidget {
                                                   null
                                               ? Image.network(
                                                   con.getOrderDataModel.value
-                                                      .data?.user?.image,
+                                                          .data?.user?.image ??
+                                                      "",
                                                   height: 40,
                                                   width: 40,
                                                 )
@@ -342,8 +343,90 @@ class OrderDetailScreen extends StatelessWidget {
                                 SizedBox(
                                   height: 30.h,
                                 ),
+                              ],
+                            ).paddingSymmetric(
+                              horizontal: 10.w, vertical: 10.h)))
+                ],
+              ),
+            );
+          },
+        ));
+  }
 
-                                // Row(
+  Widget _orderModule() {
+    return ListView.builder(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: con.getOrderDataModel.value.data?.orderDetail?.length,
+      itemBuilder: (BuildContext context, int index) {
+        var item = con.getOrderDataModel.value.data?.orderDetail?[index];
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.network(
+              item?.food?.image ?? "",
+              height: 40.h,
+              width: 40.w,
+            ),
+            SizedBox(
+              width: 10.w,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item?.food?.foodName ?? "",
+                  style:
+                      TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
+                ),
+                Text("₹${item?.food?.price.toString() ?? ""}",
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600, fontSize: 15.sp)),
+
+                // Row(
+                //   children: [
+                //     const Text("Addons :"),
+                //     item?.addon?.length == 0
+                //         ? Container()
+                //         : Expanded(
+                //             child: Row(
+                //               children: [
+                //                 ...item!.addon!.map((addons) {
+                //                   return Text("${addons.addonName},");
+                //                 }).toList(),
+                //               ],
+                //             ),
+                //           ),
+                //   ],
+                // ),
+                // Row(
+                //   children: [
+                //     const Text("Variants :"),
+                //     item?.variant?.length == 0
+                //         ? Container()
+                //         : Column(
+                //             children: [
+                //               ...item!.variant!.map((varients) {
+                //                 return Text(
+                //                   "${varients.variationOptionName ?? ""}, ",
+                //                   overflow: TextOverflow.ellipsis,
+                //                   maxLines: 3,
+                //                 );
+                //               }).toList(),
+                //             ],
+                //           ),
+                //   ],
+                // ),
+              ],
+            )
+          ],
+        ).paddingSymmetric(vertical: 5);
+      },
+    );
+  }
+}
+     // Row(
                                 //   mainAxisAlignment: MainAxisAlignment.center,
                                 //   children: [
                                 //     ElevatedButton(
@@ -406,90 +489,3 @@ class OrderDetailScreen extends StatelessWidget {
                                 //     ),
                                 //   ],
                                 // )
-                              ],
-                            ).paddingSymmetric(
-                              horizontal: 10.w, vertical: 10.h)))
-                ],
-              ),
-            );
-          },
-        ));
-  }
-
-  Widget _orderModule() {
-    return ListView.builder(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: con.getOrderDataModel.value.data?.orderDetail?.length,
-      itemBuilder: (BuildContext context, int index) {
-        var item = con.getOrderDataModel.value.data?.orderDetail?[index];
-        return Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.network(
-              item?.food?.image ?? "",
-              height: 40.h,
-              width: 40.w,
-            ),
-            SizedBox(
-              width: 10.w,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item?.food?.foodName ?? "",
-                  style:
-                      TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp),
-                ),
-                Text("₹${item?.food?.price.toString() ?? ""}",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w600, fontSize: 15.sp)),
-                // Text(
-                //   "Quantity : ${item?.quantity?.toString() ?? ""}",
-                //   style:
-                //       TextStyle(fontWeight: FontWeight.w500, fontSize: 12.sp),
-                // ),
-                Row(
-                  children: [
-                    const Text("Addons :"),
-                    item?.addon?.length == 0
-                        ? Container()
-                        : Expanded(
-                            child: Row(
-                              children: [
-                                ...item!.addon!.map((addons) {
-                                  return Text("${addons.addonName},");
-                                }).toList(),
-                              ],
-                            ),
-                          ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    const Text("Variants :"),
-                    item?.variant?.length == 0
-                        ? Container()
-                        : Column(
-                            children: [
-                              ...item!.variant!.map((varients) {
-                                return Text(
-                                  "${varients.variationOptionName ?? ""}, ",
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
-                                );
-                              }).toList(),
-                            ],
-                          ),
-                  ],
-                ),
-              ],
-            )
-          ],
-        ).paddingSymmetric(vertical: 5);
-      },
-    );
-  }
-}
