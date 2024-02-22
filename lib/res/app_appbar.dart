@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodfestadeliverymen/res/widgets/app_bar.dart';
+import 'package:foodfestadeliverymen/utils/utils.dart';
 
 import 'app_colors.dart';
 import 'app_style.dart';
@@ -18,26 +19,22 @@ class CommonAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(defaultRadius * 3),
-        bottomRight: Radius.circular(defaultRadius * 3),
-      ),
-      child: MyAppBar(
-        bgColor: Theme.of(context).colorScheme.background,
-        leading: isLeadingShow
-            ? IconButton(
-                icon: Icon(
-                  Icons.arrow_back_outlined,
-                  color: AppColors.black,
-                ),
-                onPressed: onPressed,
-              )
-            : null,
-        title: title,
-        centerTitle: true,
-        titleStyle:
-            AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black),
+    return AppBar(
+      backgroundColor: Colors.transparent,
+      centerTitle: true,
+      leading: isLeadingShow
+          ? IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_outlined,
+                color: AppColors.black,
+              ),
+              onPressed: onPressed,
+            )
+          : null,
+      title: Text(
+        title,
+        style: AppStyle.customAppBarTitleStyle()
+            .copyWith(color: AppColors.black),
       ),
     );
   }

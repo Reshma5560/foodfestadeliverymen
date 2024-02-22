@@ -3,6 +3,7 @@ import 'package:foodfestadeliverymen/data/models/current_order_model.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_status_model.dart';
 import 'package:foodfestadeliverymen/data/models/request_order_model.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
+import 'package:foodfestadeliverymen/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController
@@ -10,8 +11,11 @@ class HomeController extends GetxController
   RxBool isLoading = false.obs;
   RxBool paginationLoading = false.obs;
   RxBool nextPageStop = true.obs;
-  RxInt page = 5.obs;
+  RxInt page = 1.obs;
 
+  RxString firstName = "".obs;
+  RxString lastName = "".obs;
+  RxString userImage = "".obs;
   ScrollController currentOrderScrollController = ScrollController();
   ScrollController requestOrderScrollController = ScrollController();
   // ScrollController pastOrderScrollController = ScrollController();
@@ -38,7 +42,12 @@ class HomeController extends GetxController
   RxBool isAccept = false.obs;
   @override
   void onInit() {
+    firstName.value = LocalStorage.firstName.value;
+    lastName.value = LocalStorage.lastName.value;
+    userImage.value = LocalStorage.userImage.value;
+
     tabController = TabController(length: orderTabList.length, vsync: this);
+
     super.onInit();
   }
 

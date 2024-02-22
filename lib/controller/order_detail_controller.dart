@@ -7,6 +7,7 @@ class OrderDetailController extends GetxController {
   RxBool isLoading = true.obs;
   var orderId = Get.arguments['orderId'];
   RxBool isAccept = false.obs;
+  RxBool isViewMore=false.obs;
 
   @override
   void onInit() {

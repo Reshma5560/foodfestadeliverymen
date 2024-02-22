@@ -1,12 +1,10 @@
 // ignore_for_file: unnecessary_null_comparison, unnecessary_string_interpolations
-
-import 'dart:developer';
 import 'package:dio/dio.dart' as dio;
-import 'package:foodfestadeliverymen/controller/account/account_controller.dart';
-import 'package:foodfestadeliverymen/controller/account/components/edit_account_controller.dart';
-import 'package:foodfestadeliverymen/controller/account/components/my_earning_controller.dart';
+import 'package:foodfestadeliverymen/controller/edit_profile_controller.dart';
+import 'package:foodfestadeliverymen/controller/setting/components/my_earning_controller.dart';
 import 'package:foodfestadeliverymen/controller/home_controller.dart';
 import 'package:foodfestadeliverymen/controller/order_management_controller.dart';
+import 'package:foodfestadeliverymen/controller/setting/setting_controller.dart';
 import 'package:foodfestadeliverymen/data/api/api_function.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_model.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_status_model.dart';
@@ -19,6 +17,7 @@ import 'package:foodfestadeliverymen/data/models/request_order_model.dart';
 import 'package:foodfestadeliverymen/res/color_print.dart';
 import 'package:foodfestadeliverymen/res/ui_utils.dart';
 import 'package:foodfestadeliverymen/route/app_routes.dart';
+import 'package:foodfestadeliverymen/utils/local_storage.dart';
 import 'package:foodfestadeliverymen/utils/utils.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +25,7 @@ import '../data/handler/api_url.dart';
 
 class DesktopRepository {
   Future<dynamic> getProfileApiCall({RxBool? isLoader}) async {
-    final con = Get.find<ProfileController>();
+    final EditAccountController con = Get.find<EditAccountController>();
 
     try {
       isLoader?.value = true;
@@ -37,16 +36,22 @@ class DesktopRepository {
             GetProfileModel data = GetProfileModel.fromJson(response);
 
             con.getDataMap = data;
-            con.userApiImageFile.value = con.getDataMap?.data.image ?? "";
+            // con.userApiImageFile.value =
 
-            con.userName.value =
-                "${con.getDataMap?.data.firstName} ${con.getDataMap?.data.lastName}";
-            con.phoneNoName.value = con.getDataMap?.data.phone ?? "";
-            con.firstName.value = con.getDataMap?.data.firstName ?? "";
-            con.lastName.value = con.getDataMap?.data.lastName ?? "";
-            con.email.value = con.getDataMap?.data.email ?? "";
-            log("${con.getDataMap}");
-            await getReviewApiCall(isLoader: isLoader);
+            // con.userName.value =
+            //     "${con.getDataMap?.data.firstName} ${con.getDataMap?.data.lastName}";
+            // con.phoneNoName.value =
+            // con.firstName.value =
+            // con.lastName.value =
+            // con.email.value =
+            // log("${con.getDataMap}");
+
+            con.image.value = con.getDataMap?.data.image ?? "";
+            con.firstNameCon.text = con.getDataMap?.data.firstName ?? "";
+            con.lastNameCon.text = con.getDataMap?.data.lastName ?? "";
+            con.emailCon.text =
+                con.getDataMap?.data.email ?? LocalStorage.loginEmail.value;
+            con.mobileNumberCon.text = con.getDataMap?.data.phone ?? "";
           }
           return response;
         },
@@ -63,7 +68,7 @@ class DesktopRepository {
   }
 
   Future<dynamic> getReviewApiCall({RxBool? isLoader}) async {
-    final con = Get.find<ProfileController>();
+    final con = Get.find<SettingController>();
 
     try {
       isLoader?.value = true;
@@ -222,6 +227,7 @@ class DesktopRepository {
     final HomeController con = Get.find<HomeController>();
     try {
       if (await getConnectivityResult()) {
+        // con.isLoading.value = true;
         if (isInitial) {
           con.requestOrderListData.clear();
           con.page.value = 2;
@@ -317,8 +323,8 @@ class DesktopRepository {
           if (!isValEmpty(response) && response["status"] == true) {
             if (!isValEmpty(response["message"])) {
               toast(response["message"].toString());
-              getCurrentOrderListAPI(isInitial: false);
-              getRequestOrderListAPI(isInitial: false);
+              await getCurrentOrderListAPI(isInitial: false);
+              await getRequestOrderListAPI(isInitial: false);
               // getPastOrderListAPI(isInitial: true);
 
               // Get.offNamed(AppRoutes.bottomScreen);
@@ -479,7 +485,7 @@ class DesktopRepository {
   }
 
   Future<dynamic> getEarningApiCall({RxBool? isLoader}) async {
-    final con = Get.find<MyEarningController>();
+    final MyEarningController con = Get.find<MyEarningController>();
 
     try {
       isLoader?.value = true;
@@ -494,6 +500,7 @@ class DesktopRepository {
                 GetDeliveryManEarningModel.fromJson(response);
 
             con.myEarningData.value = data;
+            print(con.myEarningData.value);
           }
           return response;
         },

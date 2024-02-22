@@ -6,23 +6,21 @@ class LoginController extends GetxController {
   // Rx<TextEditingController> mobileNumberCon = TextEditingController().obs;
   // RxString mobileError = "".obs;
   // RxBool isMobileValid = false.obs;
-  Rx<TextEditingController> emailCon =
-      TextEditingController().obs;
-      // text: kDebugMode ? "deliveryman@gmail.com" : "")
-          // .obs;
+  Rx<TextEditingController> emailCon = TextEditingController().obs;
+  // text: kDebugMode ? "deliveryman@gmail.com" : "")
+  // .obs;
   RxBool emailValidation = false.obs;
   RxString emailError = ''.obs;
 
-  Rx<TextEditingController> passwordCon =
-      TextEditingController().obs;  
-        // text: kDebugMode ? "123456789" : "").obs;
+  Rx<TextEditingController> passwordCon = TextEditingController().obs;
+  // text: kDebugMode ? "123456789" : "").obs;
   RxBool passwordValidation = false.obs;
   RxString passwordError = ''.obs;
 
   RxBool buttonPress = false.obs;
   RxBool isLoading = false.obs;
   RxBool isRemeber = false.obs;
-  RxBool passwordVisible = false.obs;
+  RxBool passwordVisible = true.obs;
   @override
   void onInit() {
     initMethod();

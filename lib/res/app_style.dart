@@ -40,9 +40,15 @@ class AppStyle {
   static String fontFamilyName = 'Montserrat';
 
   static TextStyle authTitleStyle() => TextStyle(
-        color: Theme.of(Get.context!).primaryColor,
+        color:   Theme.of(Get.context!).primaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 36,
+      );
+
+       static TextStyle loginTitleStyle() => TextStyle(
+        color:   AppColors.black,
+        fontWeight: FontWeight.bold,
+        fontSize: 25.sp,
       );
 
   static TextStyle authSubtitleStyle() => TextStyle(

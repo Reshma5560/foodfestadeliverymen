@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestadeliverymen/common_widgets/custom_earning_container.dart';
-import 'package:foodfestadeliverymen/controller/account/components/my_earning_controller.dart';
+import 'package:foodfestadeliverymen/controller/setting/components/my_earning_controller.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
 import 'package:foodfestadeliverymen/res/app_assets.dart';
@@ -25,130 +25,163 @@ class MyEarningScreen extends StatelessWidget {
               return AnimatedOpacity(
                 opacity: value == 20 ? 0 : 1,
                 duration: const Duration(milliseconds: 700),
-                child: Column(children: [
-                  CommonAppBar(
-                    title: "My Earning",
-                    onPressed: () {
-                      Get.back();
-                    },
-                  ),
-                  Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: () async {
-                        await DesktopRepository()
-                            .getEarningApiCall(isLoader: con.isLoader);
-                      },
-                      child: con.isLoader.value
-                          ? const AppLoader()
-                          : ListView(children: [
-                              Row(
-                                children: [
-                                  CustomEarningContainer(
-                                    bgColor: AppColors.containerColor1,
-                                    title: con.myEarningData.value.wallet
-                                            ?.collectedCash
-                                            .toString() ??
-                                        "",
-                                    subTitle: "Collected Cash",
-                                    image: AppAssets.cashImg,
+                child: Stack(
+                  children: [
+                    Image.asset("assets/images/appbar_bg_img.png"),
+                    Column(children: [
+                      CommonAppBar(
+                        title: "My Earning",
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                      Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: () async {
+                            await DesktopRepository()
+                                .getEarningApiCall(isLoader: con.isLoader);
+                          },
+                          child: Obx(() => con.isLoader.value
+                              ? const AppLoader()
+                              : ListView(children: [
+                                  Row(
+                                    children: [
+                                      CustomEarningContainer(
+                                        title: con.myEarningData.value.wallet
+                                                ?.collectedCash
+                                                .toString() ??
+                                            "",
+                                        subTitle: "Collected Cash",
+                                        image: AppAssets.cashImg,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      CustomEarningContainer(
+                                        title: con.myEarningData.value.wallet
+                                                ?.totalEarning
+                                                .toString() ??
+                                            "",
+                                        subTitle: "Total Earning",
+                                        image: AppAssets.earningImg,
+                                      )
+                                    ],
                                   ),
                                   SizedBox(
-                                    width: 4.w,
+                                    height: 10.h,
                                   ),
-                                  CustomEarningContainer(
-                                    bgColor: AppColors.containerColor2,
-                                    title: con.myEarningData.value.wallet
-                                            ?.totalEarning
-                                            .toString() ??
-                                        "",
-                                    subTitle: "Total Earning",
-                                    image: AppAssets.earningImg,
-                                  )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 5.h,
-                              ),
-                              Row(
-                                children: [
-                                  CustomEarningContainer(
-                                    bgColor: AppColors.containerColor3,
-                                    title: con.myEarningData.value.wallet
-                                            ?.totalWithdrawn
-                                            .toString() ??
-                                        "",
-                                    subTitle: "Total Withdraw",
-                                    image: AppAssets.totalWithdrawImg,
+                                  Row(
+                                    children: [
+                                      CustomEarningContainer(
+                                        title: con.myEarningData.value.wallet
+                                                ?.totalWithdrawn
+                                                .toString() ??
+                                            "",
+                                        subTitle: "Total Withdraw",
+                                        image: AppAssets.totalWithdrawImg,
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      ),
+                                      CustomEarningContainer(
+                                        title: con.myEarningData.value.wallet
+                                                ?.pendingWithdraw
+                                                .toString() ??
+                                            "",
+                                        subTitle: "Pending Withdraw",
+                                        image: AppAssets.penWithdrawImg,
+                                      )
+                                    ],
                                   ),
                                   SizedBox(
-                                    width: 4.w,
+                                    height: 15.h,
                                   ),
-                                  CustomEarningContainer(
-                                    bgColor: AppColors.containerColor4,
-                                    title: con.myEarningData.value.wallet
-                                            ?.pendingWithdraw
-                                            .toString() ??
-                                        "",
-                                    subTitle: "Pending Withdraw",
-                                    image: AppAssets.penWithdrawImg,
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10.h, horizontal: 15.w),
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .background,
+                                        border: Border.all(
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            width: 2.w),
+                                        borderRadius:
+                                            BorderRadius.circular(10.r)),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Payment Withdrawal Records",
+                                          style: TextStyle(
+                                              fontSize: 14.sp,
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          height: 15.h,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          // mainAxisAlignment:
+                                          //     MainAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                "Payment Type",
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: 10.sp,
+                                                    color: AppColors.black,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                "Date",
+                                                textAlign: TextAlign.start,
+                                                style: TextStyle(
+                                                    fontSize: 10.sp,
+                                                    color: AppColors.black,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                            Expanded(
+                                              child: Text(
+                                                "	Amount",
+                                                textAlign: TextAlign.end,
+                                                style: TextStyle(
+                                                    fontSize: 10.sp,
+                                                    color: AppColors.black,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        // SizedBox(
+                                        //   height: 7.h,
+                                        // ),
+                                        Divider(
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        _paymentRecodeModule()
+                                      ],
+                                    ),
                                   )
-                                ],
-                              ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              Text(
-                                "Payment Withdrawal Records",
-                                style: TextStyle(
-                                    fontSize: 14.sp,
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                              SizedBox(
-                                height: 15.h,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Text(
-                                      "Payment Type",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "Date",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      "	Amount",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          fontSize: 12.sp,
-                                          color: AppColors.black,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 7.h,
-                              ),
-                              _paymentRecodeModule()
-                            ]).paddingSymmetric(horizontal: 10.w),
-                    ),
-                  ),
-                ]),
+                                ]).paddingSymmetric(horizontal: 10.w)),
+                        ),
+                      ),
+                    ]),
+                  ],
+                ),
               );
             }));
   }
@@ -165,9 +198,9 @@ class MyEarningScreen extends StatelessWidget {
               Expanded(
                 child: Text(
                   item?.paymentType?.paymentTypeName ?? "",
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
                   style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 10.sp,
                       color: AppColors.black,
                       fontWeight: FontWeight.w600),
                 ),
@@ -175,32 +208,30 @@ class MyEarningScreen extends StatelessWidget {
               SizedBox(
                 width: 5.w,
               ),
-              Expanded(
-                child: Text(
-                  DateFormat('dd MMM yyyy hh:mm')
-                      .format(item?.createdAt ?? DateTime.now()),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 12.sp,
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600),
-                ),
+              Text(
+                DateFormat('dd MMM yyyy hh:mm')
+                    .format(item?.createdAt ?? DateTime.now()),
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    fontSize: 10.sp,
+                    color: AppColors.black,
+                    fontWeight: FontWeight.w600),
               ),
               SizedBox(
                 width: 5.w,
               ),
               Expanded(
                 child: Text(
-                  "${item?.disbursementAmount ?? ""}",
-                  textAlign: TextAlign.center,
+                  "${item?.disbursementAmount ?? ""} ₹",
+                  textAlign: TextAlign.end,
                   style: TextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 10.sp,
                       color: AppColors.black,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ],
-          ).paddingSymmetric(vertical: 5.h);
+          ).paddingSymmetric(vertical: 3.h);
         });
   }
 }
