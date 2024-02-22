@@ -22,11 +22,11 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final HomeController con = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterTop,
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
         resizeToAvoidBottomInset: true,
         body: Column(children: [
           CommonAppBar(
@@ -62,8 +62,7 @@ class HomeScreen extends StatelessWidget {
                   return e.text == "Current Order"
                       ? RefreshIndicator(
                           onRefresh: () async {
-                            await DesktopRepository()
-                                .getCurrentOrderListAPI(isInitial: true);
+                            await DesktopRepository().getCurrentOrderListAPI(isInitial: true);
                           },
                           child: _currentOrderModule())
                       :
@@ -71,8 +70,7 @@ class HomeScreen extends StatelessWidget {
                       //     ?
                       RefreshIndicator(
                           onRefresh: () async {
-                            await DesktopRepository()
-                                .getRequestOrderListAPI(isInitial: true);
+                            await DesktopRepository().getRequestOrderListAPI(isInitial: true);
                           },
                           child: _requestOrderModule());
                   // : _pastOrderModule();
@@ -109,14 +107,12 @@ class HomeScreen extends StatelessWidget {
                   var item = con.currentOrderListData[index];
                   return InkWell(
                     onTap: () {
-                      Get.toNamed(AppRoutes.orderDetailScreen,
-                          arguments: {'orderId': item.id});
+                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id});
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 3.h),
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2),
+                          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
                           borderRadius: BorderRadius.circular(10)),
@@ -127,25 +123,16 @@ class HomeScreen extends StatelessWidget {
                             item.invoiceNumber.toString(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp),
+                            style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 2),
-                            decoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).colorScheme.background),
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(color: Theme.of(context).colorScheme.background),
                             child: Text(
                               item.orderStatus?.statusName ?? "",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 11.sp),
+                              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 11.sp),
                             ),
                           ),
                           Divider(
@@ -153,64 +140,56 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Text(
                             "Customer Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.user?.firstName} ${item.user?.lastName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Mobile No. : ${item.user?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Address : ${item.deliveryAddress?.address}, ${item.deliveryAddress?.city?.cityName}, ${item.deliveryAddress?.state?.stateName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 12.h,
                           ),
                           Text(
                             "Restaurant Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.restaurant?.restaurantName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Mobile No. : ${item.restaurant?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Addres : ${item.restaurant?.address}, ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -219,14 +198,9 @@ class HomeScreen extends StatelessWidget {
                             height: 5.h,
                           ),
                           SizedBox(
-                              height: 30,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                      child: _orderStatusDropDownModule(item)),
-                                  const Expanded(child: SizedBox())
-                                ],
-                              )),
+                            height: 30,
+                            child: _orderStatusDropDownModule(item),
+                          ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -242,8 +216,7 @@ class HomeScreen extends StatelessWidget {
     return Obx(() => con.isLoading.value
         ? ListView.builder(
             controller: con.requestOrderScrollController,
-            padding: const EdgeInsets.all(defaultPadding)
-                .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+            padding: const EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
             shrinkWrap: true,
             itemCount: 8,
             itemBuilder: (BuildContext context, index) => const SimmerTile(),
@@ -268,16 +241,12 @@ class HomeScreen extends StatelessWidget {
                   RxBool isAccept = false.obs;
                   return InkWell(
                     onTap: () {
-                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {
-                        'orderId': item.id,
-                        'isAccept': isAccept.value
-                      });
+                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id, 'isAccept': isAccept.value});
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 3.h),
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2),
+                          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
                           borderRadius: BorderRadius.circular(10)),
@@ -288,25 +257,16 @@ class HomeScreen extends StatelessWidget {
                             item.invoiceNumber.toString(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14.sp),
+                            style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 4, vertical: 2),
-                            decoration: BoxDecoration(
-                                color:
-                                    Theme.of(context).colorScheme.background),
+                            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                            decoration: BoxDecoration(color: Theme.of(context).colorScheme.background),
                             child: Text(
                               item.orderStatus?.statusName ?? "",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: AppColors.black,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 11.sp),
+                              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 11.sp),
                             ),
                           ),
                           Divider(
@@ -314,64 +274,56 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Text(
                             "Customer Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.user?.firstName} ${item.user?.lastName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Mobile No. : ${item.user?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Address : ${item.deliveryAddress?.address}, ${item.deliveryAddress?.city?.cityName}, ${item.deliveryAddress?.state?.stateName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 12.h,
                           ),
                           Text(
                             "Restaurant Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.restaurant?.restaurantName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Mobile No. : ${item.restaurant?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Addres : ${item.restaurant?.address}, ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -384,11 +336,8 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor:
-                                      const MaterialStatePropertyAll(
-                                          Colors.green),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  backgroundColor: const MaterialStatePropertyAll(Colors.green),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
@@ -397,15 +346,11 @@ class HomeScreen extends StatelessWidget {
                                 onPressed: () {
                                   var params = {
                                     "order_id": item.id,
-                                    "status":
-                                        "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                    "status": "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
                                   };
                                   DesktopRepository()
-                                      .acceptOrderApiCall(
-                                          isLoader: con.isLoading,
-                                          params: params)
-                                      .then(
-                                          (value) => con.isAccept.value = true);
+                                      .acceptOrderApiCall(isLoader: con.isLoading, params: params)
+                                      .then((value) => con.isAccept.value = true);
                                 },
                                 child: Text(
                                   "Accept",
@@ -417,11 +362,8 @@ class HomeScreen extends StatelessWidget {
                               ),
                               ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor:
-                                      const MaterialStatePropertyAll(
-                                          Colors.red),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
+                                  backgroundColor: const MaterialStatePropertyAll(Colors.red),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                                     RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5.0),
                                     ),
@@ -432,12 +374,9 @@ class HomeScreen extends StatelessWidget {
                                     : () {
                                         var params = {
                                           "order_id": item.id,
-                                          "status":
-                                              "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                          "status": "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
                                         };
-                                        DesktopRepository().acceptOrderApiCall(
-                                            isLoader: con.isLoading,
-                                            params: params);
+                                        DesktopRepository().acceptOrderApiCall(isLoader: con.isLoading, params: params);
                                       },
                                 child: Text(
                                   "Reject",
@@ -479,8 +418,7 @@ class HomeScreen extends StatelessWidget {
             Icons.keyboard_arrow_down_rounded,
             color: AppColors.grey,
           ),
-          items: con.getCurrentOrderStatusListData
-              .map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
+          items: con.getCurrentOrderStatusListData.map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
             // log("value.name ${value.countryName}");
             return DropdownMenuItem<CurrentOrderStatusDatum>(
               value: value,
@@ -504,116 +442,116 @@ class HomeScreen extends StatelessWidget {
           ),
           onChanged: (value) async {
             con.isLoading(true);
-            con.orderstatusDropDownValue.value =
-                value ?? CurrentOrderStatusDatum();
+            con.orderstatusDropDownValue.value = value ?? CurrentOrderStatusDatum();
             // con.stateList.clear();
             // con.stateList.add(StateList(stateName: 'Select state'));
 
-            DesktopRepository().updateOrderStatusApiCall(
-                isLoader: con.isLoading,
-                params: {"order_id": item.id, "status_id": value?.id});
+            if (value?.statusName != "Select order status") {
+              await DesktopRepository().updateOrderStatusApiCall(isLoader: con.isLoading, params: {"order_id": item.id, "status_id": value?.id});
+            }
+
             con.isLoading(false);
           },
         ));
   }
 
-  // Widget _pastOrderModule() {
-  //   return Obx(() => con.isLoading.value
-  //       ? ListView.builder(
-  //           padding: const EdgeInsets.all(defaultPadding)
-  //               .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
-  //           shrinkWrap: true,
-  //           itemCount: 8,
-  //           itemBuilder: (BuildContext context, index) => const SimmerTile(),
-  //         )
-  //       : con.pastOrderListData.isEmpty
-  //           ? EmptyElement(
-  //               imagePath: AppAssets.noData,
-  //               height: Get.height / 1.8,
-  //               imageHeight: Get.width / 2.4,
-  //               imageWidth: Get.width / 2,
-  //               spacing: 0,
-  //               title: AppStrings.recordNotFound,
-  //               subtitle: "",
-  //             )
-  //           : ListView.builder(
-  //               itemCount: con.pastOrderListData.length,
-  //               itemBuilder: (BuildContext context, int index) {
-  //                 var item = con.pastOrderListData[index];
-  //                 return Container(
-  //                   decoration: BoxDecoration(
-  //                       color: AppColors.white,
-  //                       boxShadow: AppStyle.boxShadow(),
-  //                       borderRadius: BorderRadius.circular(10)),
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: [
-  //                       Text(
-  //                         item.invoiceNumber.toString(),
-  //                         style: TextStyle(
-  //                             color: Theme.of(context).primaryColor,
-  //                             fontWeight: FontWeight.w600,
-  //                             fontSize: 14.sp),
-  //                       ),
-  //                       Divider(
-  //                         color: AppColors.greyBorderColor,
-  //                       ),
-  //                       RowModule(
-  //                         title: "Receiver Name",
-  //                         subTitle:
-  //                             ": ${item.user?.firstName} ${item.user?.lastName}",
-  //                       ),
-  //                       RowModule(
-  //                         title: "Receiver Contact No.",
-  //                         subTitle: ": ${item.user?.phone}",
-  //                       ),
-  //                       RowModule(
-  //                         title: "Order Status",
-  //                         subTitle: ": ${item.orderStatus?.statusName}",
-  //                         customTextStyle: TextStyle(
-  //                             color: Theme.of(context).primaryColor,
-  //                             fontWeight: FontWeight.w600,
-  //                             fontSize: 12.sp),
-  //                       ),
-  //                       SizedBox(
-  //                         height: 10.h,
-  //                       ),
-  //                       // Row(
-  //                       //   mainAxisAlignment: MainAxisAlignment.end,
-  //                       //   children: [
-  //                       //     ElevatedButton(
-  //                       //       style: ButtonStyle(
-  //                       //         shape: MaterialStateProperty.all<
-  //                       //             RoundedRectangleBorder>(
-  //                       //           RoundedRectangleBorder(
-  //                       //             borderRadius: BorderRadius.circular(5.0),
-  //                       //           ),
-  //                       //         ),
-  //                       //       ),
-  //                       //       onPressed: () {},
-  //                       //       child: const Text("Accept"),
-  //                       //     ),
-  //                       //     SizedBox(
-  //                       //       width: 5.w,
-  //                       //     ),
-  //                       //     ElevatedButton(
-  //                       //       style: ButtonStyle(
-  //                       //         shape: MaterialStateProperty.all<
-  //                       //             RoundedRectangleBorder>(
-  //                       //           RoundedRectangleBorder(
-  //                       //             borderRadius: BorderRadius.circular(5.0),
-  //                       //           ),
-  //                       //         ),
-  //                       //       ),
-  //                       //       onPressed: () {},
-  //                       //       child: const Text("Reject"),
-  //                       //     ),
-  //                       //   ],
-  //                       // )
-  //                     ],
-  //                   ).paddingSymmetric(vertical: 10, horizontal: 10),
-  //                 );
-  //               },
-  //             ).paddingSymmetric(horizontal: 10.w, vertical: 5));
-  // }
+// Widget _pastOrderModule() {
+//   return Obx(() => con.isLoading.value
+//       ? ListView.builder(
+//           padding: const EdgeInsets.all(defaultPadding)
+//               .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+//           shrinkWrap: true,
+//           itemCount: 8,
+//           itemBuilder: (BuildContext context, index) => const SimmerTile(),
+//         )
+//       : con.pastOrderListData.isEmpty
+//           ? EmptyElement(
+//               imagePath: AppAssets.noData,
+//               height: Get.height / 1.8,
+//               imageHeight: Get.width / 2.4,
+//               imageWidth: Get.width / 2,
+//               spacing: 0,
+//               title: AppStrings.recordNotFound,
+//               subtitle: "",
+//             )
+//           : ListView.builder(
+//               itemCount: con.pastOrderListData.length,
+//               itemBuilder: (BuildContext context, int index) {
+//                 var item = con.pastOrderListData[index];
+//                 return Container(
+//                   decoration: BoxDecoration(
+//                       color: AppColors.white,
+//                       boxShadow: AppStyle.boxShadow(),
+//                       borderRadius: BorderRadius.circular(10)),
+//                   child: Column(
+//                     crossAxisAlignment: CrossAxisAlignment.start,
+//                     children: [
+//                       Text(
+//                         item.invoiceNumber.toString(),
+//                         style: TextStyle(
+//                             color: Theme.of(context).primaryColor,
+//                             fontWeight: FontWeight.w600,
+//                             fontSize: 14.sp),
+//                       ),
+//                       Divider(
+//                         color: AppColors.greyBorderColor,
+//                       ),
+//                       RowModule(
+//                         title: "Receiver Name",
+//                         subTitle:
+//                             ": ${item.user?.firstName} ${item.user?.lastName}",
+//                       ),
+//                       RowModule(
+//                         title: "Receiver Contact No.",
+//                         subTitle: ": ${item.user?.phone}",
+//                       ),
+//                       RowModule(
+//                         title: "Order Status",
+//                         subTitle: ": ${item.orderStatus?.statusName}",
+//                         customTextStyle: TextStyle(
+//                             color: Theme.of(context).primaryColor,
+//                             fontWeight: FontWeight.w600,
+//                             fontSize: 12.sp),
+//                       ),
+//                       SizedBox(
+//                         height: 10.h,
+//                       ),
+//                       // Row(
+//                       //   mainAxisAlignment: MainAxisAlignment.end,
+//                       //   children: [
+//                       //     ElevatedButton(
+//                       //       style: ButtonStyle(
+//                       //         shape: MaterialStateProperty.all<
+//                       //             RoundedRectangleBorder>(
+//                       //           RoundedRectangleBorder(
+//                       //             borderRadius: BorderRadius.circular(5.0),
+//                       //           ),
+//                       //         ),
+//                       //       ),
+//                       //       onPressed: () {},
+//                       //       child: const Text("Accept"),
+//                       //     ),
+//                       //     SizedBox(
+//                       //       width: 5.w,
+//                       //     ),
+//                       //     ElevatedButton(
+//                       //       style: ButtonStyle(
+//                       //         shape: MaterialStateProperty.all<
+//                       //             RoundedRectangleBorder>(
+//                       //           RoundedRectangleBorder(
+//                       //             borderRadius: BorderRadius.circular(5.0),
+//                       //           ),
+//                       //         ),
+//                       //       ),
+//                       //       onPressed: () {},
+//                       //       child: const Text("Reject"),
+//                       //     ),
+//                       //   ],
+//                       // )
+//                     ],
+//                   ).paddingSymmetric(vertical: 10, horizontal: 10),
+//                 );
+//               },
+//             ).paddingSymmetric(horizontal: 10.w, vertical: 5));
+// }
 }

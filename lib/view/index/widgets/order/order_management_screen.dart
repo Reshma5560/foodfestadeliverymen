@@ -19,6 +19,7 @@ class OrderManagementScreen extends StatelessWidget {
   OrderManagementScreen({super.key});
 
   final OrderManagementController con = Get.put(OrderManagementController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +49,7 @@ class OrderManagementScreen extends StatelessWidget {
                         bgColor: Theme.of(context).colorScheme.background,
                         title: "Order Management",
                         centerTitle: true,
-                        titleStyle: AppStyle.customAppBarTitleStyle()
-                            .copyWith(color: AppColors.black),
+                        titleStyle: AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black),
                         actions: [
                           InkWell(
                               onTap: () {
@@ -62,11 +62,8 @@ class OrderManagementScreen extends StatelessWidget {
                     Expanded(
                         child: RefreshIndicator(
                       onRefresh: () async {
-                        await DesktopRepository().getOrderHistoryFilterApiCall(
-                            isInitial: true,
-                            isLoader: con.isLoader,
-                            fromdDate: con.fromDateCon.value.text,
-                            toDate: con.toDateCon.value.text);
+                        await DesktopRepository()
+                            .getOrderHistoryFilterApiCall(isInitial: true, fromDate: con.fromDateCon.value.text, toDate: con.toDateCon.value.text);
                       },
                       child: Obx(() => con.isLoader.isTrue
                           ? ListView.builder(
@@ -76,8 +73,7 @@ class OrderManagementScreen extends StatelessWidget {
                               // padding: EdgeInsets.symmetric(vertical: 5.h),
                               shrinkWrap: true,
                               itemCount: 8,
-                              itemBuilder: (BuildContext context, index) =>
-                                  const SimmerTile(),
+                              itemBuilder: (BuildContext context, index) => const SimmerTile(),
                             )
                           : con.getOrderHistoryFilterList.isEmpty
                               ? EmptyElement(
@@ -90,36 +86,24 @@ class OrderManagementScreen extends StatelessWidget {
                                   subtitle: "",
                                 )
                               : ListView.builder(
-                                  controller:
-                                      con.orderHistoryFilterScrollController,
+                                  controller: con.orderHistoryFilterScrollController,
                                   padding: EdgeInsets.symmetric(vertical: 5.h),
-                                  itemCount:
-                                      con.getOrderHistoryFilterList.length,
+                                  itemCount: con.getOrderHistoryFilterList.length,
                                   // padding: EdgeInsets.zero,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    var item =
-                                        con.getOrderHistoryFilterList[index];
+                                  itemBuilder: (BuildContext context, int index) {
+                                    var item = con.getOrderHistoryFilterList[index];
                                     return InkWell(
                                       onTap: () {
-                                        Get.toNamed(
-                                            AppRoutes
-                                                .orderManagementDetailScreen,
-                                            arguments: {'orderId': item.id});
+                                        Get.toNamed(AppRoutes.orderManagementDetailScreen, arguments: {'orderId': item.id});
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Theme.of(context)
-                                                    .primaryColor,
-                                                width: 2),
+                                            border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                                             color: AppColors.white,
                                             boxShadow: AppStyle.boxShadow(),
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
+                                            borderRadius: BorderRadius.circular(10)),
                                         child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Row(
                                               children: [
@@ -129,40 +113,22 @@ class OrderManagementScreen extends StatelessWidget {
                                                       Text(
                                                         "Order No.# ",
                                                         maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                            color:
-                                                                AppColors.black,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 13.sp),
+                                                        overflow: TextOverflow.ellipsis,
+                                                        style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 13.sp),
                                                       ),
                                                       Text(
-                                                        item.invoiceNumber ??
-                                                            "",
+                                                        item.invoiceNumber ?? "",
                                                         maxLines: 1,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
+                                                        overflow: TextOverflow.ellipsis,
                                                         style: TextStyle(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 13.sp),
+                                                            color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 13.sp),
                                                       ),
                                                     ],
                                                   ),
                                                 ),
                                                 InkWell(
                                                     onTap: () {
-                                                      Get.toNamed(
-                                                          AppRoutes
-                                                              .orderManagementDetailScreen,
-                                                          arguments: {
-                                                            'orderId': item.id
-                                                          });
+                                                      Get.toNamed(AppRoutes.orderManagementDetailScreen, arguments: {'orderId': item.id});
                                                     },
                                                     child: Icon(
                                                       Icons.arrow_forward,
@@ -177,41 +143,20 @@ class OrderManagementScreen extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   "Order ",
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 13.sp),
+                                                  style:
+                                                      TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 13.sp),
                                                 ),
                                                 Text(
                                                   "Status: ",
-                                                  style: TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 13.sp),
+                                                  style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 13.sp),
                                                 ),
                                                 Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 2),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                      color: Theme.of(context)
-                                                          .primaryColor),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                                  decoration:
+                                                      BoxDecoration(borderRadius: BorderRadius.circular(6), color: Theme.of(context).primaryColor),
                                                   child: Text(
-                                                    item.orderStatus
-                                                            ?.statusName ??
-                                                        "",
-                                                    style: TextStyle(
-                                                        color: AppColors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 8.sp),
+                                                    item.orderStatus?.statusName ?? "",
+                                                    style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w600, fontSize: 8.sp),
                                                   ),
                                                 )
                                               ],
@@ -223,41 +168,20 @@ class OrderManagementScreen extends StatelessWidget {
                                               children: [
                                                 Text(
                                                   "Payment ",
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .primaryColor,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 13.sp),
+                                                  style:
+                                                      TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 13.sp),
                                                 ),
                                                 Text(
                                                   "Status: ",
-                                                  style: TextStyle(
-                                                      color: AppColors.black,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 13.sp),
+                                                  style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 13.sp),
                                                 ),
                                                 Container(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 2),
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              6),
-                                                      color: Theme.of(context)
-                                                          .primaryColor),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                                  decoration:
+                                                      BoxDecoration(borderRadius: BorderRadius.circular(6), color: Theme.of(context).primaryColor),
                                                   child: Text(
-                                                    item.paymentStatus
-                                                            ?.statusName ??
-                                                        "",
-                                                    style: TextStyle(
-                                                        color: AppColors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 8.sp),
+                                                    item.paymentStatus?.statusName ?? "",
+                                                    style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w600, fontSize: 8.sp),
                                                   ),
                                                 )
                                               ],
@@ -273,87 +197,57 @@ class OrderManagementScreen extends StatelessWidget {
                                             ),
                                             Text(
                                               "Date : ${DateFormat("DD MMM,yyyy").format(item.createdAt!)}",
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.sp),
+                                              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),
                                             ),
                                             SizedBox(
                                               height: 3.h,
                                             ),
                                             Text(
                                               "Restaurant Name : ${item.restaurant?.restaurantName}",
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.sp),
+                                              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),
                                             ),
                                             SizedBox(
                                               height: 3.h,
                                             ),
                                             Text(
                                               "Customer Name : ${item.user?.firstName} ${item.user?.lastName}",
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.sp),
+                                              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),
                                             ),
                                             SizedBox(
                                               height: 3.h,
                                             ),
                                             Text(
                                               "Customer Name : ${item.user?.firstName} ${item.user?.lastName}",
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.sp),
+                                              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),
                                             ),
                                             SizedBox(
                                               height: 3.h,
                                             ),
                                             Text(
                                               "Amount : ${item.orderAmount}",
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12.sp),
+                                              style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w500, fontSize: 12.sp),
                                             ),
                                             Align(
                                               alignment: Alignment.bottomRight,
                                               child: InkWell(
                                                 onTap: () {
-                                                  _deliveryManComplaintdialog(
-                                                      item.id);
+                                                  _deliveryManComplaintdialog(item.id);
                                                 },
                                                 child: Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 2),
-                                                    decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(4),
-                                                        border: Border.all(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor)),
-                                                    child: Text(
-                                                      "Compaint",
-                                                      style: TextStyle(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                          fontWeight:
-                                                              FontWeight.w800),
-                                                    )),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(4),
+                                                      border: Border.all(color: Theme.of(context).primaryColor)),
+                                                  child: Text(
+                                                    "Complain",
+                                                    style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w800),
+                                                  ),
+                                                ),
                                               ),
                                             )
                                           ],
-                                        ).paddingSymmetric(
-                                            vertical: 10.h, horizontal: 10.w),
-                                      ).paddingSymmetric(
-                                          vertical: 3.h, horizontal: 10.w),
+                                        ).paddingSymmetric(vertical: 10.h, horizontal: 10.w),
+                                      ).paddingSymmetric(vertical: 3.h, horizontal: 10.w),
                                     );
                                   },
                                 )),
@@ -370,9 +264,7 @@ class OrderManagementScreen extends StatelessWidget {
           width: Get.width,
           decoration: BoxDecoration(
               color: Theme.of(Get.context!).colorScheme.background,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.r),
-                  topRight: Radius.circular(10.r))),
+              borderRadius: BorderRadius.only(topLeft: Radius.circular(10.r), topRight: Radius.circular(10.r))),
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -380,10 +272,7 @@ class OrderManagementScreen extends StatelessWidget {
                 "Filter",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: AppColors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18.sp),
+                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 18.sp),
               ),
               SizedBox(
                 height: 8.h,
@@ -393,18 +282,11 @@ class OrderManagementScreen extends StatelessWidget {
                 child: AppTextField(
                   enabled: true,
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(defaultRadius)),
-                      borderSide: BorderSide(color: AppColors.white)),
+                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(defaultRadius)),
-                      borderSide: BorderSide(color: AppColors.white)),
+                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                   hintText: "Enter Name",
-                  hintStyle: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.hintColor),
+                  hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                   controller: con.nameCon.value,
                   keyboardType: TextInputType.name,
                   textInputAction: TextInputAction.next,
@@ -418,29 +300,18 @@ class OrderManagementScreen extends StatelessWidget {
                 child: AppTextField(
                   enabled: true,
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(defaultRadius)),
-                      borderSide: BorderSide(color: AppColors.white)),
+                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(defaultRadius)),
-                      borderSide: BorderSide(color: AppColors.white)),
+                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                   hintText: "Enter Fromdate",
-                  hintStyle: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.hintColor),
+                  hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                   suffixIcon: const Icon(Icons.timer),
                   suffixOnTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: Get.context!,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101));
+                    DateTime? pickedDate =
+                        await showDatePicker(context: Get.context!, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-M-d').format(pickedDate);
+                      String formattedDate = DateFormat('yyyy-M-d').format(pickedDate);
 
                       con.fromDateCon.value.text = formattedDate;
                     } else {}
@@ -458,29 +329,18 @@ class OrderManagementScreen extends StatelessWidget {
                 child: AppTextField(
                   enabled: true,
                   enabledBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(defaultRadius)),
-                      borderSide: BorderSide(color: AppColors.white)),
+                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                   focusedBorder: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                          Radius.circular(defaultRadius)),
-                      borderSide: BorderSide(color: AppColors.white)),
+                      borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)), borderSide: BorderSide(color: AppColors.white)),
                   hintText: "Enter Todate",
-                  hintStyle: TextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.hintColor),
+                  hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                   suffixIcon: const Icon(Icons.timer),
                   suffixOnTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: Get.context!,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime(2101));
+                    DateTime? pickedDate =
+                        await showDatePicker(context: Get.context!, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2101));
 
                     if (pickedDate != null) {
-                      String formattedDate =
-                          DateFormat('yyyy-M-d').format(pickedDate);
+                      String formattedDate = DateFormat('yyyy-M-d').format(pickedDate);
 
                       con.toDateCon.value.text = formattedDate;
                     } else {}
@@ -499,19 +359,12 @@ class OrderManagementScreen extends StatelessWidget {
                   Get.back();
                   await DesktopRepository()
                       .getOrderHistoryFilterApiCall(
-                          isInitial: true,
-                          isLoader: con.isLoader,
-                          search: con.nameCon.value.text,
-                          fromdDate: con.fromDateCon.value.text,
-                          toDate: con.toDateCon.value.text)
+                          isInitial: true, search: con.nameCon.value.text, fromDate: con.fromDateCon.value.text, toDate: con.toDateCon.value.text)
                       .then((value) => con.nameCon.value.clear());
                 },
                 child: Text(
                   "Search",
-                  style: TextStyle(
-                      color: AppColors.white,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(color: AppColors.white, fontSize: 14.sp, fontWeight: FontWeight.w600),
                 ),
               )
             ],
@@ -534,8 +387,7 @@ class OrderManagementScreen extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(Get.context!).colorScheme.background,
-                border: Border.all(
-                    width: 3, color: Theme.of(Get.context!).primaryColor),
+                border: Border.all(width: 3, color: Theme.of(Get.context!).primaryColor),
                 borderRadius: const BorderRadius.all(
                   Radius.circular(20),
                 ),
@@ -565,9 +417,7 @@ class OrderManagementScreen extends StatelessWidget {
                           },
                           child: Container(
                             padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: Theme.of(Get.context!).primaryColor),
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Theme.of(Get.context!).primaryColor),
                             child: Icon(
                               Icons.close,
                               color: AppColors.white,
@@ -579,17 +429,12 @@ class OrderManagementScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     AppTextField(
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16.r),
-                          borderSide: BorderSide(color: AppColors.white)),
+                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide(color: AppColors.white)),
                       controller: con.complaintMessageCon,
                       errorMessage: con.complaintMessageError.value,
                       showError: con.complaintMessageValidation.value,
                       hintText: "Enter your complaint here",
-                      hintStyle: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.hintColor),
+                      hintStyle: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.hintColor),
                       onChanged: (value) {
                         con.complaintMessageValidation.value = false;
                       },
@@ -603,8 +448,7 @@ class OrderManagementScreen extends StatelessWidget {
                         onPressed: () async {
                           //complaint message
                           if (con.complaintMessageCon.value.text.isEmpty) {
-                            con.complaintMessageError.value =
-                                "Please enter complaint message";
+                            con.complaintMessageError.value = "Please enter complaint message";
                             con.complaintMessageValidation.value = false;
                             FocusScope.of(Get.context!).unfocus();
                           } else {
@@ -613,19 +457,16 @@ class OrderManagementScreen extends StatelessWidget {
                           }
 
                           if (con.complaintMessageValidation.isFalse) {
-                            await DesktopRepository().complaintOrderApiCall(
-                                isLoader: con.isLoader,
-                                params: {
-                                  "complaint": con.complaintMessageCon.text,
-                                  "order_id": id
-                                  // "9b38d4c7-eacf-42da-b80e-bf4ea84cf335"
-                                });
+                            await DesktopRepository().complaintOrderApiCall(isLoader: con.isLoader, params: {
+                              "complaint": con.complaintMessageCon.text,
+                              "order_id": id
+                              // "9b38d4c7-eacf-42da-b80e-bf4ea84cf335"
+                            });
                           }
                         },
                         child: Text(
                           "Update Me!",
-                          style: TextStyle(
-                              color: AppColors.white, fontSize: 14.sp),
+                          style: TextStyle(color: AppColors.white, fontSize: 14.sp),
                         )),
                   ]),
                 ),

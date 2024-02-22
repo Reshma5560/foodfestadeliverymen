@@ -12,6 +12,7 @@ import '../../res/app_style.dart';
 import '../../res/app_text_field.dart';
 import '../../res/ui_utils.dart';
 import '../../utils/helper.dart';
+import '../../utils/local_storage.dart';
 import '../gradient_container/gradient_container.dart';
 import 'components/auth_header.dart';
 
@@ -43,12 +44,10 @@ class LoginScreen extends StatelessWidget {
                           child: Obx(
                             () => ListView(
                               padding: EdgeInsets.all(defaultPadding.w),
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.onDrag,
+                              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                               physics: const RangeMaintainingScrollPhysics(),
                               children: [
-                                SizedBox(
-                                    height: double.parse(value.toString())),
+                                SizedBox(height: double.parse(value.toString())),
                                 Text(
                                   "Welcome",
                                   style: AppStyle.authTitleStyle(),
@@ -81,27 +80,20 @@ class LoginScreen extends StatelessWidget {
                                   obscureText: con.passwordVisible.value,
                                   textInputAction: TextInputAction.done,
                                   suffixOnTap: () {
-                                    con.passwordVisible.value =
-                                        !con.passwordVisible.value;
+                                    con.passwordVisible.value = !con.passwordVisible.value;
                                   },
                                   suffixIcon: Icon(
-                                    con.passwordVisible.value
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
+                                    con.passwordVisible.value ? Icons.visibility : Icons.visibility_off,
                                     color: Theme.of(context).primaryColor,
                                   ),
                                   onChanged: (value) {
-                                    if (con.passwordCon.value.text.length ==
-                                        16) {
+                                    if (con.passwordCon.value.text.length == 16) {
                                       con.passwordError.value = "";
                                       con.passwordValidation.value = false;
                                       FocusScope.of(context).unfocus();
-                                    } else if (con
-                                            .passwordCon.value.text.length <
-                                        8) {
+                                    } else if (con.passwordCon.value.text.length < 8) {
                                       con.passwordValidation.value = true;
-                                      con.passwordError.value =
-                                          "Please Enter your password at least 8 digits.";
+                                      con.passwordError.value = "Please Enter your password at least 8 digits.";
                                     } else {
                                       con.passwordValidation.value = false;
                                       con.passwordError.value = "";
@@ -117,16 +109,14 @@ class LoginScreen extends StatelessWidget {
                                     Checkbox(
                                       value: con.isRemeber.value,
                                       onChanged: (value) {
-                                        con.isRemeber.value =
-                                            !con.isRemeber.value;
+                                        con.isRemeber.value = !con.isRemeber.value;
                                       },
                                     ),
                                     Align(
                                         alignment: Alignment.centerRight,
                                         child: InkWell(
                                           onTap: () {
-                                            con.isRemeber.value =
-                                                !con.isRemeber.value;
+                                            con.isRemeber.value = !con.isRemeber.value;
                                           },
                                           child: Text(
                                             "Remeber Me!",
@@ -146,8 +136,7 @@ class LoginScreen extends StatelessWidget {
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
                                       onTap: () {
-                                        Get.toNamed(
-                                            AppRoutes.forgotPasswordScreen);
+                                        Get.toNamed(AppRoutes.forgotPasswordScreen);
                                       },
                                       child: Text(
                                         "Forgot password",
@@ -161,19 +150,12 @@ class LoginScreen extends StatelessWidget {
                                         ),
                                       ),
                                     )),
-                                SizedBox(
-                                    height: MediaQuery.of(context)
-                                            .viewInsets
-                                            .bottom +
-                                        defaultPadding.w * 3),
+                                SizedBox(height: MediaQuery.of(context).viewInsets.bottom + defaultPadding.w * 3),
                                 Obx(
                                   () => TweenAnimationBuilder(
-                                    duration:
-                                        const Duration(milliseconds: 1000),
+                                    duration: const Duration(milliseconds: 1000),
                                     curve: Curves.elasticOut,
-                                    tween: con.buttonPress.value
-                                        ? Tween(begin: 0.9, end: 0.97)
-                                        : Tween(begin: 1.0, end: 1.0),
+                                    tween: con.buttonPress.value ? Tween(begin: 0.9, end: 0.97) : Tween(begin: 1.0, end: 1.0),
                                     builder: (context, value, child) {
                                       return Transform.scale(
                                         scale: value,
@@ -187,65 +169,39 @@ class LoginScreen extends StatelessWidget {
                                             onPressed: () {
                                               if (con.isLoading.isFalse) {
                                                 /// Email validation
-                                                if (con.emailCon.value.text
-                                                    .trim()
-                                                    .isEmpty) {
-                                                  con.emailValidation.value =
-                                                      true;
-                                                  con.emailError.value =
-                                                      "Please enter your email address.";
-                                                } else if (Helper.isEmail(con
-                                                        .emailCon.value.text
-                                                        .trim()) !=
-                                                    true) {
-                                                  con.emailValidation.value =
-                                                      true;
-                                                  con.emailError.value =
-                                                      "Please enter valid email address.";
+                                                if (con.emailCon.value.text.trim().isEmpty) {
+                                                  con.emailValidation.value = true;
+                                                  con.emailError.value = "Please enter your email address.";
+                                                } else if (Helper.isEmail(con.emailCon.value.text.trim()) != true) {
+                                                  con.emailValidation.value = true;
+                                                  con.emailError.value = "Please enter valid email address.";
                                                 } else {
-                                                  con.emailValidation.value =
-                                                      false;
+                                                  con.emailValidation.value = false;
                                                 }
 
                                                 ///password validation
 
-                                                if (con.passwordCon.value.text
-                                                    .isEmpty) {
-                                                  con.passwordValidation.value =
-                                                      true;
-                                                  con.passwordError.value =
-                                                      "Please Enter your password.";
-                                                } else if (con.passwordCon.value
-                                                        .text.length <
-                                                    8) {
-                                                  con.passwordValidation.value =
-                                                      true;
-                                                  con.passwordError.value =
-                                                      "Please Enter your password at least 8 digits.";
+                                                if (con.passwordCon.value.text.isEmpty) {
+                                                  con.passwordValidation.value = true;
+                                                  con.passwordError.value = "Please Enter your password.";
+                                                } else if (con.passwordCon.value.text.length < 8) {
+                                                  con.passwordValidation.value = true;
+                                                  con.passwordError.value = "Please Enter your password at least 8 digits.";
                                                 } else {
-                                                  con.passwordValidation.value =
-                                                      false;
+                                                  con.passwordValidation.value = false;
                                                   con.passwordError.value = "";
                                                 }
 
-                                                if (con
-                                                    .emailValidation.isFalse) {
-                                                  FocusScope.of(context)
-                                                      .unfocus();
+                                                if (con.emailValidation.isFalse) {
+                                                  FocusScope.of(context).unfocus();
                                                   AuthRepository().loginApi(
                                                       isLoader: con.isLoading,
                                                       params: {
-                                                        "email": con
-                                                            .emailCon.value.text
-                                                            .trim(),
-                                                        "password": con
-                                                            .passwordCon
-                                                            .value
-                                                            .text
-                                                            .trim(),
+                                                        "email": con.emailCon.value.text.trim(),
+                                                        "password": con.passwordCon.value.text.trim(),
+                                                        "fcm_token": LocalStorage.deviceToken.value,
                                                       },
-                                                      isRemeber:
-                                                          con.isRemeber.value);
+                                                      isRemeber: con.isRemeber.value);
                                                 }
                                               }
                                             },

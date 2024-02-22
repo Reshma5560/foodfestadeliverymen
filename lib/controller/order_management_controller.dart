@@ -14,8 +14,7 @@ class OrderManagementController extends GetxController {
   RxBool nextPageStop = true.obs;
   RxInt page = 1.obs;
 
-  RxList<GetOrderHistoryFilterDatum> getOrderHistoryFilterList =
-      <GetOrderHistoryFilterDatum>[].obs;
+  RxList<GetOrderHistoryFilterDatum> getOrderHistoryFilterList = <GetOrderHistoryFilterDatum>[].obs;
 
   ScrollController orderHistoryFilterScrollController = ScrollController();
 
@@ -34,11 +33,8 @@ class OrderManagementController extends GetxController {
     var formattedDate = "${dateParse.year}-${dateParse.month}-${dateParse.day}";
     fromDate.value = formattedDate.toString();
 
-    DateTime lastDayCurrentMonth =
-        DateTime.utc(DateTime.now().year, DateTime.now().month + 1)
-            .subtract(const Duration(days: 1));
-    toDate.value =
-        "${lastDayCurrentMonth.year}-${lastDayCurrentMonth.month}-${lastDayCurrentMonth.day}";
+    DateTime lastDayCurrentMonth = DateTime.utc(DateTime.now().year, DateTime.now().month + 1).subtract(const Duration(days: 1));
+    toDate.value = "${lastDayCurrentMonth.year}-${lastDayCurrentMonth.month}-${lastDayCurrentMonth.day}";
 
     fromDateCon.value.text = fromDate.value;
     toDateCon.value.text = toDate.value;
@@ -48,11 +44,7 @@ class OrderManagementController extends GetxController {
 
   @override
   Future<void> onReady() async {
-    await DesktopRepository().getOrderHistoryFilterApiCall(
-        isInitial: true,
-        isLoader: isLoader,
-        fromdDate: fromDateCon.value.text,
-        toDate: toDateCon.value.text);
+    await DesktopRepository().getOrderHistoryFilterApiCall(isInitial: true, fromDate: fromDateCon.value.text, toDate: toDateCon.value.text);
     manageOrderHistoryFilterListScrollController();
     super.onReady();
   }
@@ -60,23 +52,20 @@ class OrderManagementController extends GetxController {
   @override
   void onInit() {
     getCurrentDate();
-
     super.onInit();
   }
 
   void manageOrderHistoryFilterListScrollController() async {
     orderHistoryFilterScrollController.addListener(
       () {
-        if (orderHistoryFilterScrollController.position.maxScrollExtent ==
-                orderHistoryFilterScrollController.position.pixels &&
-            isLoader.isFalse) {
+        if (orderHistoryFilterScrollController.position.maxScrollExtent == orderHistoryFilterScrollController.position.pixels && isLoader.isFalse) {
           if (nextPageStop.isTrue && paginationLoading.isFalse) {
             paginationLoading.value = true;
             DesktopRepository().getOrderHistoryFilterApiCall(
-                isInitial: false,
-                isLoader: isLoader,
-                fromdDate: fromDateCon.value.text,
-                toDate: toDateCon.value.text);
+              isInitial: false,
+              fromDate: fromDateCon.value.text,
+              toDate: toDateCon.value.text,
+            );
           }
         }
       },

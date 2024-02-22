@@ -5,15 +5,15 @@ import 'package:foodfestadeliverymen/data/models/request_order_model.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:get/get.dart';
 
-class HomeController extends GetxController
-    with GetSingleTickerProviderStateMixin {
+class HomeController extends GetxController with GetSingleTickerProviderStateMixin {
   RxBool isLoading = false.obs;
   RxBool paginationLoading = false.obs;
   RxBool nextPageStop = true.obs;
-  RxInt page = 5.obs;
+  RxInt page = 1.obs;
 
   ScrollController currentOrderScrollController = ScrollController();
   ScrollController requestOrderScrollController = ScrollController();
+
   // ScrollController pastOrderScrollController = ScrollController();
   TabController? tabController;
 
@@ -21,10 +21,8 @@ class HomeController extends GetxController
 
   RxList<RequestOrderDatum> requestOrderListData = <RequestOrderDatum>[].obs;
 
-  RxList<CurrentOrderStatusDatum> getCurrentOrderStatusListData =
-      <CurrentOrderStatusDatum>[].obs;
-  Rx<CurrentOrderStatusDatum> orderstatusDropDownValue =
-      CurrentOrderStatusDatum(statusName: 'Select order status').obs;
+  RxList<CurrentOrderStatusDatum> getCurrentOrderStatusListData = <CurrentOrderStatusDatum>[].obs;
+  Rx<CurrentOrderStatusDatum> orderstatusDropDownValue = CurrentOrderStatusDatum(statusName: 'Select order status').obs;
 
   // RxList<PastOrderDatum> pastOrderListData = <PastOrderDatum>[].obs;
 
@@ -36,6 +34,7 @@ class HomeController extends GetxController
   ];
 
   RxBool isAccept = false.obs;
+
   @override
   void onInit() {
     tabController = TabController(length: orderTabList.length, vsync: this);
@@ -60,9 +59,7 @@ class HomeController extends GetxController
   void manageCurrentOrderListScrollController() async {
     currentOrderScrollController.addListener(
       () {
-        if (currentOrderScrollController.position.maxScrollExtent ==
-                currentOrderScrollController.position.pixels &&
-            isLoading.isFalse) {
+        if (currentOrderScrollController.position.maxScrollExtent == currentOrderScrollController.position.pixels && isLoading.isFalse) {
           if (nextPageStop.isTrue && paginationLoading.isFalse) {
             paginationLoading.value = true;
             DesktopRepository().getCurrentOrderListAPI(isInitial: false);
@@ -75,9 +72,7 @@ class HomeController extends GetxController
   void manageRequestOrderListScrollController() async {
     requestOrderScrollController.addListener(
       () {
-        if (requestOrderScrollController.position.maxScrollExtent ==
-                requestOrderScrollController.position.pixels &&
-            isLoading.isFalse) {
+        if (requestOrderScrollController.position.maxScrollExtent == requestOrderScrollController.position.pixels && isLoading.isFalse) {
           if (nextPageStop.isTrue && paginationLoading.isFalse) {
             paginationLoading.value = true;
             DesktopRepository().getRequestOrderListAPI(isInitial: false);
@@ -87,18 +82,18 @@ class HomeController extends GetxController
     );
   }
 
-  // void managePastOrderListScrollController() async {
-  //   pastOrderScrollController.addListener(
-  //     () {
-  //       if (pastOrderScrollController.position.maxScrollExtent ==
-  //               pastOrderScrollController.position.pixels &&
-  //           isLoading.isFalse) {
-  //         if (nextPageStop.isTrue && paginationLoading.isFalse) {
-  //           paginationLoading.value = true;
-  //           DesktopRepository().getPastOrderListAPI(isInitial: false);
-  //         }
-  //       }
-  //     },
-  //   );
-  // }
+// void managePastOrderListScrollController() async {
+//   pastOrderScrollController.addListener(
+//     () {
+//       if (pastOrderScrollController.position.maxScrollExtent ==
+//               pastOrderScrollController.position.pixels &&
+//           isLoading.isFalse) {
+//         if (nextPageStop.isTrue && paginationLoading.isFalse) {
+//           paginationLoading.value = true;
+//           DesktopRepository().getPastOrderListAPI(isInitial: false);
+//         }
+//       }
+//     },
+//   );
+// }
 }
