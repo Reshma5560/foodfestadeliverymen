@@ -60,11 +60,21 @@ class HomeScreen extends StatelessWidget {
                 controller: con.tabController,
                 children: con.orderTabList.map((e) {
                   return e.text == "Current Order"
-                      ? _currentOrderModule()
+                      ? RefreshIndicator(
+                          onRefresh: () async {
+                            await DesktopRepository()
+                                .getCurrentOrderListAPI(isInitial: true);
+                          },
+                          child: _currentOrderModule())
                       :
                       // e.text == "Request Order"
                       //     ?
-                      _requestOrderModule();
+                      RefreshIndicator(
+                          onRefresh: () async {
+                            await DesktopRepository()
+                                .getRequestOrderListAPI(isInitial: true);
+                          },
+                          child: _requestOrderModule());
                   // : _pastOrderModule();
                 }).toList()),
           ),
