@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:foodfestadeliverymen/common_widgets/custom_alert_dislog.dart';
 import 'package:foodfestadeliverymen/common_widgets/custom_list_tile.dart';
 import 'package:foodfestadeliverymen/controller/setting/setting_controller.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
@@ -135,7 +134,7 @@ class AccountScreen extends StatelessWidget {
           icon: Icons.logout,
           title: 'Logout',
           onPressed: () {
-            _dialogLogout();
+            _logoutWidget();
           },
         ),
         SizedBox(
@@ -145,35 +144,8 @@ class AccountScreen extends StatelessWidget {
     ).paddingSymmetric(horizontal: 10.w);
   }
 
+
   _logoutWidget() {
-    return showDialog(
-      barrierDismissible: false,
-      context: Get.context!,
-      builder: (context) {
-        return CustomLogoutAlertDialog(
-            text: "Logout",
-            content: "Are you sure you want logout ?",
-            yesButtonText: "Yes",
-            onYesPressed: () {
-              con.isLoader.value = true;
-
-              LocalStorage.clearLocalStorage().then((value) {
-                Get.offAllNamed(AppRoutes.loginScreen);
-              });
-            },
-            //  () async => await DesktopRepository()
-            //     .logOutApiCall(isLoader: con.isLoader),
-            noButtonText: "No",
-            onNoPressed: () => Get.back(),
-            bgColor: Theme.of(context)
-                .colorScheme
-                .background // AppColors.lightYellow,
-            );
-      },
-    );
-  }
-
-  _dialogLogout() {
     return Get.dialog(
         Column(
           mainAxisAlignment: MainAxisAlignment.center,

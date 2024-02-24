@@ -11,7 +11,10 @@ import 'api_class.dart';
 class APIFunction {
   /// ------ To Call Post Api -------------------->>>
   Future<dynamic> postApiCall(
-      {required String apiName, dynamic params, bool? isDecode}) async {
+      {required String apiName,
+      dynamic params,
+      dynamic queryParameters,
+      bool? isDecode}) async {
     if (await getConnectivityResult()) {
       if (!isValEmpty(params)) {
         log("-=-=-=-Post Api=-=-=-> $params");
@@ -20,6 +23,7 @@ class APIFunction {
         apiName,
         isDecode: isDecode ?? false,
         data: params,
+        queryParameters: queryParameters,
         options: Options(
           headers: {
             "Content-Type": "application/json",
@@ -121,7 +125,7 @@ class APIFunction {
         options: Options(
           headers: {
             "Content-Type": "application/json",
-              "Authorization": "Bearer ${LocalStorage.token.value}",
+            "Authorization": "Bearer ${LocalStorage.token.value}",
           },
         ),
       );

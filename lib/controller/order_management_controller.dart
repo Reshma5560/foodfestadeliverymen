@@ -50,8 +50,7 @@ class OrderManagementController extends GetxController {
   Future<void> onReady() async {
     await DesktopRepository().getOrderHistoryFilterApiCall(
         isInitial: true,
-        isLoader: isLoader,
-        fromdDate: fromDateCon.value.text,
+        fromDate: fromDateCon.value.text,
         toDate: toDateCon.value.text);
     manageOrderHistoryFilterListScrollController();
     super.onReady();
@@ -73,10 +72,10 @@ class OrderManagementController extends GetxController {
           if (nextPageStop.isTrue && paginationLoading.isFalse) {
             paginationLoading.value = true;
             DesktopRepository().getOrderHistoryFilterApiCall(
-                isInitial: false,
-                isLoader: isLoader,
-                fromdDate: fromDateCon.value.text,
-                toDate: toDateCon.value.text);
+              isInitial: false,
+              fromDate: fromDateCon.value.text,
+              toDate: toDateCon.value.text,
+            );
           }
         }
       },

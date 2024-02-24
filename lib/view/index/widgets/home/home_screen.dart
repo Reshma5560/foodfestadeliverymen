@@ -10,6 +10,7 @@ import 'package:foodfestadeliverymen/data/models/current_order_model.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_status_model.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:foodfestadeliverymen/res/app_assets.dart';
+import 'package:foodfestadeliverymen/res/app_button.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
 import 'package:foodfestadeliverymen/res/app_strings.dart';
 import 'package:foodfestadeliverymen/res/app_style.dart';
@@ -38,49 +39,47 @@ class HomeScreen extends StatelessWidget {
               //     Get.back();
               //   },
               // ),
-              Container(
-                child: Row(
-                  children: [
-                    // ClipRRect(
-                    //   borderRadius: BorderRadius.circular(9.r),
-                    //   child:
-                    //       //  Container(
-                    //       //   color: AppColors.black,
-                    //       //   height: 40.h,
-                    //       //   width: 40.w,`
-                    //       // )
-                    //       Image.network(
-                    //     "https://foodfiesta.omtecweb.com/storage/deliveryman_profile/${con.userImage.value}",
-                    //     // AppAssets.appLogo,
-                    //     fit: BoxFit.cover,
-                    //     height: 35.h,
-                    //     width: 40.w,
-                    //   ),
-                    // ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Welcome",
-                          style: TextStyle(
-                              fontSize: 8.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.greyFontColor),
-                        ),
-                        Text(
-                          "${con.firstName.value} ${con.lastName.value}",
-                          style: TextStyle(
-                              fontSize: 11.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.black),
-                        )
-                      ],
-                    )
-                  ],
-                ),
+              Row(
+                children: [
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(9.r),
+                  //   child:
+                  //       //  Container(
+                  //       //   color: AppColors.black,
+                  //       //   height: 40.h,
+                  //       //   width: 40.w,`
+                  //       // )
+                  //       Image.network(
+                  //     "https://foodfiesta.omtecweb.com/storage/deliveryman_profile/${con.userImage.value}",
+                  //     // AppAssets.appLogo,
+                  //     fit: BoxFit.cover,
+                  //     height: 35.h,
+                  //     width: 40.w,
+                  //   ),
+                  // ),
+                  SizedBox(
+                    width: 10.w,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Welcome",
+                        style: TextStyle(
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.greyFontColor),
+                      ),
+                      Text(
+                        "${con.firstName.value} ${con.lastName.value}",
+                        style: TextStyle(
+                            fontSize: 11.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.black),
+                      )
+                    ],
+                  )
+                ],
               ).paddingSymmetric(horizontal: 10.w, vertical: 20.h),
               // SizedBox(
               //   height: 20.h,
@@ -555,66 +554,61 @@ class HomeScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      const MaterialStatePropertyAll(
-                                          Colors.green),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
+                              const Expanded(child: SizedBox()),
+                              Expanded(
+                                child: AppButton(
+                                  height: 25.h,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  onPressed: () {
+                                    var params = {
+                                      "order_id": item.id,
+                                      "status":
+                                          "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                    };
+                                    DesktopRepository()
+                                        .acceptOrderApiCall(
+                                            isLoader: con.isLoading,
+                                            params: params)
+                                        .then((value) =>
+                                            con.isAccept.value = true);
+                                  },
+                                  child: Text(
+                                    "Accept",
+                                    style: TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                onPressed: () {
-                                  var params = {
-                                    "order_id": item.id,
-                                    "status":
-                                        "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
-                                  };
-                                  DesktopRepository()
-                                      .acceptOrderApiCall(
-                                          isLoader: con.isLoading,
-                                          params: params)
-                                      .then(
-                                          (value) => con.isAccept.value = true);
-                                },
-                                child: Text(
-                                  "Accept",
-                                  style: TextStyle(color: AppColors.white),
                                 ),
                               ),
                               SizedBox(
                                 width: 10.w,
                               ),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      const MaterialStatePropertyAll(
-                                          Colors.red),
-                                  shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5.0),
-                                    ),
+                              Expanded(
+                                child: AppButton(
+                                  height: 25.h,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  onPressed:
+                                      //  con.isAccept.value == true
+                                      //     ? null
+                                      // :
+                                      () {
+                                    var params = {
+                                      "order_id": item.id,
+                                      "status":
+                                          "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                    };
+                                    DesktopRepository().acceptOrderApiCall(
+                                        isLoader: con.isLoading,
+                                        params: params);
+                                  },
+                                  child: Text(
+                                    "Reject",
+                                    style: TextStyle(
+                                        color: AppColors.white,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                ),
-                                onPressed: con.isAccept.value == true
-                                    ? null
-                                    : () {
-                                        var params = {
-                                          "order_id": item.id,
-                                          "status":
-                                              "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
-                                        };
-                                        DesktopRepository().acceptOrderApiCall(
-                                            isLoader: con.isLoading,
-                                            params: params);
-                                      },
-                                child: Text(
-                                  "Reject",
-                                  style: TextStyle(color: AppColors.white),
                                 ),
                               ),
                             ],
@@ -639,11 +633,11 @@ class HomeScreen extends StatelessWidget {
             filled: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 18.0),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: AppColors.grey),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
               borderSide: BorderSide(color: AppColors.grey),
             ),
           ),

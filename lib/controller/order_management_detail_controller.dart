@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:foodfestadeliverymen/data/models/get_order_by_id_model.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
+import 'package:foodfestadeliverymen/res/ui_utils.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -34,7 +35,7 @@ class OrderManagementDetailController extends GetxController {
         showNotification: true,
         openFileFromNotification: true,
         saveInPublicStorage: true,
-      );
+      ).then((value) => toast("File downloaded successfully!"));
       isDownload = false;
 
       log('Download task ID: $taskId');

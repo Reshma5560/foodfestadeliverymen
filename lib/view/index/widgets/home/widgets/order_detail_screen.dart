@@ -138,22 +138,53 @@ class OrderDetailScreen extends StatelessWidget {
                                         SizedBox(
                                           height: 6.h,
                                         ),
-                                        InkWell(
-                                          onTap: () async {
-                                            Uri phoneno = Uri.parse(
-                                                '${con.getOrderDataModel.value.data?.user?.phone}');
-                                            if (await launchUrl(phoneno)) {
-                                              //dialer opened
-                                            } else {
-                                              //dailer is not opened
-                                            }
-                                          },
-                                          child: Text(
-                                            "Mobile No. : ${con.getOrderDataModel.value.data?.user?.phone}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 11.sp),
-                                          ),
+                                        // InkWell(
+                                        //   onTap: () async {
+                                        //     Uri phoneno = Uri.parse(
+                                        //         '${con.getOrderDataModel.value.data?.user?.phone}');
+                                        //     if (await launchUrl(phoneno)) {
+                                        //       //dialer opened
+                                        //     } else {
+                                        //       //dailer is not opened
+                                        //     }
+                                        //   },
+                                        //   child: Text(
+                                        //     "Mobile No. : ${con.getOrderDataModel.value.data?.user?.phone}",
+                                        //     style: TextStyle(
+                                        //         fontWeight: FontWeight.w600,
+                                        //         fontSize: 11.sp),
+                                        //   ),
+                                        // ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Mobile No. : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 11.sp),
+                                            ),
+                                            InkWell(
+                                              onTap: () async {
+                                                Uri phoneno = Uri.parse(
+                                                    '${con.getOrderDataModel.value.data?.user?.phone}');
+                                                if (await launchUrl(phoneno)) {
+                                                  //dialer opened
+                                                } else {
+                                                  //dailer is not opened
+                                                }
+                                              },
+                                              child: Text(
+                                                "${con.getOrderDataModel.value.data?.user?.phone}",
+                                                style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 11.sp),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                         SizedBox(
                                           height: 6.h,
@@ -185,23 +216,54 @@ class OrderDetailScreen extends StatelessWidget {
                                         SizedBox(
                                           height: 7.h,
                                         ),
-                                        InkWell(
-                                          onTap: () async {
-                                            Uri phoneno = Uri.parse(
-                                                '${con.getOrderDataModel.value.data?.restaurant?.phone}');
-                                            if (await launchUrl(phoneno)) {
-                                              //dialer opened
-                                            } else {
-                                              //dailer is not opened
-                                            }
-                                          },
-                                          child: Text(
-                                            "Mobile No. : ${con.getOrderDataModel.value.data?.restaurant?.phone}",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 11.sp),
-                                          ),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              "Mobile No. : ",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 11.sp),
+                                            ),
+                                            InkWell(
+                                              onTap: () async {
+                                                Uri phoneno = Uri.parse(
+                                                    '${con.getOrderDataModel.value.data?.restaurant?.phone}');
+                                                if (await launchUrl(phoneno)) {
+                                                  //dialer opened
+                                                } else {
+                                                  //dailer is not opened
+                                                }
+                                              },
+                                              child: Text(
+                                                "${con.getOrderDataModel.value.data?.restaurant?.phone}",
+                                                style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 11.sp),
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                        // InkWell(
+                                        //   onTap: () async {
+                                        //     Uri phoneno = Uri.parse(
+                                        //         '${con.getOrderDataModel.value.data?.restaurant?.phone}');
+                                        //     if (await launchUrl(phoneno)) {
+                                        //       //dialer opened
+                                        //     } else {
+                                        //       //dailer is not opened
+                                        //     }
+                                        //   },
+                                        //   child: Text(
+                                        //     "Mobile No. : ${con.getOrderDataModel.value.data?.restaurant?.phone}",
+                                        //     style: TextStyle(
+                                        //         fontWeight: FontWeight.w600,
+                                        //         fontSize: 11.sp),
+                                        //   ),
+                                        // ),
                                         SizedBox(
                                           height: 7.h,
                                         ),
@@ -216,7 +278,7 @@ class OrderDetailScreen extends StatelessWidget {
                                         ),
                                         con.isViewMore.isTrue
                                             ? _buildViewMoreModule()
-                                            : SizedBox(),
+                                            : const SizedBox(),
                                         InkWell(
                                           onTap: () {
                                             con.isViewMore.value =

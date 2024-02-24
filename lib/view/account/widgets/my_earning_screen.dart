@@ -94,7 +94,7 @@ class MyEarningScreen extends StatelessWidget {
                                     ],
                                   ),
                                   SizedBox(
-                                    height: 15.h,
+                                    height: 10.h,
                                   ),
                                   Container(
                                     padding: EdgeInsets.symmetric(
@@ -189,7 +189,7 @@ class MyEarningScreen extends StatelessWidget {
   Widget _paymentRecodeModule() {
     return ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: con.myEarningData.value.data?.length,
         itemBuilder: (BuildContext context, int index) {
           var item = con.myEarningData.value.data?[index];
@@ -222,7 +222,7 @@ class MyEarningScreen extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  "${item?.disbursementAmount ?? ""} ₹",
+                  "${item?.disbursementAmount ?? ""}",
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: 10.sp,

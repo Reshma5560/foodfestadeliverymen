@@ -68,12 +68,12 @@ class OrderManagementScreen extends StatelessWidget {
                             await DesktopRepository()
                                 .getOrderHistoryFilterApiCall(
                                     isInitial: true,
-                                    isLoader: con.isLoader,
-                                    fromdDate: con.fromDateCon.value.text,
+                                    fromDate: con.fromDateCon.value.text,
                                     toDate: con.toDateCon.value.text);
                           },
                           child: Obx(() => con.isLoader.isTrue
                               ? ListView.builder(
+                                  padding: EdgeInsets.zero,
                                   // padding: const EdgeInsets.all(defaultPadding)
                                   //     .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
 
@@ -535,9 +535,8 @@ class OrderManagementScreen extends StatelessWidget {
                   await DesktopRepository()
                       .getOrderHistoryFilterApiCall(
                           isInitial: true,
-                          isLoader: con.isLoader,
                           search: con.nameCon.value.text,
-                          fromdDate: con.fromDateCon.value.text,
+                          fromDate: con.fromDateCon.value.text,
                           toDate: con.toDateCon.value.text)
                       .then((value) => con.nameCon.value.clear());
                 },

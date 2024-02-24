@@ -68,7 +68,7 @@ class BottomScreen extends StatelessWidget {
                         ),
                         BottomNavigationBarItem(
                           icon: Image.asset(
-                            AppAssets.categoryIcon,
+                            AppAssets.orderIcon,
                             height: 14.h,
                             color:
                                 indexScreenController.selectedIndex.value == 1

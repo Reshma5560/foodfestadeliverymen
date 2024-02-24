@@ -8,7 +8,7 @@ class AppAssets {
   static String infoProfileIcon = '${iconPath}info_profile_icon.png';
 
   static String homeIcon = '${iconPath}ic_home.png';
-  static String categoryIcon = '${iconPath}ic_category.png';
+  static String orderIcon = '${iconPath}ic_order.png';
   static String profileIcon = '${iconPath}profile_icon.png';
   static String settingIcon="${iconPath}setting_icon.png";
   

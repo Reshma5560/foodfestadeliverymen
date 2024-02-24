@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:foodfestadeliverymen/res/widgets/app_bar.dart';
-import 'package:foodfestadeliverymen/utils/utils.dart';
-
 import 'app_colors.dart';
 import 'app_style.dart';
 
@@ -33,8 +30,8 @@ class CommonAppBar extends StatelessWidget {
           : null,
       title: Text(
         title,
-        style: AppStyle.customAppBarTitleStyle()
-            .copyWith(color: AppColors.black),
+        style:
+            AppStyle.customAppBarTitleStyle().copyWith(color: AppColors.black),
       ),
     );
   }

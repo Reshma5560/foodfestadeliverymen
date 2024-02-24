@@ -44,7 +44,7 @@ class CustomListTile extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
               ),
             ]).paddingSymmetric(horizontal: defaultPadding, vertical: 4),
-            isChildShow == true ? child??SizedBox() : SizedBox()
+            isChildShow == true ? child??const SizedBox() : const SizedBox()
           ],
         ),
       ),

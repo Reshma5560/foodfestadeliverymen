@@ -497,10 +497,6 @@ class OrderManagementDetailScreen extends StatelessWidget {
                                                 ),
                                               ],
                                             ),
-                                            Divider(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            ),
                                             SizedBox(
                                               height: 10.h,
                                             ),

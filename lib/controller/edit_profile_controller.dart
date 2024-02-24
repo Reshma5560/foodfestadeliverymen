@@ -117,24 +117,7 @@ class EditAccountController extends GetxController {
   }
   @override
   void onReady() {
-    // TODO: implement onReady
-
-    DesktopRepository().getProfileApiCall(isLoader: isLoader);
+    DesktopRepository().getProfileApiCall();
     super.onReady();
-  }
-
-  @override
-  void onInit() {
-    // emailCon.text = "customer@gmail.com";
-
-    // if (Get.arguments != null) {
-    //   image.value = Get.arguments['image'];
-    //   firstNameCon.text = Get.arguments['firstName'];
-    //   lastNameCon.text = Get.arguments['lastName'];
-    //   emailCon.text = Get.arguments['email'] ?? "customer@gmail.com";
-    //   mobileNumberCon.text = Get.arguments['mobileNo'];
-    // }
-
-    super.onInit();
   }
 }

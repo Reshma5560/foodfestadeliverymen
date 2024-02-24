@@ -53,6 +53,7 @@ class HomeController extends GetxController
 
   @override
   void onReady() {
+    // DesktopRepository().getProfileApiCall();
     DesktopRepository().getCurrentOrderListAPI(isInitial: true);
     manageCurrentOrderListScrollController();
     manageRequestOrderListScrollController();

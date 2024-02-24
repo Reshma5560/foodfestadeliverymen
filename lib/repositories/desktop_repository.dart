@@ -1,9 +1,12 @@
 // ignore_for_file: unnecessary_null_comparison, unnecessary_string_interpolations
+
+import 'dart:developer';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:foodfestadeliverymen/controller/edit_profile_controller.dart';
-import 'package:foodfestadeliverymen/controller/setting/components/my_earning_controller.dart';
 import 'package:foodfestadeliverymen/controller/home_controller.dart';
 import 'package:foodfestadeliverymen/controller/order_management_controller.dart';
+import 'package:foodfestadeliverymen/controller/setting/components/my_earning_controller.dart';
 import 'package:foodfestadeliverymen/controller/setting/setting_controller.dart';
 import 'package:foodfestadeliverymen/data/api/api_function.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_model.dart';
@@ -24,11 +27,11 @@ import 'package:get/get.dart';
 import '../data/handler/api_url.dart';
 
 class DesktopRepository {
-  Future<dynamic> getProfileApiCall({RxBool? isLoader}) async {
+  Future<dynamic> getProfileApiCall() async {
     final EditAccountController con = Get.find<EditAccountController>();
 
     try {
-      isLoader?.value = true;
+      con.isLoader.value = true;
       await APIFunction().getApiCall(apiName: ApiUrls.getProfileUrl).then(
         (response) async {
           printData(key: "get profile  response", value: response);
@@ -36,22 +39,14 @@ class DesktopRepository {
             GetProfileModel data = GetProfileModel.fromJson(response);
 
             con.getDataMap = data;
-            // con.userApiImageFile.value =
-
-            // con.userName.value =
-            //     "${con.getDataMap?.data.firstName} ${con.getDataMap?.data.lastName}";
-            // con.phoneNoName.value =
-            // con.firstName.value =
-            // con.lastName.value =
-            // con.email.value =
-            // log("${con.getDataMap}");
-
             con.image.value = con.getDataMap?.data.image ?? "";
             con.firstNameCon.text = con.getDataMap?.data.firstName ?? "";
             con.lastNameCon.text = con.getDataMap?.data.lastName ?? "";
             con.emailCon.text =
                 con.getDataMap?.data.email ?? LocalStorage.loginEmail.value;
             con.mobileNumberCon.text = con.getDataMap?.data.phone ?? "";
+            log("${con.getDataMap}");
+            // await getReviewApiCall(isLoader: isLoader);
           }
           return response;
         },
@@ -63,7 +58,7 @@ class DesktopRepository {
       }
       rethrow;
     } finally {
-      isLoader?.value = false;
+      con.isLoader.value = false;
     }
   }
 
@@ -106,10 +101,11 @@ class DesktopRepository {
         "last_name": editAccountController.lastNameCon.text.trim(),
         "email": editAccountController.emailCon.text.trim(),
         "phone": editAccountController.mobileNumberCon.text.trim(),
-        "image": await dio.MultipartFile.fromFile(
-          editAccountController.apiImage!.path,
-          filename: editAccountController.imagePath.value.split("/").last,
-        ),
+        if (editAccountController.apiImage?.path != null)
+          "image": await dio.MultipartFile.fromFile(
+            editAccountController.apiImage!.path,
+            filename: editAccountController.imagePath.value.split("/").last,
+          ),
       });
       await APIFunction()
           .postApiCall(apiName: ApiUrls.updateUserProfileUrl, params: formData)
@@ -173,33 +169,28 @@ class DesktopRepository {
     final HomeController con = Get.find<HomeController>();
     try {
       if (await getConnectivityResult()) {
-        con.currentOrderListData.clear();
         if (isInitial) {
-          con.page.value = 2;
+          con.currentOrderListData.clear();
+          con.page.value = 1;
           con.isLoading.value = true;
           con.nextPageStop.value = true;
         }
 
         if (con.nextPageStop.isTrue) {
-          await APIFunction()
-              .getApiCall(
-                  apiName:
-                      "${ApiUrls.deliverymenUrl}${ApiUrls.currentOrderUrl}?per_page=${con.page.value}")
-              .then(
+          await APIFunction().getApiCall(
+              apiName: "${ApiUrls.deliverymenUrl}${ApiUrls.currentOrderUrl}",
+              queryParameters: {
+                "per_page": 20,
+                "page": con.page.value,
+              }).then(
             (response) async {
               printData(key: "current order response", value: response);
               CurrentOrderModel currentOrderModel =
                   CurrentOrderModel.fromJson(response);
 
-              currentOrderModel.data?.data?.forEach((element) {
-                // log("-------------${element.restaurant}");
-                // log("-------------${element.restaurant != null}");
-                if (element != null) {
-                  con.currentOrderListData.add(element);
-                }
-              });
+              con.currentOrderListData.value =
+                  currentOrderModel.data?.data ?? [];
 
-              con.currentOrderListData.refresh();
               con.page.value++;
               printData(
                   key: "current order length",
@@ -227,34 +218,27 @@ class DesktopRepository {
     final HomeController con = Get.find<HomeController>();
     try {
       if (await getConnectivityResult()) {
-        // con.isLoading.value = true;
         if (isInitial) {
           con.requestOrderListData.clear();
-          con.page.value = 2;
+          con.page.value = 1;
           con.isLoading.value = true;
           con.nextPageStop.value = true;
         }
 
         if (con.nextPageStop.isTrue) {
-          await APIFunction()
-              .getApiCall(
-                  apiName:
-                      "${ApiUrls.deliverymenUrl}${ApiUrls.requestOrderUrl}?per_page=${con.page.value}")
-              .then(
+          await APIFunction().getApiCall(
+              apiName: "${ApiUrls.deliverymenUrl}${ApiUrls.requestOrderUrl}",
+              queryParameters: {
+                "per_page": 20,
+                "page": con.page.value,
+              }).then(
             (response) async {
               printData(key: "request order response", value: response);
               RequestOrderModel requestOrderModel =
                   RequestOrderModel.fromJson(response);
 
-              requestOrderModel.data?.data?.forEach((element) {
-                // log("-------------${element.restaurant}");
-                // log("-------------${element.restaurant != null}");
-                if (element != null) {
-                  con.requestOrderListData.add(element);
-                }
-              });
-
-              con.requestOrderListData.refresh();
+              con.requestOrderListData.value +=
+                  requestOrderModel.data?.data ?? [];
               con.page.value++;
               printData(
                   key: "request order length",
@@ -323,12 +307,14 @@ class DesktopRepository {
           if (!isValEmpty(response) && response["status"] == true) {
             if (!isValEmpty(response["message"])) {
               toast(response["message"].toString());
-              await getCurrentOrderListAPI(isInitial: false);
-              await getRequestOrderListAPI(isInitial: false);
+              getCurrentOrderListAPI(isInitial: false);
+              getRequestOrderListAPI(isInitial: false);
               // getPastOrderListAPI(isInitial: true);
 
               // Get.offNamed(AppRoutes.bottomScreen);
             }
+          } else {
+            toast(response["message"].toString());
           }
           return response;
         },
@@ -418,54 +404,45 @@ class DesktopRepository {
 //get order history filer api call
   Future<dynamic> getOrderHistoryFilterApiCall(
       {required bool isInitial,
-      RxBool? isLoader,
       String? search,
-      required String fromdDate,
+      required String fromDate,
       required String toDate}) async {
     final OrderManagementController con = Get.find<OrderManagementController>();
     try {
       if (await getConnectivityResult()) {
-        con.getOrderHistoryFilterList.clear();
         if (isInitial) {
-          con.page.value = 3;
+          con.getOrderHistoryFilterList.clear();
+          con.page.value = 1;
           con.isLoader.value = true;
           con.nextPageStop.value = true;
         }
 
         dio.FormData formData = dio.FormData.fromMap({
           "search": search ?? "",
-          "from_date": fromdDate,
+          "from_date": fromDate,
           "to_date": toDate,
         });
         if (con.nextPageStop.isTrue) {
-          await APIFunction()
-              .postApiCall(
-                  apiName:
-                      "${ApiUrls.getOrderHistoryFilterUrl}?per_page=${con.page.value}",
-                  params: formData)
-              .then(
+          await APIFunction().postApiCall(
+              apiName: "${ApiUrls.getOrderHistoryFilterUrl}",
+              params: formData,
+              queryParameters: {"per_page": 20, "page": con.page.value}).then(
             (response) async {
               printData(
                   key: "get order history filter response", value: response);
               if (!isValEmpty(response) && response["status"] == true) {
-                GetOrderHistoryFilterModel getOrderHistoryFiltermodel =
+                GetOrderHistoryFilterModel getOrderHistoryFilterModel =
                     GetOrderHistoryFilterModel.fromJson(response);
 
-                getOrderHistoryFiltermodel.data?.data?.forEach((element) {
-                  // log("-------------${element.restaurant}");
-                  // log("-------------${element.restaurant != null}");
-                  if (element != null) {
-                    con.getOrderHistoryFilterList.add(element);
-                  }
-                });
+                con.getOrderHistoryFilterList.value +=
+                    getOrderHistoryFilterModel.data?.data ?? [];
 
-                con.getOrderHistoryFilterList.refresh();
                 con.page.value++;
                 printData(
                     key: " order history filter length",
                     value: con.getOrderHistoryFilterList.length);
                 if (con.getOrderHistoryFilterList.length ==
-                    getOrderHistoryFiltermodel.data?.total) {
+                    getOrderHistoryFilterModel.data?.total) {
                   con.nextPageStop.value = false;
                 }
               }
@@ -480,7 +457,7 @@ class DesktopRepository {
         printError(type: this, errText: "$e");
       }
     } finally {
-      isLoader?.value = false;
+      con.isLoader.value = false;
     }
   }
 
@@ -500,7 +477,6 @@ class DesktopRepository {
                 GetDeliveryManEarningModel.fromJson(response);
 
             con.myEarningData.value = data;
-            print(con.myEarningData.value);
           }
           return response;
         },
