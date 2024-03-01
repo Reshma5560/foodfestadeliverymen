@@ -8,6 +8,7 @@ import 'package:foodfestadeliverymen/common_widgets/simmer_tile.dart';
 import 'package:foodfestadeliverymen/controller/home_controller.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_model.dart';
 import 'package:foodfestadeliverymen/data/models/current_order_status_model.dart';
+import 'package:foodfestadeliverymen/packages/cached_network_image/cached_network_image.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:foodfestadeliverymen/res/app_assets.dart';
 import 'package:foodfestadeliverymen/res/app_button.dart';
@@ -16,6 +17,7 @@ import 'package:foodfestadeliverymen/res/app_strings.dart';
 import 'package:foodfestadeliverymen/res/app_style.dart';
 import 'package:foodfestadeliverymen/res/widgets/empty_element.dart';
 import 'package:foodfestadeliverymen/route/app_routes.dart';
+import 'package:foodfestadeliverymen/utils/local_storage.dart';
 import 'package:get/get.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -30,33 +32,51 @@ class HomeScreen extends StatelessWidget {
         resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
-            Image.asset("assets/images/bg_shade.png"),
+            Container(
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: const [
+                    0.1,
+                    0.2,
+                  ],
+                      colors: [
+                    AppColors.kPrimaryColor.withOpacity(0.2),
+                    AppColors.white
+                  ])),
+            ),
+            // Image.asset(
+            //   AppAssets.appbarBgImage,
+            //   fit: BoxFit.fill,
+            //   width: Get.width,
+            //   height: Get.height,
+            // ),
             Column(children: [
-              // CommonAppBar(
-              //   title: "Orders",
-              //   isLeadingShow: false,
-              //   onPressed: () {
-              //     Get.back();
-              //   },
-              // ),
               Row(
                 children: [
-                  // ClipRRect(
-                  //   borderRadius: BorderRadius.circular(9.r),
-                  //   child:
-                  //       //  Container(
-                  //       //   color: AppColors.black,
-                  //       //   height: 40.h,
-                  //       //   width: 40.w,`
-                  //       // )
-                  //       Image.network(
-                  //     "https://foodfiesta.omtecweb.com/storage/deliveryman_profile/${con.userImage.value}",
-                  //     // AppAssets.appLogo,
-                  //     fit: BoxFit.cover,
-                  //     height: 35.h,
-                  //     width: 40.w,
-                  //   ),
-                  // ),
+                  Center(
+                    child: Obx(
+                      () => LocalStorage.userImage.isNotEmpty
+                          ? MFNetworkImage(
+                              height: 40,
+                              width: 40,
+                              imageUrl: LocalStorage.userImage.value,
+                              fit: BoxFit.cover,
+                              shape: BoxShape.circle,
+                            )
+                          : Container(
+                              height: 40,
+                              width: 40,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(Icons.person_2_outlined,
+                                  color: AppColors.white),
+                            ),
+                    ),
+                  ),
                   SizedBox(
                     width: 10.w,
                   ),
@@ -172,30 +192,35 @@ class HomeScreen extends StatelessWidget {
               //   },
               // ),
               Obx(() => Expanded(
-                    child: TabBarView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        controller: con.tabController,
-                        children: con.orderTabList.map((e) {
-                          return con.tabIndex.value == 0
-                              ? RefreshIndicator(
-                                  onRefresh: () async {
-                                    await DesktopRepository()
-                                        .getCurrentOrderListAPI(
-                                            isInitial: true);
-                                  },
-                                  child: _currentOrderModule())
-                              :
-                              // e.text == "Request Order"
-                              //     ?
-                              RefreshIndicator(
-                                  onRefresh: () async {
-                                    await DesktopRepository()
-                                        .getRequestOrderListAPI(
-                                            isInitial: true);
-                                  },
-                                  child: _requestOrderModule());
-                          // : _pastOrderModule();
-                        }).toList()),
+                    child: Container(
+                      height: Get.height,
+                      width: Get.width,
+                      // color: AppColors.white,
+                      child: TabBarView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          controller: con.tabController,
+                          children: con.orderTabList.map((e) {
+                            return con.tabIndex.value == 0
+                                ? RefreshIndicator(
+                                    onRefresh: () async {
+                                      await DesktopRepository()
+                                          .getCurrentOrderListAPI(
+                                              isInitial: true);
+                                    },
+                                    child: _currentOrderModule())
+                                :
+                                // e.text == "Request Order"
+                                //     ?
+                                RefreshIndicator(
+                                    onRefresh: () async {
+                                      await DesktopRepository()
+                                          .getRequestOrderListAPI(
+                                              isInitial: true);
+                                    },
+                                    child: _requestOrderModule());
+                            // : _pastOrderModule();
+                          }).toList()),
+                    ),
                   )),
             ]),
           ],

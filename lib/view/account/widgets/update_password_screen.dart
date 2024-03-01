@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestadeliverymen/controller/setting/components/update_passwprd_controller.dart';
 import 'package:foodfestadeliverymen/repositories/auth_repositories.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
+import 'package:foodfestadeliverymen/res/app_assets.dart';
 import 'package:foodfestadeliverymen/res/app_button.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
 import 'package:foodfestadeliverymen/res/app_style.dart';
@@ -28,15 +29,39 @@ class UpdatePasswordScreen extends StatelessWidget {
                   duration: const Duration(milliseconds: 700),
                   child: Stack(
                     children: [
-                      Image.asset("assets/images/appbar_bg_img.png"),
-                      Column(children: [
-                        CommonAppBar(
-                          title: "Change Password",
-                          onPressed: () {
-                            Get.back();
-                          },
+                      Image.asset(
+                        AppAssets.appbarBgImage,
+                        fit: BoxFit.fill,
+                        width: Get.width,
+                        height: Get.height,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: Get.height * 0.03),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.arrow_back_ios,
+                                size: 16.sp,
+                              ),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            ),
+                            Text(
+                              "Change Password",
+                              style: AppStyle.customAppBarTitleStyle().copyWith(
+                                  color: AppColors.black, fontSize: 16.sp),
+                            ),
+                            const Text("Aboutus",
+                                style: TextStyle(color: Colors.transparent)),
+                          ],
                         ),
-                        Expanded(
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: Get.height * 0.1),
+                        child: Expanded(
                           child: ListView(
                             padding: EdgeInsets.zero,
                             children: [
@@ -61,26 +86,13 @@ class UpdatePasswordScreen extends StatelessWidget {
                                       showError:
                                           con.oldPasswordValidation.value,
                                       keyboardType: TextInputType.emailAddress,
-                                      onChanged: (value) {},
+                                      onChanged: (value) {
+                                        con.oldPasswordValidation.value = false;
+                                      },
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly,
                                         LengthLimitingTextInputFormatter(16),
                                       ],
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
                                     ),
                                     SizedBox(height: 10.w),
                                     AppTextField(
@@ -90,26 +102,13 @@ class UpdatePasswordScreen extends StatelessWidget {
                                       showError:
                                           con.newPasswordValidation.value,
                                       keyboardType: TextInputType.emailAddress,
-                                      onChanged: (value) {},
+                                      onChanged: (value) {
+                                        con.newPasswordValidation.value = false;
+                                      },
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly,
                                         LengthLimitingTextInputFormatter(16),
                                       ],
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
                                     ),
                                     SizedBox(height: 10.w),
                                     AppTextField(
@@ -120,26 +119,14 @@ class UpdatePasswordScreen extends StatelessWidget {
                                       showError:
                                           con.cnfmNewPasswordValidation.value,
                                       keyboardType: TextInputType.emailAddress,
-                                      onChanged: (value) {},
+                                      onChanged: (value) {
+                                        con.cnfmNewPasswordValidation.value =
+                                            false;
+                                      },
                                       inputFormatters: [
                                         FilteringTextInputFormatter.digitsOnly,
                                         LengthLimitingTextInputFormatter(16),
                                       ],
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(14.r)),
-                                          borderSide: BorderSide(
-                                              color: AppColors.white)),
                                     ),
                                     SizedBox(height: 20.w),
                                     AppButton(
@@ -239,8 +226,8 @@ class UpdatePasswordScreen extends StatelessWidget {
                               )
                             ],
                           ).paddingSymmetric(horizontal: 15.h, vertical: 10.h),
-                        )
-                      ]),
+                        ),
+                      ),
                     ],
                   ));
             }));

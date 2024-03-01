@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestadeliverymen/controller/order_detail_controller.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
+import 'package:foodfestadeliverymen/res/app_assets.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
 import 'package:foodfestadeliverymen/res/app_loader.dart';
 import 'package:foodfestadeliverymen/res/app_style.dart';
@@ -28,308 +29,329 @@ class OrderDetailScreen extends StatelessWidget {
               duration: const Duration(milliseconds: 700),
               child: Stack(
                 children: [
-                  Image.asset("assets/images/appbar_bg_img.png"),
-                  Column(
-                    children: [
-                      CommonAppBar(
-                        title: "Order Details",
-                        onPressed: () {
-                          Get.back();
-                        },
-                      ),
-                      Expanded(
-                          child: Obx(() => con.isLoading.isTrue
-                              ? const AppLoader()
-                              : ListView(padding: EdgeInsets.zero, children: [
-                                  Container(
-                                    // margin: EdgeInsets.symmetric(vertical: 3.h),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                            width: 2),
-                                        color: AppColors.white,
-                                        boxShadow: AppStyle.boxShadow(),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                   Image.asset(
+                    AppAssets.appbarBgImage,
+                    fit: BoxFit.fill,
+                    width: Get.width,
+                    height: Get.height,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: Get.height * 0.03),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(
+                            Icons.arrow_back_ios,
+                            size: 16.sp,
+                          ),
+                          onPressed: () {
+                            Get.back();
+                          },
+                        ),
+                        Text(
+                          "Order Details",
+                          style: AppStyle.customAppBarTitleStyle().copyWith(
+                              color: AppColors.black, fontSize: 16.sp),
+                        ),
+                        const Text("Aboutus",
+                            style: TextStyle(color: Colors.transparent)),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: Get.height * 0.1),
+                    child:  Expanded(
+                      child: Obx(() => con.isLoading.isTrue
+                          ? const AppLoader()
+                          : ListView(padding: EdgeInsets.zero, children: [
+                              Container(
+                                // margin: EdgeInsets.symmetric(vertical: 3.h),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color:
+                                            Theme.of(context).primaryColor,
+                                        width: 2),
+                                    color: AppColors.white,
+                                    boxShadow: AppStyle.boxShadow(),
+                                    borderRadius:
+                                        BorderRadius.circular(10)),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
                                       children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "ORDER# ",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.sp),
-                                            ),
-                                            Text(
-                                              con.getOrderDataModel.value.data
-                                                      ?.invoiceNumber ??
-                                                  "",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .primaryColor,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.sp),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Status: ",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: AppColors.black,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 14.sp),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w,
-                                                  vertical: 2.h),
-                                              decoration: BoxDecoration(
-                                                  color: Theme.of(context)
-                                                      .primaryColor),
-                                              child: Text(
-                                                con
-                                                        .getOrderDataModel
-                                                        .value
-                                                        .data
-                                                        ?.orderStatus
-                                                        ?.statusName ??
-                                                    "",
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    color: AppColors.white,
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 11.sp),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Divider(
-                                          color: Theme.of(context).primaryColor,
-                                        ),
                                         Text(
-                                          "Customer Details",
+                                          "ORDER# ",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 15.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 8.h,
-                                        ),
-                                        Text(
-                                          "Name : ${con.getOrderDataModel.value.data?.user?.firstName} ${con.getOrderDataModel.value.data?.user?.lastName}",
-                                          style: TextStyle(
+                                              color: AppColors.black,
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 11.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 6.h,
-                                        ),
-                                        // InkWell(
-                                        //   onTap: () async {
-                                        //     Uri phoneno = Uri.parse(
-                                        //         '${con.getOrderDataModel.value.data?.user?.phone}');
-                                        //     if (await launchUrl(phoneno)) {
-                                        //       //dialer opened
-                                        //     } else {
-                                        //       //dailer is not opened
-                                        //     }
-                                        //   },
-                                        //   child: Text(
-                                        //     "Mobile No. : ${con.getOrderDataModel.value.data?.user?.phone}",
-                                        //     style: TextStyle(
-                                        //         fontWeight: FontWeight.w600,
-                                        //         fontSize: 11.sp),
-                                        //   ),
-                                        // ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Mobile No. : ",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 11.sp),
-                                            ),
-                                            InkWell(
-                                              onTap: () async {
-                                                Uri phoneno = Uri.parse(
-                                                    '${con.getOrderDataModel.value.data?.user?.phone}');
-                                                if (await launchUrl(phoneno)) {
-                                                  //dialer opened
-                                                } else {
-                                                  //dailer is not opened
-                                                }
-                                              },
-                                              child: Text(
-                                                "${con.getOrderDataModel.value.data?.user?.phone}",
-                                                style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 11.sp),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 6.h,
+                                              fontSize: 14.sp),
                                         ),
                                         Text(
-                                          "Address : ${con.getOrderDataModel.value.data?.deliveryAddress?.address}, ${con.getOrderDataModel.value.data?.deliveryAddress?.city?.cityName}, ${con.getOrderDataModel.value.data?.deliveryAddress?.state?.stateName}",
+                                          con.getOrderDataModel.value.data
+                                                  ?.invoiceNumber ??
+                                              "",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .primaryColor,
                                               fontWeight: FontWeight.w600,
-                                              fontSize: 11.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 12.h,
-                                        ),
-                                        Text(
-                                          "Restaurant Details",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 15.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 8.h,
-                                        ),
-                                        Text(
-                                          "Name : ${con.getOrderDataModel.value.data?.restaurant?.restaurantName}",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 7.h,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              "Mobile No. : ",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 11.sp),
-                                            ),
-                                            InkWell(
-                                              onTap: () async {
-                                                Uri phoneno = Uri.parse(
-                                                    '${con.getOrderDataModel.value.data?.restaurant?.phone}');
-                                                if (await launchUrl(phoneno)) {
-                                                  //dialer opened
-                                                } else {
-                                                  //dailer is not opened
-                                                }
-                                              },
-                                              child: Text(
-                                                "${con.getOrderDataModel.value.data?.restaurant?.phone}",
-                                                style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 11.sp),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        // InkWell(
-                                        //   onTap: () async {
-                                        //     Uri phoneno = Uri.parse(
-                                        //         '${con.getOrderDataModel.value.data?.restaurant?.phone}');
-                                        //     if (await launchUrl(phoneno)) {
-                                        //       //dialer opened
-                                        //     } else {
-                                        //       //dailer is not opened
-                                        //     }
-                                        //   },
-                                        //   child: Text(
-                                        //     "Mobile No. : ${con.getOrderDataModel.value.data?.restaurant?.phone}",
-                                        //     style: TextStyle(
-                                        //         fontWeight: FontWeight.w600,
-                                        //         fontSize: 11.sp),
-                                        //   ),
-                                        // ),
-                                        SizedBox(
-                                          height: 7.h,
-                                        ),
-                                        Text(
-                                          "Addres : ${con.getOrderDataModel.value.data?.restaurant?.address}, ",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11.sp),
-                                        ),
-                                        SizedBox(
-                                          height: 10.h,
-                                        ),
-                                        con.isViewMore.isTrue
-                                            ? _buildViewMoreModule()
-                                            : const SizedBox(),
-                                        InkWell(
-                                          onTap: () {
-                                            con.isViewMore.value =
-                                                !con.isViewMore.value;
-                                          },
-                                          child: Container(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 10.w,
-                                                  vertical: 2.h),
-                                              decoration: BoxDecoration(
-                                                  color: AppColors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          6.r),
-                                                  border: Border.all(
-                                                      color: Theme.of(context)
-                                                          .primaryColor)),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  Text(
-                                                    con.isViewMore.isTrue
-                                                        ? "View less"
-                                                        : "View more.",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 11.sp),
-                                                  ),
-                                                  Icon(
-                                                    con.isViewMore.isTrue
-                                                        ? Icons.arrow_drop_up
-                                                        : Icons.arrow_drop_down,
-                                                    color: Theme.of(context)
-                                                        .primaryColor,
-                                                  )
-                                                ],
-                                              )),
+                                              fontSize: 14.sp),
                                         ),
                                       ],
-                                    ).paddingSymmetric(
-                                        vertical: 10, horizontal: 10),
-                                  ).paddingSymmetric(
-                                      horizontal: 10.w, vertical: 10.h),
-                                ])))
-                    ],
-                  ),
-                ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Status: ",
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: AppColors.black,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14.sp),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w,
+                                              vertical: 2.h),
+                                          decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
+                                          child: Text(
+                                            con
+                                                    .getOrderDataModel
+                                                    .value
+                                                    .data
+                                                    ?.orderStatus
+                                                    ?.statusName ??
+                                                "",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: AppColors.white,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 11.sp),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Divider(
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    Text(
+                                      "Customer Details",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.sp),
+                                    ),
+                                    SizedBox(
+                                      height: 8.h,
+                                    ),
+                                    Text(
+                                      "Name : ${con.getOrderDataModel.value.data?.user?.firstName} ${con.getOrderDataModel.value.data?.user?.lastName}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp),
+                                    ),
+                                    SizedBox(
+                                      height: 6.h,
+                                    ),
+                                    // InkWell(
+                                    //   onTap: () async {
+                                    //     Uri phoneno = Uri.parse(
+                                    //         '${con.getOrderDataModel.value.data?.user?.phone}');
+                                    //     if (await launchUrl(phoneno)) {
+                                    //       //dialer opened
+                                    //     } else {
+                                    //       //dailer is not opened
+                                    //     }
+                                    //   },
+                                    //   child: Text(
+                                    //     "Mobile No. : ${con.getOrderDataModel.value.data?.user?.phone}",
+                                    //     style: TextStyle(
+                                    //         fontWeight: FontWeight.w600,
+                                    //         fontSize: 11.sp),
+                                    //   ),
+                                    // ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Mobile No. : ",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 11.sp),
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            Uri phoneno = Uri.parse(
+                                                '${con.getOrderDataModel.value.data?.user?.phone}');
+                                            if (await launchUrl(phoneno)) {
+                                              //dialer opened
+                                            } else {
+                                              //dailer is not opened
+                                            }
+                                          },
+                                          child: Text(
+                                            "${con.getOrderDataModel.value.data?.user?.phone}",
+                                            style: TextStyle(
+                                                decoration: TextDecoration
+                                                    .underline,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 11.sp),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 6.h,
+                                    ),
+                                    Text(
+                                      "Address : ${con.getOrderDataModel.value.data?.deliveryAddress?.address}, ${con.getOrderDataModel.value.data?.deliveryAddress?.city?.cityName}, ${con.getOrderDataModel.value.data?.deliveryAddress?.state?.stateName}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp),
+                                    ),
+                                    SizedBox(
+                                      height: 12.h,
+                                    ),
+                                    Text(
+                                      "Restaurant Details",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.sp),
+                                    ),
+                                    SizedBox(
+                                      height: 8.h,
+                                    ),
+                                    Text(
+                                      "Name : ${con.getOrderDataModel.value.data?.restaurant?.restaurantName}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp),
+                                    ),
+                                    SizedBox(
+                                      height: 7.h,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "Mobile No. : ",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 11.sp),
+                                        ),
+                                        InkWell(
+                                          onTap: () async {
+                                            Uri phoneno = Uri.parse(
+                                                '${con.getOrderDataModel.value.data?.restaurant?.phone}');
+                                            if (await launchUrl(phoneno)) {
+                                              //dialer opened
+                                            } else {
+                                              //dailer is not opened
+                                            }
+                                          },
+                                          child: Text(
+                                            "${con.getOrderDataModel.value.data?.restaurant?.phone}",
+                                            style: TextStyle(
+                                                decoration: TextDecoration
+                                                    .underline,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 11.sp),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // InkWell(
+                                    //   onTap: () async {
+                                    //     Uri phoneno = Uri.parse(
+                                    //         '${con.getOrderDataModel.value.data?.restaurant?.phone}');
+                                    //     if (await launchUrl(phoneno)) {
+                                    //       //dialer opened
+                                    //     } else {
+                                    //       //dailer is not opened
+                                    //     }
+                                    //   },
+                                    //   child: Text(
+                                    //     "Mobile No. : ${con.getOrderDataModel.value.data?.restaurant?.phone}",
+                                    //     style: TextStyle(
+                                    //         fontWeight: FontWeight.w600,
+                                    //         fontSize: 11.sp),
+                                    //   ),
+                                    // ),
+                                    SizedBox(
+                                      height: 7.h,
+                                    ),
+                                    Text(
+                                      "Addres : ${con.getOrderDataModel.value.data?.restaurant?.address}, ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11.sp),
+                                    ),
+                                    SizedBox(
+                                      height: 10.h,
+                                    ),
+                                    con.isViewMore.isTrue
+                                        ? _buildViewMoreModule()
+                                        : const SizedBox(),
+                                    InkWell(
+                                      onTap: () {
+                                        con.isViewMore.value =
+                                            !con.isViewMore.value;
+                                      },
+                                      child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 10.w,
+                                              vertical: 2.h),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      6.r),
+                                              border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .primaryColor)),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                con.isViewMore.isTrue
+                                                    ? "View less"
+                                                    : "View more.",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .primaryColor,
+                                                    fontWeight:
+                                                        FontWeight.w600,
+                                                    fontSize: 11.sp),
+                                              ),
+                                              Icon(
+                                                con.isViewMore.isTrue
+                                                    ? Icons.arrow_drop_up
+                                                    : Icons.arrow_drop_down,
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                              )
+                                            ],
+                                          )),
+                                    ),
+                                  ],
+                                ).paddingSymmetric(
+                                    vertical: 10, horizontal: 10),
+                              ).paddingSymmetric(
+                                  horizontal: 10.w, vertical: 10.h),
+                            ]))),
+              ),],
               ),
             );
           },

@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestadeliverymen/controller/edit_profile_controller.dart';
 import 'package:foodfestadeliverymen/repositories/desktop_repository.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
+import 'package:foodfestadeliverymen/res/app_assets.dart';
 import 'package:foodfestadeliverymen/res/app_button.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
 import 'package:foodfestadeliverymen/res/app_style.dart';
@@ -31,202 +32,217 @@ class EditAccountScreen extends StatelessWidget {
               duration: const Duration(milliseconds: 700),
               child: Stack(
                 children: [
-                  Image.asset("assets/images/appbar_bg_img.png"),
-                  Column(children: [
-                    CommonAppBar(
-                      title: "Edit Account",
-                      isLeadingShow: false,
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                    Expanded(
-                      child: ListView(
-                        padding: EdgeInsets.zero,
-                        children: [
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 15.w, vertical: 10.h),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor,
-                                    width: 2),
-                                color: Theme.of(context).colorScheme.background,
-                                boxShadow: AppStyle.boxShadow(),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "MY PROFILE",
-                                  style: TextStyle(
-                                      color: Theme.of(context).primaryColor,
-                                      fontSize: 13.sp,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                _profileImageWidget(),
-                                const SizedBox(
-                                  height: defaultPadding,
-                                ),
-                                const SizedBox(
-                                  height: defaultPadding,
-                                ),
-                                AppTextField(
-                                  // titleText: "Full Name",
-                                  hintText: "Enter First Name",
-                                  controller:
-                                      editAccountController.firstNameCon,
-                                  errorMessage: editAccountController
-                                      .firstNameError.value,
-                                  showError: editAccountController
-                                      .firstNameValidation.value,
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.next,
-                                  onChanged: (value) {
-                                    editAccountController
-                                        .firstNameValidation.value = false;
-                                  },
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                ),
-                                SizedBox(height: 10.w),
-                                AppTextField(
-                                  // titleText: "Full Name",
-                                  hintText: "Enter Last Name",
-                                  controller: editAccountController.lastNameCon,
-                                  errorMessage:
-                                      editAccountController.lastNameError.value,
-                                  showError: editAccountController
-                                      .lastNameValidation.value,
-                                  keyboardType: TextInputType.name,
-                                  textInputAction: TextInputAction.next,
-                                  onChanged: (value) {
-                                    editAccountController
-                                        .lastNameValidation.value = false;
-                                  },
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                ),
-                                SizedBox(height: 10.w),
-                                AppTextField(
-                                  // titleText: "Email",
-                                  hintText: "Enter Email", readOnly: true,
-                                  controller: editAccountController.emailCon,
-                                  errorMessage:
-                                      editAccountController.emailError.value,
-                                  showError: editAccountController
-                                      .emailValidation.value,
-                                  keyboardType: TextInputType.emailAddress,
-                                  onChanged: (value) {
-                                    editAccountController
-                                        .emailValidation.value = false;
-                                  },
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                ),
-                                SizedBox(height: 10.w),
-                                AppTextField(
-                                  controller:
-                                      editAccountController.mobileNumberCon,
-                                  errorMessage:
-                                      editAccountController.mobileError.value,
-                                  showError:
-                                      editAccountController.isMobileValid.value,
-                                  // titleText: "Mobile Number",
-                                  hintText: "Mobile Number",
-                                  keyboardType: TextInputType.phone,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    LengthLimitingTextInputFormatter(10),
-                                  ],
-                                  onChanged: (value) {
-                                    if (editAccountController.mobileNumberCon
-                                            .value.text.length ==
-                                        10) {
-                                      FocusScope.of(context).unfocus();
-                                    }
-                                    editAccountController.isMobileValid.value =
-                                        false;
-                                  },
-                                  enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(14.r)),
-                                      borderSide:
-                                          BorderSide(color: AppColors.white)),
-                                ),
-                                SizedBox(
-                                  height: 30.h,
-                                ),
-                                AppButton(
-                                  height: 30.h,
-                                  borderRadius: BorderRadius.circular(12.r),
-                                  onPressed: () {
-                                    log(editAccountController.imagePath.value);
-                                    DesktopRepository().editProfileApiCall(
-                                      isLoader: editAccountController.isLoader,
-                                    );
-                                  },
-                                  title: "Update",
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                )
-                              ],
-                            ),
-                          )
+                  Image.asset(
+                    AppAssets.appbarBgImage,
+                    fit: BoxFit.fill,
+                    width: Get.width,
+                    height: Get.height,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: Get.height * 0.04),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                             Text(
+                          "Edit Account",
+                          style: AppStyle.customAppBarTitleStyle().copyWith(
+                              color: AppColors.black, fontSize: 16.sp),
+                        ),
                         ],
-                      ).paddingSymmetric(horizontal: 15.h, vertical: 5.h),
-                    )
-                  ]),
+                    ),
+                  ),
+                  Padding(
+                      padding: EdgeInsets.only(top: Get.height * 0.1),
+                      child: Expanded(
+                        child: ListView(
+                          padding: EdgeInsets.zero,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15.w, vertical: 10.h),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 2),
+                                  color:
+                                      Theme.of(context).colorScheme.background,
+                                  boxShadow: AppStyle.boxShadow(),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "MY PROFILE",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor,
+                                        fontSize: 13.sp,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  _profileImageWidget(),
+                                  const SizedBox(
+                                    height: defaultPadding,
+                                  ),
+                                  const SizedBox(
+                                    height: defaultPadding,
+                                  ),
+                                  AppTextField(
+                                    // titleText: "Full Name",
+                                    hintText: "Enter First Name",
+                                    controller:
+                                        editAccountController.firstNameCon,
+                                    errorMessage: editAccountController
+                                        .firstNameError.value,
+                                    showError: editAccountController
+                                        .firstNameValidation.value,
+                                    keyboardType: TextInputType.name,
+                                    textInputAction: TextInputAction.next,
+                                    onChanged: (value) {
+                                      editAccountController
+                                          .firstNameValidation.value = false;
+                                    },
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                  ),
+                                  SizedBox(height: 10.w),
+                                  AppTextField(
+                                    // titleText: "Full Name",
+                                    hintText: "Enter Last Name",
+                                    controller:
+                                        editAccountController.lastNameCon,
+                                    errorMessage: editAccountController
+                                        .lastNameError.value,
+                                    showError: editAccountController
+                                        .lastNameValidation.value,
+                                    keyboardType: TextInputType.name,
+                                    textInputAction: TextInputAction.next,
+                                    onChanged: (value) {
+                                      editAccountController
+                                          .lastNameValidation.value = false;
+                                    },
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                  ),
+                                  SizedBox(height: 10.w),
+                                  AppTextField(
+                                    // titleText: "Email",
+                                    hintText: "Enter Email", readOnly: true,
+                                    controller: editAccountController.emailCon,
+                                    errorMessage:
+                                        editAccountController.emailError.value,
+                                    showError: editAccountController
+                                        .emailValidation.value,
+                                    keyboardType: TextInputType.emailAddress,
+                                    onChanged: (value) {
+                                      editAccountController
+                                          .emailValidation.value = false;
+                                    },
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                  ),
+                                  SizedBox(height: 10.w),
+                                  AppTextField(
+                                    controller:
+                                        editAccountController.mobileNumberCon,
+                                    errorMessage:
+                                        editAccountController.mobileError.value,
+                                    showError: editAccountController
+                                        .isMobileValid.value,
+                                    // titleText: "Mobile Number",
+                                    hintText: "Mobile Number",
+                                    keyboardType: TextInputType.phone,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(10),
+                                    ],
+                                    onChanged: (value) {
+                                      if (editAccountController.mobileNumberCon
+                                              .value.text.length ==
+                                          10) {
+                                        FocusScope.of(context).unfocus();
+                                      }
+                                      editAccountController
+                                          .isMobileValid.value = false;
+                                    },
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                    focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(14.r)),
+                                        borderSide:
+                                            BorderSide(color: AppColors.white)),
+                                  ),
+                                  SizedBox(
+                                    height: 30.h,
+                                  ),
+                                  AppButton(
+                                    height: 30.h,
+                                    borderRadius: BorderRadius.circular(12.r),
+                                    onPressed: () {
+                                      log(editAccountController
+                                          .imagePath.value);
+                                      DesktopRepository().editProfileApiCall(
+                                        isLoader:
+                                            editAccountController.isLoader,
+                                      );
+                                    },
+                                    title: "Update",
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ).paddingSymmetric(horizontal: 15.h, vertical: 5.h),
+                      )),
                 ],
               ),
             );
@@ -247,8 +263,8 @@ class EditAccountScreen extends StatelessWidget {
               Radius.circular(20.r),
             ),
             child: Container(
-              height: 80.h,
-              width: 80.w,
+              height: 70.h,
+              width: 70.w,
               decoration: BoxDecoration(
                 color: AppColors.white,
                 // shape: BoxShape.circle,
@@ -279,8 +295,8 @@ class EditAccountScreen extends StatelessWidget {
         ),
       ),
       Positioned(
-          bottom: 11.h,
-          right: 96.w,
+          bottom: 10.h,
+          right: 100.w,
           child: Center(
             child: GestureDetector(
               onTap: () {
@@ -296,7 +312,7 @@ class EditAccountScreen extends StatelessWidget {
                     ),
                   ),
                   child: Icon(
-                    Icons.camera,
+                    Icons.edit,
                     // AppIcons.cameraIcon,\
                     color: AppColors.white,
                     //  Theme.of(Get.context!).primaryColor,

@@ -10,8 +10,7 @@ class AppAssets {
   static String homeIcon = '${iconPath}ic_home.png';
   static String orderIcon = '${iconPath}ic_order.png';
   static String profileIcon = '${iconPath}profile_icon.png';
-  static String settingIcon="${iconPath}setting_icon.png";
-  
+  static String settingIcon = "${iconPath}setting_icon.png";
 
   /// IMAGES ///
   static String appLogo = '${imagesPath}app_logo.png';
@@ -27,6 +26,7 @@ class AppAssets {
   static String totalWithdrawImg = '${imagesPath}total_withdraw.png';
   static String bgImage = '${imagesPath}bg_image.png';
   static String bgLogo = '${imagesPath}bg_logo.png';
+  static String appbarBgImage = '${imagesPath}appbar_bg_img.png';
 
   /// SVG ///
 

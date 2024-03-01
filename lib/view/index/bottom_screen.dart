@@ -13,6 +13,7 @@ class BottomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: Obx(() => IndexedStack(
             index: indexScreenController.selectedIndex.value,
             children: indexScreenController.pages,

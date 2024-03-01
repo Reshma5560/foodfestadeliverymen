@@ -33,18 +33,21 @@ class CustomListTile extends StatelessWidget {
           children: [
             Row(children: [
               Expanded(
-                  child: Text(title,
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14))),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+              ),
               Icon(
                 Icons.arrow_right,
                 size: 30.h,
-                color: Theme.of(context).primaryColor,
+                color:   Theme.of(context).primaryColor,
               ),
             ]).paddingSymmetric(horizontal: defaultPadding, vertical: 4),
-            isChildShow == true ? child??const SizedBox() : const SizedBox()
+            isChildShow == true ? child ?? const SizedBox() : const SizedBox()
           ],
         ),
       ),

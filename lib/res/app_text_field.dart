@@ -122,7 +122,7 @@ class AppTextField extends StatelessWidget {
 
   AnimatedContainer errorMessageWidget() {
     return AnimatedContainer(
-      margin: EdgeInsets.only(left: 0, top: showError == false ? 0 : 5),
+      margin: EdgeInsets.only(left: 0, top: showError == false ? 0 : 1),
       alignment: Alignment.centerLeft,
       duration: const Duration(milliseconds: 180),
       height: showError == false ? 0 : 15 * 1.5,
@@ -155,7 +155,7 @@ class AppTextField extends StatelessWidget {
         onFieldSubmitted: onFieldSubmitted,
         style: style ??
             TextStyle(
-                fontSize: 15.sp,
+                fontSize: 11.sp,
                 fontWeight: FontWeight.w500,
                 color: titleTextColor ?? Theme.of(context).primaryColor),
         inputFormatters: inputFormatters,
@@ -187,31 +187,24 @@ class AppTextField extends StatelessWidget {
           hintText: hintText,
           hintStyle: hintStyle ??
               TextStyle(
-                  fontSize: 12.sp,
+                  fontSize: 11.sp,
                   fontWeight: FontWeight.w400,
                   color: AppColors.iconGreyColor),
           enabledBorder: enabledBorder ??
               OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(Radius.circular(defaultRadius)),
+                  borderRadius: BorderRadius.all(Radius.circular(14.r)),
                   borderSide: BorderSide(
                       color: showError == false
-                          ? AppColors.lightRed
+                          ? AppColors.white
                           : Theme.of(context).colorScheme.error)),
           border: border ??
               OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(Radius.circular(defaultRadius)),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor.withOpacity(0.4))),
+                  borderRadius: BorderRadius.all(Radius.circular(14.r)),
+                  borderSide: BorderSide(color: AppColors.white)),
           focusedBorder: focusedBorder ??
               OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(Radius.circular(defaultRadius)),
-                  borderSide: BorderSide(
-                      color: Theme.of(context)
-                          .primaryColor
-                          .withOpacity(readOnly == true ? 0.2 : 1))),
+                  borderRadius: BorderRadius.all(Radius.circular(14.r)),
+                  borderSide: BorderSide(color: AppColors.white)),
           focusedErrorBorder: focusedErrorBorder ??
               OutlineInputBorder(
                   borderRadius:

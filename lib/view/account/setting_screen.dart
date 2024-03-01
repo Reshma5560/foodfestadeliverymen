@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:foodfestadeliverymen/common_widgets/custom_list_tile.dart';
 import 'package:foodfestadeliverymen/controller/setting/setting_controller.dart';
 import 'package:foodfestadeliverymen/res/app_appbar.dart';
+import 'package:foodfestadeliverymen/res/app_assets.dart';
 import 'package:foodfestadeliverymen/res/app_button.dart';
 import 'package:foodfestadeliverymen/res/app_colors.dart';
+import 'package:foodfestadeliverymen/res/app_style.dart';
 import 'package:foodfestadeliverymen/route/app_routes.dart';
 import 'package:foodfestadeliverymen/utils/local_storage.dart';
 import 'package:get/get.dart';
@@ -20,36 +22,37 @@ class AccountScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset("assets/images/appbar_bg_img.png"),
-          ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              CommonAppBar(
-                title: "Setting",
-                isLeadingShow: false,
-                onPressed: () {
-                  Get.back();
-                },
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              // SizedBox(height: defaultPadding.h),
-              // // _profileImageWidget(),
-              // const SizedBox(
-              //   height: defaultPadding,
-              // ),
-              // Text("My Account",
-              //         style: TextStyle(
-              //             fontWeight: FontWeight.w600,
-              //             fontSize: 16,
-              //             color: Theme.of(context).primaryColor))
-              //     .paddingSymmetric(horizontal: defaultPadding),
-              // const SizedBox(
-              //   height: defaultPadding,
-              // ),
-              _bodyWidget(),
-            ],
+          Image.asset(
+            AppAssets.appbarBgImage,
+            fit: BoxFit.fill,
+            width: Get.width,
+            height: Get.height,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: Get.height * 0.03),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back_ios,
+                      size: 16.sp, color: Colors.transparent),
+                  onPressed: () {
+                    Get.back();
+                  },
+                ),
+                Text(
+                  "Setting",
+                  style: AppStyle.customAppBarTitleStyle()
+                      .copyWith(color: AppColors.black, fontSize: 16.sp),
+                ),
+                const Text("Aboutus",
+                    style: TextStyle(color: Colors.transparent)),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: Get.height * 0.1),
+            child: _bodyWidget(),
           ),
         ],
       ),
@@ -143,7 +146,6 @@ class AccountScreen extends StatelessWidget {
       ],
     ).paddingSymmetric(horizontal: 10.w);
   }
-
 
   _logoutWidget() {
     return Get.dialog(

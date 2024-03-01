@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_colors.dart';
 import 'app_style.dart';
 
@@ -23,6 +24,7 @@ class CommonAppBar extends StatelessWidget {
           ? IconButton(
               icon: Icon(
                 Icons.arrow_back_ios_outlined,
+                size: 16.sp,
                 color: AppColors.black,
               ),
               onPressed: onPressed,
