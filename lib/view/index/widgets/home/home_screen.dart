@@ -24,83 +24,72 @@ class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
   final HomeController con = Get.put(HomeController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterTop,
-        resizeToAvoidBottomInset: true,
-        body: Stack(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: const [
-                    0.1,
-                    0.2,
-                  ],
-                      colors: [
-                    AppColors.kPrimaryColor.withOpacity(0.2),
-                    AppColors.white
-                  ])),
-            ),
-            // Image.asset(
-            //   AppAssets.appbarBgImage,
-            //   fit: BoxFit.fill,
-            //   width: Get.width,
-            //   height: Get.height,
-            // ),
-            Column(children: [
-              Row(
-                children: [
-                  Center(
-                    child: Obx(
-                      () => LocalStorage.userImage.isNotEmpty
-                          ? MFNetworkImage(
-                              height: 40,
-                              width: 40,
-                              imageUrl: LocalStorage.userImage.value,
-                              fit: BoxFit.cover,
-                              shape: BoxShape.circle,
-                            )
-                          : Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterTop,
+      resizeToAvoidBottomInset: true,
+      body: Stack(
+        children: [
+          Image.asset("assets/images/bg_home_image.png", width: Get.width, fit: BoxFit.fill),
+          // Image.asset(
+          //   AppAssets.appbarBgImage,
+          //   fit: BoxFit.fill,
+          //   width: Get.width,
+          //   height: Get.height,
+          // ),
+          Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: Get.height * 0.03, left: defaultPadding - 6),
+                child: Row(
+                  children: [
+                    Center(
+                      child: Obx(
+                        () => LocalStorage.userImage.isNotEmpty
+                            ? MFNetworkImage(
+                                height: 40,
+                                width: 40,
+                                imageUrl: LocalStorage.userImage.value,
+                                fit: BoxFit.cover,
                                 shape: BoxShape.circle,
+                              )
+                            : Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).primaryColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.person_2_outlined,
+                                  color: AppColors.white,
+                                ),
                               ),
-                              child: Icon(Icons.person_2_outlined,
-                                  color: AppColors.white),
-                            ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10.w,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Welcome",
-                        style: TextStyle(
-                            fontSize: 8.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.greyFontColor),
                       ),
-                      Text(
-                        "${con.firstName.value} ${con.lastName.value}",
-                        style: TextStyle(
-                            fontSize: 11.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.black),
-                      )
-                    ],
-                  )
-                ],
-              ).paddingSymmetric(horizontal: 10.w, vertical: 20.h),
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Welcome",
+                          style: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.w400, color: AppColors.greyFontColor),
+                        ),
+                        Obx(
+                          () => Text(
+                            "${LocalStorage.firstName.value} ${LocalStorage.lastName.value}",
+                            style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600, color: AppColors.black),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ).paddingSymmetric(horizontal: 10.w, vertical: 20.h),
+              ),
               // SizedBox(
               //   height: 20.h,
               // ),
@@ -111,27 +100,21 @@ class HomeScreen extends StatelessWidget {
                           onTap: () {
                             con.tabIndex.value = 0;
                             log(con.tabIndex.value.toString());
-                            DesktopRepository()
-                                .getCurrentOrderListAPI(isInitial: true);
+                            DesktopRepository().getCurrentOrderListAPI(isInitial: true);
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 7.h),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.r),
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor),
-                                color: con.tabIndex.value == 0
-                                    ? Theme.of(context).primaryColor
-                                    : AppColors.white),
+                                border: Border.all(color: Theme.of(context).primaryColor),
+                                color: con.tabIndex.value == 0 ? Theme.of(context).primaryColor : AppColors.white),
                             child: Text(
                               "Current Order",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: con.tabIndex.value == 0
-                                      ? AppColors.white
-                                      : Theme.of(context).primaryColor),
+                                  color: con.tabIndex.value == 0 ? AppColors.white : Theme.of(context).primaryColor),
                             ),
                           ),
                         ),
@@ -144,27 +127,21 @@ class HomeScreen extends StatelessWidget {
                           onTap: () {
                             con.tabIndex.value = 1;
                             log(con.tabIndex.value.toString());
-                            DesktopRepository()
-                                .getRequestOrderListAPI(isInitial: true);
+                            DesktopRepository().getRequestOrderListAPI(isInitial: true);
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(vertical: 7.h),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12.r),
-                                border: Border.all(
-                                    color: Theme.of(context).primaryColor),
-                                color: con.tabIndex.value == 1
-                                    ? Theme.of(context).primaryColor
-                                    : AppColors.white),
+                                border: Border.all(color: Theme.of(context).primaryColor),
+                                color: con.tabIndex.value == 1 ? Theme.of(context).primaryColor : AppColors.white),
                             child: Text(
                               "Request Order",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,
-                                  color: con.tabIndex.value == 1
-                                      ? AppColors.white
-                                      : Theme.of(context).primaryColor),
+                                  color: con.tabIndex.value == 1 ? AppColors.white : Theme.of(context).primaryColor),
                             ),
                           ),
                         ),
@@ -191,40 +168,33 @@ class HomeScreen extends StatelessWidget {
               //     // }
               //   },
               // ),
-              Obx(() => Expanded(
-                    child: Container(
-                      height: Get.height,
-                      width: Get.width,
-                      // color: AppColors.white,
-                      child: TabBarView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          controller: con.tabController,
-                          children: con.orderTabList.map((e) {
-                            return con.tabIndex.value == 0
-                                ? RefreshIndicator(
-                                    onRefresh: () async {
-                                      await DesktopRepository()
-                                          .getCurrentOrderListAPI(
-                                              isInitial: true);
-                                    },
-                                    child: _currentOrderModule())
-                                :
-                                // e.text == "Request Order"
-                                //     ?
-                                RefreshIndicator(
-                                    onRefresh: () async {
-                                      await DesktopRepository()
-                                          .getRequestOrderListAPI(
-                                              isInitial: true);
-                                    },
-                                    child: _requestOrderModule());
-                            // : _pastOrderModule();
-                          }).toList()),
+              Obx(
+                () => Expanded(
+                  child: SizedBox(
+                    height: Get.height,
+                    width: Get.width,
+                    // color: AppColors.white,
+                    child: TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: con.tabController,
+                      children: con.orderTabList.map((e) {
+                        return con.tabIndex.value == 0
+                            ? _currentOrderModule()
+                            :
+                            // e.text == "Request Order"
+                            //     ?
+                            _requestOrderModule();
+                        // : _pastOrderModule();
+                      }).toList(),
                     ),
-                  )),
-            ]),
-          ],
-        ));
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _currentOrderModule() {
@@ -256,14 +226,12 @@ class HomeScreen extends StatelessWidget {
                   var item = con.currentOrderListData[index];
                   return InkWell(
                     onTap: () {
-                      Get.toNamed(AppRoutes.orderDetailScreen,
-                          arguments: {'orderId': item.id});
+                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id});
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 3.h),
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2),
+                          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
                           borderRadius: BorderRadius.circular(10)),
@@ -276,19 +244,13 @@ class HomeScreen extends StatelessWidget {
                                 "ORDER# ",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.sp),
+                                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
                               ),
                               Text(
                                 item.invoiceNumber.toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.sp),
+                                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
                               ),
                             ],
                           ),
@@ -298,24 +260,16 @@ class HomeScreen extends StatelessWidget {
                                 "Status: ",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.sp),
+                                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 2.h),
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor),
+                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
+                                decoration: BoxDecoration(color: Theme.of(context).primaryColor),
                                 child: Text(
                                   item.orderStatus?.statusName ?? "",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: AppColors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11.sp),
+                                  style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w500, fontSize: 11.sp),
                                 ),
                               ),
                             ],
@@ -325,64 +279,56 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Text(
                             "Customer Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.user?.firstName} ${item.user?.lastName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Mobile No. : ${item.user?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Address : ${item.deliveryAddress?.address}, ${item.deliveryAddress?.city?.cityName}, ${item.deliveryAddress?.state?.stateName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 12.h,
                           ),
                           Text(
                             "Restaurant Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.restaurant?.restaurantName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Mobile No. : ${item.restaurant?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Addres : ${item.restaurant?.address}, ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -393,11 +339,7 @@ class HomeScreen extends StatelessWidget {
                           SizedBox(
                               height: 30,
                               child: Row(
-                                children: [
-                                  Expanded(
-                                      child: _orderStatusDropDownModule(item)),
-                                  const Expanded(child: SizedBox())
-                                ],
+                                children: [Expanded(child: _orderStatusDropDownModule(item)), const Expanded(child: SizedBox())],
                               )),
                           SizedBox(
                             height: 10.h,
@@ -414,8 +356,7 @@ class HomeScreen extends StatelessWidget {
     return Obx(() => con.isLoading.value
         ? ListView.builder(
             controller: con.requestOrderScrollController,
-            padding: const EdgeInsets.all(defaultPadding)
-                .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+            padding: const EdgeInsets.all(defaultPadding).copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
             shrinkWrap: true,
             itemCount: 8,
             itemBuilder: (BuildContext context, index) => const SimmerTile(),
@@ -440,16 +381,12 @@ class HomeScreen extends StatelessWidget {
                   RxBool isAccept = false.obs;
                   return InkWell(
                     onTap: () {
-                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {
-                        'orderId': item.id,
-                        'isAccept': isAccept.value
-                      });
+                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id, 'isAccept': isAccept.value});
                     },
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 3.h),
                       decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Theme.of(context).primaryColor, width: 2),
+                          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
                           color: AppColors.white,
                           boxShadow: AppStyle.boxShadow(),
                           borderRadius: BorderRadius.circular(10)),
@@ -462,19 +399,13 @@ class HomeScreen extends StatelessWidget {
                                 "ORDER# ",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.sp),
+                                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
                               ),
                               Text(
                                 item.invoiceNumber.toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.sp),
+                                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
                               ),
                             ],
                           ),
@@ -484,24 +415,16 @@ class HomeScreen extends StatelessWidget {
                                 "Status: ",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14.sp),
+                                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
                               ),
                               Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10.w, vertical: 2.h),
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor),
+                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
+                                decoration: BoxDecoration(color: Theme.of(context).primaryColor),
                                 child: Text(
                                   item.orderStatus?.statusName ?? "",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: AppColors.white,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 11.sp),
+                                  style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w500, fontSize: 11.sp),
                                 ),
                               ),
                             ],
@@ -511,64 +434,56 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Text(
                             "Customer Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.user?.firstName} ${item.user?.lastName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Mobile No. : ${item.user?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 6.h,
                           ),
                           Text(
                             "Address : ${item.deliveryAddress?.address}, ${item.deliveryAddress?.city?.cityName}, ${item.deliveryAddress?.state?.stateName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 12.h,
                           ),
                           Text(
                             "Restaurant Details",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
                           ),
                           SizedBox(
                             height: 8.h,
                           ),
                           Text(
                             "Name : ${item.restaurant?.restaurantName}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Mobile No. : ${item.restaurant?.phone}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 7.h,
                           ),
                           Text(
                             "Addres : ${item.restaurant?.address}, ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
                           ),
                           SizedBox(
                             height: 10.h,
@@ -587,22 +502,15 @@ class HomeScreen extends StatelessWidget {
                                   onPressed: () {
                                     var params = {
                                       "order_id": item.id,
-                                      "status":
-                                          "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                      "status": "2" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
                                     };
                                     DesktopRepository()
-                                        .acceptOrderApiCall(
-                                            isLoader: con.isLoading,
-                                            params: params)
-                                        .then((value) =>
-                                            con.isAccept.value = true);
+                                        .acceptOrderApiCall(isLoader: con.isLoading, params: params)
+                                        .then((value) => con.isAccept.value = true);
                                   },
                                   child: Text(
                                     "Accept",
-                                    style: TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: AppColors.white, fontSize: 12.sp, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -620,19 +528,13 @@ class HomeScreen extends StatelessWidget {
                                       () {
                                     var params = {
                                       "order_id": item.id,
-                                      "status":
-                                          "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
+                                      "status": "3" // 1-pending BYDEFAULT | 2-ACCEPT | 3 -REJECT
                                     };
-                                    DesktopRepository().acceptOrderApiCall(
-                                        isLoader: con.isLoading,
-                                        params: params);
+                                    DesktopRepository().acceptOrderApiCall(isLoader: con.isLoading, params: params);
                                   },
                                   child: Text(
                                     "Reject",
-                                    style: TextStyle(
-                                        color: AppColors.white,
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.bold),
+                                    style: TextStyle(color: AppColors.white, fontSize: 12.sp, fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
@@ -654,7 +556,8 @@ class HomeScreen extends StatelessWidget {
           // menuMaxHeight: 400,
           dropdownColor: Theme.of(Get.context!).primaryColor,
           decoration: InputDecoration(
-            fillColor: Theme.of(Get.context!).primaryColor, //AppColors.white,
+            fillColor: Theme.of(Get.context!).primaryColor,
+            //AppColors.white,
             filled: true,
             contentPadding: const EdgeInsets.symmetric(horizontal: 18.0),
             enabledBorder: OutlineInputBorder(
@@ -672,8 +575,7 @@ class HomeScreen extends StatelessWidget {
             Icons.arrow_drop_down,
             color: AppColors.white,
           ),
-          items: con.getCurrentOrderStatusListData
-              .map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
+          items: con.getCurrentOrderStatusListData.map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
             // log("value.name ${value.countryName}");
             return DropdownMenuItem<CurrentOrderStatusDatum>(
               value: value,
@@ -696,12 +598,9 @@ class HomeScreen extends StatelessWidget {
           ),
           onChanged: (value) async {
             con.isLoading(true);
-            con.orderstatusDropDownValue.value =
-                value ?? CurrentOrderStatusDatum();
+            con.orderstatusDropDownValue.value = value ?? CurrentOrderStatusDatum();
 
-            DesktopRepository().updateOrderStatusApiCall(
-                isLoader: con.isLoading,
-                params: {"order_id": item.id, "status_id": value?.id});
+            DesktopRepository().updateOrderStatusApiCall(isLoader: con.isLoading, params: {"order_id": item.id, "status_id": value?.id});
             con.isLoading(false);
           },
         ));
