@@ -33,66 +33,57 @@ class HomeScreen extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset("assets/images/bg_home_image.png", width: Get.width, fit: BoxFit.fill),
-          // Image.asset(
-          //   AppAssets.appbarBgImage,
-          //   fit: BoxFit.fill,
-          //   width: Get.width,
-          //   height: Get.height,
-          // ),
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: Get.height * 0.03, left: defaultPadding - 6),
-                child: Row(
-                  children: [
-                    Center(
-                      child: Obx(
-                        () => LocalStorage.userImage.isNotEmpty
-                            ? MFNetworkImage(
-                                height: 40,
-                                width: 40,
-                                imageUrl: LocalStorage.userImage.value,
-                                fit: BoxFit.cover,
-                                shape: BoxShape.circle,
-                              )
-                            : Container(
-                                height: 40,
-                                width: 40,
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(
-                                  Icons.person_2_outlined,
-                                  color: AppColors.white,
-                                ),
-                              ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Welcome",
-                          style: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.w400, color: AppColors.greyFontColor),
-                        ),
-                        Obx(
-                          () => Text(
-                            "${LocalStorage.firstName.value} ${LocalStorage.lastName.value}",
-                            style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600, color: AppColors.black),
+          Padding(
+            padding: EdgeInsets.only(top: Get.height * 0.03, left: defaultPadding - 6),
+            child: Row(
+              children: [
+                Center(
+                  child: Obx(
+                    () => LocalStorage.userImage.isNotEmpty
+                        ? MFNetworkImage(
+                            height: 40,
+                            width: 40,
+                            imageUrl: LocalStorage.userImage.value,
+                            fit: BoxFit.cover,
+                            shape: BoxShape.circle,
+                          )
+                        : Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.person_2_outlined,
+                              color: AppColors.white,
+                            ),
                           ),
-                        )
-                      ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10.w,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Welcome",
+                      style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w400, color: AppColors.greyFontColor),
+                    ),
+                    Obx(
+                      () => Text(
+                        "${LocalStorage.firstName.value} ${LocalStorage.lastName.value}",
+                        style: TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w600, color: AppColors.black),
+                      ),
                     )
                   ],
-                ).paddingSymmetric(horizontal: 10.w, vertical: 20.h),
-              ),
-              // SizedBox(
-              //   height: 20.h,
-              // ),
+                )
+              ],
+            ).paddingSymmetric(horizontal: 10.w, vertical: 20.h),
+          ),
+          Column(
+            children: [
               Obx(() => Row(
                     children: [
                       Expanded(
@@ -148,26 +139,6 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ).paddingSymmetric(horizontal: 10.w)),
-              // TabBar(
-              //   physics: const NeverScrollableScrollPhysics(),
-              //   unselectedLabelColor: Theme.of(context).primaryColor,
-              //   // indicatorColor: AppColors.black,
-              //   // automaticIndicatorColorAdjustment: false,
-              //   controller: con.tabController,
-              //   tabs: con.orderTabList,
-              //   onTap: (value) {
-              //     con.tabIndex.value = value;
-              //     log(con.tabIndex.value.toString());
-              //     if (con.tabIndex.value == 0) {
-              //       DesktopRepository().getCurrentOrderListAPI(isInitial: true);
-              //     } else if (con.tabIndex.value == 1) {
-              //       DesktopRepository().getRequestOrderListAPI(isInitial: true);
-              //     }
-              //     // else if (con.tabIndex.value == 2) {
-              //     //   DesktopRepository().getPastOrderListAPI(isInitial: true);
-              //     // }
-              //   },
-              // ),
               Obx(
                 () => Expanded(
                   child: SizedBox(
@@ -177,15 +148,12 @@ class HomeScreen extends StatelessWidget {
                     child: TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       controller: con.tabController,
-                      children: con.orderTabList.map((e) {
-                        return con.tabIndex.value == 0
-                            ? _currentOrderModule()
-                            :
-                            // e.text == "Request Order"
-                            //     ?
-                            _requestOrderModule();
-                        // : _pastOrderModule();
-                      }).toList(),
+                      children: con.orderTabList.map(
+                        (e) {
+                          return con.tabIndex.value == 0 ? _currentOrderModule() : _requestOrderModule();
+                          // : _pastOrderModule();
+                        },
+                      ).toList(),
                     ),
                   ),
                 ),
@@ -198,158 +166,160 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _currentOrderModule() {
-    return Obx(() => con.isLoading.value
-        ? ListView.builder(
-            // padding: const EdgeInsets.all(defaultPadding)
-            //     .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
+    return Obx(
+      () => con.isLoading.value
+          ? ListView.builder(
+              // padding: const EdgeInsets.all(defaultPadding)
+              //     .copyWith(bottom: MediaQuery.of(Get.context!).padding.bottom),
 
-            // padding: EdgeInsets.symmetric(vertical: 5.h),
-            shrinkWrap: true,
-            itemCount: 8,
-            itemBuilder: (BuildContext context, index) => const SimmerTile(),
-          )
-        : con.currentOrderListData.value.isEmpty
-            ? EmptyElement(
-                imagePath: AppAssets.noData,
-                height: Get.height / 1.8,
-                imageHeight: Get.width / 2.4,
-                imageWidth: Get.width / 2,
-                spacing: 0,
-                title: AppStrings.recordNotFound,
-                subtitle: "",
-              )
-            : ListView.builder(
-                controller: con.currentOrderScrollController,
-                itemCount: con.currentOrderListData.length,
-                padding: EdgeInsets.symmetric(vertical: 5.h),
-                itemBuilder: (BuildContext context, int index) {
-                  var item = con.currentOrderListData[index];
-                  return InkWell(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id});
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 3.h),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
-                          color: AppColors.white,
-                          boxShadow: AppStyle.boxShadow(),
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                "ORDER# ",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
-                              ),
-                              Text(
-                                item.invoiceNumber.toString(),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                "Status: ",
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
-                              ),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
-                                decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-                                child: Text(
-                                  item.orderStatus?.statusName ?? "",
+              // padding: EdgeInsets.symmetric(vertical: 5.h),
+              shrinkWrap: true,
+              itemCount: 8,
+              itemBuilder: (BuildContext context, index) => const SimmerTile(),
+            )
+          : con.currentOrderListData.value.isEmpty
+              ? EmptyElement(
+                  imagePath: AppAssets.noData,
+                  height: Get.height / 1.8,
+                  imageHeight: Get.width / 2.4,
+                  imageWidth: Get.width / 2,
+                  spacing: 0,
+                  title: AppStrings.recordNotFound,
+                  subtitle: "",
+                )
+              : ListView.builder(
+                  controller: con.currentOrderScrollController,
+                  itemCount: con.currentOrderListData.length,
+                  padding: EdgeInsets.symmetric(vertical: 5.h),
+                  itemBuilder: (BuildContext context, int index) {
+                    var item = con.currentOrderListData[index];
+                    return InkWell(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.orderDetailScreen, arguments: {'orderId': item.id});
+                      },
+                      child: Container(
+                        margin: EdgeInsets.symmetric(vertical: 3.h),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+                            color: AppColors.white,
+                            boxShadow: AppStyle.boxShadow(),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "ORDER# ",
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w500, fontSize: 11.sp),
+                                  style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
                                 ),
-                              ),
-                            ],
-                          ),
-                          Divider(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          Text(
-                            "Customer Details",
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
-                          ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          Text(
-                            "Name : ${item.user?.firstName} ${item.user?.lastName}",
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
-                          ),
-                          SizedBox(
-                            height: 6.h,
-                          ),
-                          Text(
-                            "Mobile No. : ${item.user?.phone}",
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
-                          ),
-                          SizedBox(
-                            height: 6.h,
-                          ),
-                          Text(
-                            "Address : ${item.deliveryAddress?.address}, ${item.deliveryAddress?.city?.cityName}, ${item.deliveryAddress?.state?.stateName}",
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
-                          ),
-                          SizedBox(
-                            height: 12.h,
-                          ),
-                          Text(
-                            "Restaurant Details",
-                            style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
-                          ),
-                          SizedBox(
-                            height: 8.h,
-                          ),
-                          Text(
-                            "Name : ${item.restaurant?.restaurantName}",
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
-                          ),
-                          SizedBox(
-                            height: 7.h,
-                          ),
-                          Text(
-                            "Mobile No. : ${item.restaurant?.phone}",
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
-                          ),
-                          SizedBox(
-                            height: 7.h,
-                          ),
-                          Text(
-                            "Addres : ${item.restaurant?.address}, ",
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          SizedBox(
-                            height: 5.h,
-                          ),
-                          SizedBox(
-                              height: 30,
-                              child: Row(
-                                children: [Expanded(child: _orderStatusDropDownModule(item)), const Expanded(child: SizedBox())],
-                              )),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                        ],
-                      ).paddingSymmetric(vertical: 10, horizontal: 10),
-                    ),
-                  );
-                },
-              ).paddingSymmetric(horizontal: 10.w, vertical: 5.h));
+                                Text(
+                                  item.invoiceNumber.toString(),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(color: Theme.of(context).primaryColor, fontWeight: FontWeight.w600, fontSize: 14.sp),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  "Status: ",
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(color: AppColors.black, fontWeight: FontWeight.w600, fontSize: 14.sp),
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 2.h),
+                                  decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+                                  child: Text(
+                                    item.orderStatus?.statusName ?? "",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: AppColors.white, fontWeight: FontWeight.w500, fontSize: 11.sp),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Divider(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            Text(
+                              "Customer Details",
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              "Name : ${item.user?.firstName} ${item.user?.lastName}",
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            ),
+                            SizedBox(
+                              height: 6.h,
+                            ),
+                            Text(
+                              "Mobile No. : ${item.user?.phone}",
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            ),
+                            SizedBox(
+                              height: 6.h,
+                            ),
+                            Text(
+                              "Address : ${item.deliveryAddress?.address}, ${item.deliveryAddress?.city?.cityName}, ${item.deliveryAddress?.state?.stateName}",
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            ),
+                            SizedBox(
+                              height: 12.h,
+                            ),
+                            Text(
+                              "Restaurant Details",
+                              style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15.sp),
+                            ),
+                            SizedBox(
+                              height: 8.h,
+                            ),
+                            Text(
+                              "Name : ${item.restaurant?.restaurantName}",
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            ),
+                            SizedBox(
+                              height: 7.h,
+                            ),
+                            Text(
+                              "Mobile No. : ${item.restaurant?.phone}",
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            ),
+                            SizedBox(
+                              height: 7.h,
+                            ),
+                            Text(
+                              "Addres : ${item.restaurant?.address}, ",
+                              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 11.sp),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            SizedBox(
+                              height: 5.h,
+                            ),
+                            SizedBox(
+                                height: 30,
+                                child: Row(
+                                  children: [Expanded(child: _orderStatusDropDownModule(item)), const Expanded(child: SizedBox())],
+                                )),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                          ],
+                        ).paddingSymmetric(vertical: 10, horizontal: 10),
+                      ),
+                    );
+                  },
+                ).paddingSymmetric(horizontal: 10.w, vertical: 5.h),
+    );
   }
 
   Widget _requestOrderModule() {
@@ -552,57 +522,59 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _orderStatusDropDownModule(CurrentOrderDatum item) {
-    return Obx(() => DropdownButtonFormField<CurrentOrderStatusDatum>(
-          // menuMaxHeight: 400,
-          dropdownColor: Theme.of(Get.context!).primaryColor,
-          decoration: InputDecoration(
-            fillColor: Theme.of(Get.context!).primaryColor,
-            //AppColors.white,
-            filled: true,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 18.0),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color: AppColors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              borderSide: BorderSide(color: AppColors.grey),
-            ),
+    return Obx(
+      () => DropdownButtonFormField<CurrentOrderStatusDatum>(
+        // menuMaxHeight: 400,
+        dropdownColor: Theme.of(Get.context!).primaryColor,
+        decoration: InputDecoration(
+          fillColor: Theme.of(Get.context!).primaryColor,
+          //AppColors.white,
+          filled: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 18.0),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: AppColors.grey),
           ),
-          hint: const Text("Select Order status"),
-          value: con.orderstatusDropDownValue.value,
-          icon: Icon(
-            Icons.arrow_drop_down,
-            color: AppColors.white,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.circular(10)),
+            borderSide: BorderSide(color: AppColors.grey),
           ),
-          items: con.getCurrentOrderStatusListData.map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
-            // log("value.name ${value.countryName}");
-            return DropdownMenuItem<CurrentOrderStatusDatum>(
-              value: value,
-              child: Text(
-                "${value.statusName}",
-                style: TextStyle(
-                  color: AppColors.white,
-                  fontSize: 11.sp,
-                ),
+        ),
+        hint: const Text("Select Order status"),
+        value: con.orderstatusDropDownValue.value,
+        icon: Icon(
+          Icons.arrow_drop_down,
+          color: AppColors.white,
+        ),
+        items: con.getCurrentOrderStatusListData.map<DropdownMenuItem<CurrentOrderStatusDatum>>((value) {
+          // log("value.name ${value.countryName}");
+          return DropdownMenuItem<CurrentOrderStatusDatum>(
+            value: value,
+            child: Text(
+              "${value.statusName}",
+              style: TextStyle(
+                color: AppColors.white,
+                fontSize: 11.sp,
               ),
-            );
-          }).toList(),
-          isDense: true,
-          isExpanded: false,
-          // underline: Container(height: 1, color: AppColors.blackColor),
-          // borderRadius: const BorderRadius.all(Radius.circular(15)),
-          style: TextStyle(
-            color: AppColors.grey,
-            fontSize: 11.sp,
-          ),
-          onChanged: (value) async {
-            con.isLoading(true);
-            con.orderstatusDropDownValue.value = value ?? CurrentOrderStatusDatum();
+            ),
+          );
+        }).toList(),
+        isDense: true,
+        isExpanded: false,
+        // underline: Container(height: 1, color: AppColors.blackColor),
+        // borderRadius: const BorderRadius.all(Radius.circular(15)),
+        style: TextStyle(
+          color: AppColors.grey,
+          fontSize: 11.sp,
+        ),
+        onChanged: (value) async {
+          con.isLoading(true);
+          con.orderstatusDropDownValue.value = value ?? CurrentOrderStatusDatum();
 
-            DesktopRepository().updateOrderStatusApiCall(isLoader: con.isLoading, params: {"order_id": item.id, "status_id": value?.id});
-            con.isLoading(false);
-          },
-        ));
+          DesktopRepository().updateOrderStatusApiCall(isLoader: con.isLoading, params: {"order_id": item.id, "status_id": value?.id});
+          con.isLoading(false);
+        },
+      ),
+    );
   }
 }
