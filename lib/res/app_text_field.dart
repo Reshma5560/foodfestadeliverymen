@@ -101,8 +101,7 @@ class AppTextField extends StatelessWidget {
         children: [
           if (titleText != null) filedTitle(),
           myTextFormField(context),
-          if (errorMessage != null && errorMessage!.isNotEmpty)
-            errorMessageWidget(),
+          if (errorMessage != null && errorMessage!.isNotEmpty) errorMessageWidget(),
         ],
       );
     } else {
@@ -134,96 +133,67 @@ class AppTextField extends StatelessWidget {
   }
 
   Widget myTextFormField(BuildContext context) {
-    return SizedBox(
-      height: 40.h,
-      child: TextFormField(
-        onTap: onTap,
-        focusNode: focusNode,
-        autofocus: autofocus ?? false,
-        textInputAction: textInputAction,
-        textAlignVertical: TextAlignVertical.center,
-        cursorColor: cursorColor ?? Theme.of(context).primaryColor,
-        initialValue: initialValue,
-        controller: controller,
-        enabled: enabled,
-        cursorHeight: cursorHeight,
-        maxLength: maxLength != 0 ? maxLength : null,
-        obscureText: obscureText,
-        keyboardType: keyboardType,
-        onChanged: onChanged,
-        maxLines: maxLines,
-        onFieldSubmitted: onFieldSubmitted,
-        style: style ??
-            TextStyle(
-                fontSize: 11.sp,
-                fontWeight: FontWeight.w500,
-                color: titleTextColor ?? Theme.of(context).primaryColor),
-        inputFormatters: inputFormatters,
-        readOnly: readOnly ?? false,
-        decoration: InputDecoration(
-          filled: true,
-          isCollapsed: true,
-          contentPadding: contentPadding ??
-              const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-          fillColor: enabled == false
-              ? Theme.of(context).primaryColor.withAlpha(22)
-              : fillColor ?? Colors.white,
-          prefixIcon: prefixIcon != null
-              ? InkWell(
-                  overlayColor: MaterialStateProperty.all(
-                      Get.isDarkMode ? null : Colors.white),
-                  onTap: prefixOnTap,
-                  child: prefixIcon,
-                )
-              : null,
-          suffixIcon: suffixIcon != null
-              ? InkWell(
-                  overlayColor: MaterialStateProperty.all(
-                      Get.isDarkMode ? null : Colors.white),
-                  onTap: suffixOnTap,
-                  child: suffixIcon,
-                )
-              : null,
-          hintText: hintText,
-          hintStyle: hintStyle ??
-              TextStyle(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.iconGreyColor),
-          enabledBorder: enabledBorder ??
-              OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(14.r)),
-                  borderSide: BorderSide(
-                      color: showError == false
-                          ? AppColors.white
-                          : Theme.of(context).colorScheme.error)),
-          border: border ??
-              OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(14.r)),
-                  borderSide: BorderSide(color: AppColors.white)),
-          focusedBorder: focusedBorder ??
-              OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(14.r)),
-                  borderSide: BorderSide(color: AppColors.white)),
-          focusedErrorBorder: focusedErrorBorder ??
-              OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(Radius.circular(defaultRadius)),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor.withOpacity(0.4))),
-          disabledBorder: disabledBorder ??
-              OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(Radius.circular(defaultRadius)),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor.withOpacity(0.4))),
-          errorBorder: errorBorder ??
-              OutlineInputBorder(
-                  borderRadius:
-                      const BorderRadius.all(Radius.circular(defaultRadius)),
-                  borderSide:
-                      BorderSide(color: Theme.of(context).colorScheme.error)),
-        ),
+    return TextFormField(
+      onTap: onTap,
+      focusNode: focusNode,
+      autofocus: autofocus ?? false,
+      textInputAction: textInputAction,
+      textAlignVertical: TextAlignVertical.center,
+      cursorColor: cursorColor ?? Theme.of(context).primaryColor,
+      initialValue: initialValue,
+      controller: controller,
+      enabled: enabled,
+      cursorHeight: cursorHeight,
+      maxLength: maxLength != 0 ? maxLength : null,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      onChanged: onChanged,
+      maxLines: maxLines,
+      onFieldSubmitted: onFieldSubmitted,
+      style: style ?? TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w500, color: titleTextColor ?? Theme.of(context).primaryColor),
+      inputFormatters: inputFormatters,
+      readOnly: readOnly ?? false,
+      decoration: InputDecoration(
+        isDense: false,
+        filled: true,
+        isCollapsed: true,
+        contentPadding: contentPadding ?? const EdgeInsets.all(18),
+        fillColor: enabled == false ? Theme.of(context).primaryColor.withAlpha(22) : fillColor ?? Colors.white,
+        prefixIcon: prefixIcon != null
+            ? InkWell(
+                overlayColor: MaterialStateProperty.all(Get.isDarkMode ? null : Colors.white),
+                onTap: prefixOnTap,
+                child: prefixIcon,
+              )
+            : null,
+        suffixIcon: suffixIcon != null
+            ? InkWell(
+                overlayColor: MaterialStateProperty.all(Get.isDarkMode ? null : Colors.white),
+                onTap: suffixOnTap,
+                child: suffixIcon,
+              )
+            : null,
+        hintText: hintText,
+        hintStyle: hintStyle ?? TextStyle(fontSize: 11.sp, fontWeight: FontWeight.w400, color: AppColors.iconGreyColor),
+        enabledBorder: enabledBorder ??
+            OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(14.r)),
+                borderSide: BorderSide(color: showError == false ? AppColors.white : Theme.of(context).colorScheme.error)),
+        border: border ?? OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
+        focusedBorder: focusedBorder ??
+            OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
+        focusedErrorBorder: focusedErrorBorder ??
+            OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)),
+                borderSide: BorderSide(color: Theme.of(context).primaryColor.withOpacity(0.4))),
+        disabledBorder: disabledBorder ??
+            OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)),
+                borderSide: BorderSide(color: Theme.of(context).primaryColor.withOpacity(0.4))),
+        errorBorder: errorBorder ??
+            OutlineInputBorder(
+                borderRadius: const BorderRadius.all(Radius.circular(defaultRadius)),
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.error)),
       ),
     );
   }

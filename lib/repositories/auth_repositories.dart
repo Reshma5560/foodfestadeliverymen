@@ -10,14 +10,11 @@ import '../utils/local_storage.dart';
 import '../utils/utils.dart';
 
 class AuthRepository {
-  Future<dynamic> loginApi(
-      {dynamic params, RxBool? isLoader, required bool isRemeber}) async {
+  Future<dynamic> loginApi({dynamic params, RxBool? isLoader, required bool isRemeber}) async {
     try {
       isLoader?.value = true;
       printData(key: "Login params", value: params);
-      await APIFunction()
-          .postApiCall(apiName: ApiUrls.loginUrl, params: params)
-          .then(
+      await APIFunction().postApiCall(apiName: ApiUrls.loginUrl, params: params).then(
         (response) async {
           if (!isValEmpty(response) && response["status"] == true) {
             if (!isValEmpty(response["message"])) {
@@ -34,16 +31,7 @@ class AuthRepository {
                 Get.offAllNamed(AppRoutes.bottomScreen);
               },
             );
-            // if (isRemeber == true) {
-            await LocalStorage.setLoginInfo(
-                userEmail: params['email'],
-                // con.emailCon.value.text,
-                userPassword: params['password'],
 
-                // con.passwordCon.value.text,
-                isRemeberData: isRemeber
-                // con.isRemeber.value
-                );
             // } else {
             //   await LocalStorage.clearLoginData();
             // }
@@ -69,13 +57,10 @@ class AuthRepository {
     }
   }
 
-  Future<dynamic> updatePasswordApiCall(
-      {RxBool? isLoader, dynamic params}) async {
+  Future<dynamic> updatePasswordApiCall({RxBool? isLoader, dynamic params}) async {
     try {
       isLoader?.value = true;
-      await APIFunction()
-          .postApiCall(apiName: ApiUrls.updatePasswordUrl, params: params)
-          .then(
+      await APIFunction().postApiCall(apiName: ApiUrls.updatePasswordUrl, params: params).then(
         (response) async {
           printData(key: "update password response", value: response);
           if (!isValEmpty(response) && response["status"] == true) {
@@ -99,13 +84,10 @@ class AuthRepository {
   }
 
 //forgot passwprd api
-  Future<dynamic> forgotPasswordApiCall(
-      {RxBool? isLoader, dynamic params}) async {
+  Future<dynamic> forgotPasswordApiCall({RxBool? isLoader, dynamic params}) async {
     try {
       isLoader?.value = true;
-      await APIFunction()
-          .postApiCall(apiName: ApiUrls.forgotPasswordUrl, params: params)
-          .then(
+      await APIFunction().postApiCall(apiName: ApiUrls.forgotPasswordUrl, params: params).then(
         (response) async {
           printData(key: "forgot password response", value: response);
           if (!isValEmpty(response) && response["status"] == true) {

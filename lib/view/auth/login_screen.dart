@@ -12,6 +12,7 @@ import '../../res/app_button.dart';
 import '../../res/app_style.dart';
 import '../../res/app_text_field.dart';
 import '../../utils/helper.dart';
+import '../../utils/local_storage.dart';
 import '../gradient_container/gradient_container.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -77,6 +78,7 @@ class LoginScreen extends StatelessWidget {
                                       onChanged: (value) {
                                         con.emailValidation.value = false;
                                       },
+                                      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
                                     ),
                                     SizedBox(height: 10.h),
                                     AppTextField(
@@ -88,17 +90,29 @@ class LoginScreen extends StatelessWidget {
                                       keyboardType: TextInputType.visiblePassword,
                                       obscureText: con.passwordVisible.value,
                                       textInputAction: TextInputAction.done,
-                                      suffixOnTap: () {
-                                        con.passwordVisible.value = !con.passwordVisible.value;
-                                      },
-                                      suffixIcon: Icon(con.passwordVisible.value ? Icons.visibility : Icons.visibility_off,
-                                          size: 15.sp, color: AppColors.iconGreyColor),
-                                      enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
-                                      border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
-                                      focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
+                                      contentPadding: const EdgeInsets.all(14),
+                                      suffixIcon: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        icon: Icon(
+                                          con.passwordVisible.value ? Icons.visibility : Icons.visibility_off,
+                                          size: 15.sp,
+                                          color: AppColors.iconGreyColor,
+                                        ),
+                                        onPressed: () {
+                                          con.passwordVisible.value = !con.passwordVisible.value;
+                                        },
+                                      ),
+                                      // suffixOnTap: () {
+                                      //   con.passwordVisible.value = !con.passwordVisible.value;
+                                      // },
+                                      // suffixIcon: Icon(con.passwordVisible.value ? Icons.visibility : Icons.visibility_off,
+                                      //     size: 15.sp, color: AppColors.iconGreyColor),
+                                      // enabledBorder: OutlineInputBorder(
+                                      //     borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
+                                      // border: OutlineInputBorder(
+                                      //     borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
+                                      // focusedBorder: OutlineInputBorder(
+                                      //     borderRadius: BorderRadius.all(Radius.circular(14.r)), borderSide: BorderSide(color: AppColors.white)),
 
                                       onChanged: (value) {
                                         con.passwordValidation.value = false;
@@ -111,30 +125,37 @@ class LoginScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         Checkbox(
-                                          value: con.isRemeber.value,
+                                          value: con.isRemember.value,
                                           onChanged: (value) {
-                                            con.isRemeber.value = !con.isRemeber.value;
+                                            con.isRemember.value = value!;
+                                            if (con.isRemember.isTrue) {
+                                              LocalStorage.setLoginInfo(
+                                                userEmail: con.emailCon.value.text.trim(),
+                                                userPassword: con.passwordCon.value.text.trim(),
+                                                remember: con.isRemember.value,
+                                              );
+                                            } else {
+                                              LocalStorage.email.value = "";
+                                              LocalStorage.password.value = "";
+                                              LocalStorage.isRemember.value = false;
+                                            }
                                           },
                                           checkColor: AppColors.white,
                                           activeColor: Theme.of(context).primaryColor,
                                         ),
                                         Align(
-                                            alignment: Alignment.centerRight,
-                                            child: InkWell(
-                                              onTap: () {
-                                                con.isRemeber.value = !con.isRemeber.value;
-                                              },
-                                              child: Text(
-                                                "Remeber Me!",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  decorationThickness: 1.5,
-                                                  color: Theme.of(context).primaryColor,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            )),
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            "Remember Me!",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontSize: 12.sp,
+                                              decorationThickness: 1.5,
+                                              color: Theme.of(context).primaryColor,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                     SizedBox(height: 5.h),
@@ -208,7 +229,7 @@ class LoginScreen extends StatelessWidget {
                                                             "email": con.emailCon.value.text.trim(),
                                                             "password": con.passwordCon.value.text.trim(),
                                                           },
-                                                          isRemeber: con.isRemeber.value);
+                                                          isRemeber: con.isRemember.value);
                                                     }
                                                   }
                                                 },

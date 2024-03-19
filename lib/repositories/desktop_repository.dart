@@ -42,7 +42,7 @@ class DesktopRepository {
             con.image.value = con.getDataMap?.data.image ?? "";
             con.firstNameCon.text = con.getDataMap?.data.firstName ?? "";
             con.lastNameCon.text = con.getDataMap?.data.lastName ?? "";
-            con.emailCon.text = con.getDataMap?.data.email ?? LocalStorage.loginEmail.value;
+            con.emailCon.text = con.getDataMap?.data.email ?? LocalStorage.email.value;
 
             con.mobileNumberCon.text = con.getDataMap?.data.phone ?? "";
             LocalStorage.prefs.write(Prefs.firstName, con.firstNameCon.value.text.trim());
@@ -280,8 +280,8 @@ class DesktopRepository {
           if (!isValEmpty(response) && response["status"] == true) {
             if (!isValEmpty(response["message"])) {
               toast(response["message"].toString());
-              getCurrentOrderListAPI(isInitial: false);
-              getRequestOrderListAPI(isInitial: false);
+              getCurrentOrderListAPI(isInitial: true);
+              getRequestOrderListAPI(isInitial: true);
               // getPastOrderListAPI(isInitial: true);
 
               // Get.offNamed(AppRoutes.bottomScreen);
